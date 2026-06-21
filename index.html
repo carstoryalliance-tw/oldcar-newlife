@@ -26,8 +26,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 /* ── Mobile RWD ── */
 @media(max-width:640px){
   /* Nav：隱藏所有按鈕，只留 Logo + 漢堡 */
-  #nav-about,#nav-videos,#nav-news,#nav-members,#nav-yt,#nav-ig{display:none !important;}
-  nav button[onClick],nav a[href="sponsors/"],nav a[href="https://www.youtube.com/@OLDCARNEWLIFE"],nav a[href="https://www.instagram.com/oldcar.newlife/"]{display:none !important;}
+  #nav-about,#nav-videos,#nav-news,#nav-members,#nav-yt,#nav-ig,#nav-join,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
   #ham-btn{display:flex !important;}
   .pc-br{display:none !important;}
 
@@ -89,10 +88,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
   <button id="nav-videos" onClick="{{ gotoVideos }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">公益影片</button>
   <button id="nav-news" onClick="{{ gotoNews }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">媒體報導</button>
   <button id="nav-members" onClick="{{ gotoMembers }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">成員介紹</button>
-  <div style="flex:1;"></div>
-  <button onClick="{{ gotoJoin }}" style="padding:7px 13px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;flex-shrink:0;">🚗 入會申請</button>
-  <button onClick="{{ gotoDonate }}" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;margin-left:8px;flex-shrink:0;">🌱 捐款支持</button>
-  <a href="sponsors/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">✦ 贊助夥伴</a>
+  <div id="nav-spacer" style="flex:1;"></div>
+  <button id="nav-join" onClick="{{ gotoJoin }}" style="padding:7px 13px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;flex-shrink:0;">🚗 入會申請</button>
+  <button id="nav-donate" onClick="{{ gotoDonate }}" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;margin-left:8px;flex-shrink:0;">🌱 捐款支持</button>
+  <a id="nav-sponsors" href="sponsors/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">✦ 贊助夥伴</a>
   <a id="nav-yt" href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="padding:7px 12px;background:rgba(255,0,0,.1);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ff6b6b;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
     YouTube
@@ -1172,6 +1171,20 @@ class Component extends DCLogic {
   }
 }
 
+</script>
+<script>
+(function(){
+  function _toggleNav(){
+    var m=document.getElementById('mobile-nav');
+    if(!m)return;
+    m.style.display=m.style.display==='flex'?'none':'flex';
+  }
+  window.toggleNav=_toggleNav;
+  document.addEventListener('DOMContentLoaded',function(){
+    var btn=document.getElementById('ham-btn');
+    if(btn) btn.addEventListener('click',function(e){e.stopPropagation();_toggleNav();});
+  });
+})();
 </script>
 </body>
 </html>
