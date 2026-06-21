@@ -13,7 +13,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Noto Sans TC',sans-serif;background:#0a0b0f;color:#fff;scroll-behavior:smooth}
-input,select,textarea{font-family:'Noto Sans TC',sans-serif;-webkit-appearance:none;color:#fff;width:100%}
+input:not([type=checkbox]):not([type=radio]),select,textarea{font-family:'Noto Sans TC',sans-serif;-webkit-appearance:none;color:#fff;width:100%}
+input[type=checkbox]{-webkit-appearance:checkbox;appearance:checkbox;width:auto;}
+input[type=radio]{-webkit-appearance:radio;appearance:radio;width:auto;}
 input::placeholder,textarea::placeholder{color:#555}
 select option{background:#1a1d27}
 input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !important}
@@ -27,18 +29,19 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
   #nav-about,#nav-videos,#nav-news,#nav-members,#nav-yt,#nav-ig{display:none !important;}
   .pc-br{display:none !important;}
 
-  /* Hero：切換成堆疊佈局，影片完整顯示 */
-  #hero-section{display:block !important;min-height:0 !important;padding:0 !important;overflow:visible !important;}
-  #hero-vid-container{position:relative !important;inset:auto !important;width:100% !important;height:auto !important;aspect-ratio:16/9;}
-  #hero-bg-video{position:absolute !important;top:0 !important;left:0 !important;width:100% !important;height:100% !important;min-width:unset !important;min-height:unset !important;transform:none !important;object-fit:cover !important;opacity:.9 !important;}
-  #hero-vid-container::after{content:'';display:block;position:absolute;bottom:0;left:0;right:0;height:35%;background:linear-gradient(to top,#0a0b0f 0%,transparent 100%);pointer-events:none;}
-  #hero-overlay{display:none !important;}
-  #hero-text-inner{padding:24px 20px 36px !important;}
+  /* Hero：背景影片，縮短高度讓影片橫向顯示更多 */
+  #hero-section{min-height:0 !important;padding:20px 20px 28px !important;}
+  #hero-vid-container{position:absolute !important;inset:0 !important;height:unset !important;aspect-ratio:unset !important;}
+  #hero-vid-container::after{display:none !important;}
+  #hero-bg-video{top:0 !important;left:0 !important;width:100% !important;height:100% !important;min-width:unset !important;min-height:unset !important;transform:none !important;object-fit:cover !important;object-position:center !important;opacity:.65 !important;}
+  #hero-overlay{display:block !important;}
+  .hero-hide-mobile{display:none !important;}
+  #hero-text-inner{padding:0 !important;}
   #hero-scroll-hint{display:none !important;}
   #hero-cta{flex-direction:column !important;}
-  #hero-cta button{width:100% !important;padding:14px !important;}
+  #hero-cta button{width:100% !important;padding:13px !important;}
 
-  /* 中段公益洗車影片：顯示完整 16:9 */
+  /* 中段公益洗車影片：完整 16:9 */
   #mid-video{max-height:unset !important;aspect-ratio:16/9 !important;object-fit:cover !important;}
 }
 
@@ -103,9 +106,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
   <div id="hero-text-inner" style="position:relative;max-width:700px;">
     <div style="display:inline-block;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.4);color:#e8a020;font-size:11px;font-weight:700;padding:6px 18px;border-radius:20px;letter-spacing:3px;margin-bottom:28px;">OLD CAR × NEW LIFE</div>
     <h1 style="font-size:clamp(30px,6vw,58px);font-weight:900;line-height:1.15;margin-bottom:14px;text-shadow:0 2px 20px rgba(0,0,0,.5);">社團法人<br><span style="color:#e8a020;">台灣人車公益協會</span></h1>
-    <div style="font-size:clamp(13px,2.5vw,17px);color:#bbb;font-weight:300;letter-spacing:4px;margin-bottom:18px;">TAIWAN CAR STORY ALLIANCE</div>
-    <div style="font-size:clamp(13px,2vw,15px);color:rgba(232,160,32,.85);letter-spacing:2px;margin-bottom:14px;line-height:2.2;">以人為本 · 以車為橋 · 讓愛發動 · 讓希望前行</div>
-    <p style="font-size:14px;color:#aaa;line-height:2;margin-bottom:40px;">致力協助弱勢族群解決交通與生活困難，讓車圈的熱情與專業<span class="pc-br"><br></span>成為改變社會的善的力量。</p>
+    <div class="hero-hide-mobile" style="font-size:clamp(13px,2.5vw,17px);color:#bbb;font-weight:300;letter-spacing:4px;margin-bottom:18px;">TAIWAN CAR STORY ALLIANCE</div>
+    <div class="hero-hide-mobile" style="font-size:clamp(13px,2vw,15px);color:rgba(232,160,32,.85);letter-spacing:2px;margin-bottom:14px;line-height:2.2;">以人為本 · 以車為橋 · 讓愛發動 · 讓希望前行</div>
+    <p class="hero-hide-mobile" style="font-size:14px;color:#aaa;line-height:2;margin-bottom:40px;">致力協助弱勢族群解決交通與生活困難，讓車圈的熱情與專業<span class="pc-br"><br></span>成為改變社會的善的力量。</p>
     <div id="hero-cta" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
       <button onClick="{{ gotoJoin }}" style="padding:15px 34px;background:linear-gradient(135deg,#e8a020,#d4821a);border:none;border-radius:10px;font-size:15px;font-weight:900;color:#0a0b0f;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;box-shadow:0 4px 20px rgba(232,160,32,.3);">🚗 立即入會申請</button>
       <button onClick="{{ gotoDonate }}" style="padding:15px 34px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.45);border-radius:10px;font-size:15px;font-weight:700;color:#6dcc8a;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;">🌱 立即捐款</button>
