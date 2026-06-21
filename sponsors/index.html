@@ -19,76 +19,62 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .nav-links{display:flex;align-items:center;gap:8px;}
 .nav-links a{font-size:12px;color:#aaa;text-decoration:none;padding:6px 12px;border-radius:6px;transition:all .2s;}
 .nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);}
-.nav-btn{background:linear-gradient(135deg,#e8a020,#d4821a) !important;color:#000 !important;font-weight:700 !important;border-radius:7px !important;}
-.nav-btn:hover{opacity:.9;}
+.nav-btn{background:linear-gradient(135deg,#e8a020,#d4821a)!important;color:#000!important;font-weight:700!important;border-radius:7px!important;}
 
 /* HERO BANNER */
-.page-hero{padding:72px 24px 56px;text-align:center;background:linear-gradient(180deg,rgba(232,160,32,.04) 0%,transparent 100%);border-bottom:1px solid #1a1c24;}
-.page-badge{display:inline-block;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.4);color:#e8a020;font-size:11px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:3px;margin-bottom:20px;}
-.page-hero h1{font-size:clamp(26px,5vw,44px);font-weight:900;margin-bottom:12px;}
-.page-hero p{font-size:14px;color:#888;max-width:520px;margin:0 auto;}
+.page-hero{padding:48px 24px 36px;text-align:center;background:linear-gradient(180deg,rgba(232,160,32,.04) 0%,transparent 100%);border-bottom:1px solid #1a1c24;}
+.page-badge{display:inline-block;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.4);color:#e8a020;font-size:11px;font-weight:700;padding:5px 16px;border-radius:20px;letter-spacing:3px;margin-bottom:16px;}
+.page-hero h1{font-size:clamp(22px,5vw,40px);font-weight:900;margin-bottom:8px;}
+.page-hero p{font-size:13px;color:#888;max-width:520px;margin:0 auto;}
 
 /* SPONSOR CARD */
-.sponsor-section{max-width:960px;margin:0 auto;padding:48px 20px 80px;}
+.sponsor-section{max-width:960px;margin:0 auto;padding:32px 20px 60px;}
 .sponsor-card{background:#111318;border:1px solid #1e2029;border-radius:20px;overflow:hidden;}
 
 /* TOP STRIP */
-.card-top{background:linear-gradient(135deg,#1a0505 0%,#1a0a0a 100%);border-bottom:1px solid #2a1515;padding:28px 32px;display:flex;align-items:center;gap:20px;}
-.card-logo{width:72px;height:72px;object-fit:contain;border-radius:12px;}
-.card-title-block{}
-.card-title-block h2{font-size:22px;font-weight:900;color:#fff;}
-.card-title-block .en{font-size:12px;color:#888;letter-spacing:2px;margin-top:2px;}
-.badge-sponsor{background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.5);color:#e8a020;font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:1px;margin-top:6px;display:inline-block;}
+.card-top{background:linear-gradient(135deg,#1a0505 0%,#1a0a0a 100%);border-bottom:1px solid #2a1515;padding:20px 24px;display:flex;align-items:center;gap:16px;}
+.card-logo{width:60px;height:60px;object-fit:contain;border-radius:10px;flex-shrink:0;}
+.card-title-block h2{font-size:20px;font-weight:900;color:#fff;}
+.card-title-block .en{font-size:11px;color:#888;letter-spacing:2px;margin-top:1px;}
+.badge-sponsor{background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.5);color:#e8a020;font-size:10px;font-weight:700;padding:2px 9px;border-radius:12px;letter-spacing:1px;margin-top:5px;display:inline-block;}
 
-/* BODY LAYOUT */
-.card-body{display:grid;grid-template-columns:1fr 340px;gap:0;}
-@media(max-width:700px){.card-body{grid-template-columns:1fr;}}
-
-/* LEFT INFO */
-.card-info{padding:32px;}
-.section-label{font-size:10px;color:#555;letter-spacing:3px;font-weight:700;margin-bottom:16px;text-transform:uppercase;}
-.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
-.store-chip{background:#13151f;border:1px solid #252830;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;}
-.store-chip .dot{width:6px;height:6px;background:#e8a020;border-radius:50%;flex-shrink:0;}
-.store-chip span{font-size:13px;font-weight:600;}
-.info-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #1a1c24;}
-.info-row:last-child{border-bottom:none;}
-.info-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.info-label{font-size:11px;color:#555;margin-bottom:2px;}
-.info-val{font-size:14px;font-weight:600;}
-.info-val a{color:#fff;text-decoration:none;}
-.info-val a:hover{color:#e8a020;}
-.web-placeholder{color:#444;font-size:13px;font-style:italic;}
-
-/* STORE PHOTO */
-.store-photo{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;margin-top:24px;}
+/* CARD BODY — flex row-reverse: video right on desktop, video top on mobile */
+.card-body{display:flex;flex-direction:row-reverse;}
 
 /* RIGHT VIDEO */
-.card-video{background:#fff;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
-.card-video video{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+.card-video{flex:0 0 300px;background:#000;display:flex;align-items:center;justify-content:center;}
+.card-video video{width:100%;aspect-ratio:716/1284;object-fit:contain;display:block;}
+
+/* LEFT INFO */
+.card-info{flex:1;padding:20px 22px;display:flex;flex-direction:column;gap:0;}
+.section-label{font-size:10px;color:#555;letter-spacing:3px;font-weight:700;margin-bottom:10px;text-transform:uppercase;}
+.store-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:18px;}
+.store-chip{background:#13151f;border:1px solid #252830;border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:7px;}
+.store-chip .dot{width:5px;height:5px;background:#e8a020;border-radius:50%;flex-shrink:0;}
+.store-chip span{font-size:12px;font-weight:600;}
+.info-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #1a1c24;}
+.info-row:last-child{border-bottom:none;}
+.info-icon{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.info-label{font-size:10px;color:#555;margin-bottom:1px;}
+.info-val{font-size:13px;font-weight:600;}
+.info-val a{color:#fff;text-decoration:none;}
+.info-val a:hover{color:#e8a020;}
+.web-placeholder{color:#444;font-size:12px;font-style:italic;}
+
+/* MOBILE */
 @media(max-width:700px){
-  .card-video{min-height:420px;}
-  .card-info{padding:24px 20px;}
-  .store-grid{grid-template-columns:1fr 1fr;}
-  .card-top{padding:20px;}
+  .card-body{flex-direction:column;}
+  .card-video{flex:none;width:100%;}
+  .card-video video{width:100%;aspect-ratio:716/1284;}
+  .card-info{padding:16px 18px;}
+  .card-top{padding:16px 18px;}
 }
 
-/* SOCIAL LINKS */
-.social-links{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
-.social-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;}
-.social-btn.fb{background:rgba(24,119,242,.12);border:1px solid rgba(24,119,242,.3);color:#5b9cf6;}
-.social-btn.fb:hover{background:rgba(24,119,242,.2);}
-.social-btn.ig{background:rgba(193,53,132,.12);border:1px solid rgba(193,53,132,.3);color:#e1306c;}
-.social-btn.ig:hover{background:rgba(193,53,132,.2);}
-.social-btn.web{background:#13151f;border:1px solid #252830;color:#555;cursor:default;}
-
 /* FOOTER */
-footer{border-top:1px solid #1a1c24;padding:32px 24px;text-align:center;}
+footer{border-top:1px solid #1a1c24;padding:24px;text-align:center;}
 footer p{font-size:12px;color:#444;}
 footer a{color:#666;text-decoration:none;}
-
-/* BACK LINK */
-.back-link{display:inline-flex;align-items:center;gap:6px;color:#888;font-size:13px;text-decoration:none;margin-bottom:28px;transition:color .2s;}
+.back-link{display:inline-flex;align-items:center;gap:6px;color:#888;font-size:13px;text-decoration:none;margin-bottom:20px;transition:color .2s;}
 .back-link:hover{color:#e8a020;}
 </style>
 </head>
@@ -111,7 +97,7 @@ footer a{color:#666;text-decoration:none;}
 <div class="page-hero">
   <div class="page-badge">HONOR SPONSORS</div>
   <h1>榮譽贊助夥伴</h1>
-  <p>感謝每一位贊助夥伴的支持，讓協會的公益夢想得以落地實現。<br>您的品牌將在此頁面永久展示，見證我們共同推動的善的力量。</p>
+  <p>感謝每一位贊助夥伴的支持，讓協會的公益夢想得以落地實現。</p>
 </div>
 
 <!-- SPONSOR CARD -->
@@ -127,17 +113,25 @@ footer a{color:#666;text-decoration:none;}
         <h2>樂凱車體包膜</h2>
         <div class="en">LUCKY PPF</div>
         <div class="badge-sponsor">✦ 榮譽贊助會員</div>
-        <div style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+        <div style="margin-top:8px;display:flex;align-items:center;gap:7px;">
           <span style="font-size:13px;font-weight:700;color:#fff;">阿杰</span>
-          <span style="font-size:11px;color:#e8a020;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.3);padding:2px 9px;border-radius:10px;font-weight:700;letter-spacing:1px;">CEO</span>
+          <span style="font-size:10px;color:#e8a020;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.3);padding:2px 8px;border-radius:10px;font-weight:700;letter-spacing:1px;">CEO</span>
         </div>
       </div>
     </div>
 
-    <!-- BODY -->
+    <!-- BODY: video first in HTML → top on mobile, right on desktop (row-reverse) -->
     <div class="card-body">
 
-      <!-- LEFT INFO -->
+      <!-- VIDEO (right on desktop / top on mobile) -->
+      <div class="card-video">
+        <video autoplay loop muted playsinline preload="auto"
+               poster="../uploads/lucky-ppf/ajie-poster.jpg">
+          <source src="../uploads/lucky-ppf/ajie.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- INFO (left on desktop / bottom on mobile) -->
       <div class="card-info">
         <div class="section-label">實體門市</div>
         <div class="store-grid">
@@ -157,7 +151,7 @@ footer a{color:#666;text-decoration:none;}
         </div>
         <div class="info-row">
           <div class="info-icon" style="background:rgba(24,119,242,.1);color:#1877F2;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           </div>
           <div>
             <div class="info-label">Facebook</div>
@@ -166,7 +160,7 @@ footer a{color:#666;text-decoration:none;}
         </div>
         <div class="info-row">
           <div class="info-icon" style="background:rgba(193,53,132,.1);color:#e1306c;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           </div>
           <div>
             <div class="info-label">Instagram</div>
@@ -180,29 +174,6 @@ footer a{color:#666;text-decoration:none;}
             <div class="info-val web-placeholder">即將上線 Coming Soon</div>
           </div>
         </div>
-
-        <img class="store-photo" src="../uploads/lucky-ppf/store.jpg" alt="樂凱車體包膜門市">
-
-        <div class="social-links">
-          <a class="social-btn fb" href="https://www.facebook.com/people/%E6%A8%82%E5%87%B1%E8%BB%8A%E9%AB%94%E5%8C%85%E8%86%9C-LUCKY-PPF/100075761388849/?locale=zh_TW" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            Facebook
-          </a>
-          <a class="social-btn ig" href="https://www.instagram.com/lucky_ppf/" target="_blank" rel="noopener">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            Instagram
-          </a>
-          <span class="social-btn web">🌐 官網 (即將上線)</span>
-        </div>
-      </div>
-
-      <!-- RIGHT VIDEO -->
-      <div class="card-video">
-        <video autoplay loop muted playsinline preload="auto"
-               poster="../uploads/lucky-ppf/ajie-poster.jpg"
-               style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;min-height:480px;">
-          <source src="../uploads/lucky-ppf/ajie.mp4" type="video/mp4">
-        </video>
       </div>
 
     </div>
