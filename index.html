@@ -79,7 +79,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <!-- ── 導覽列 ── -->
 <nav style="position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.92);backdrop-filter:blur(14px);border-bottom:1px solid #252830;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
-  <button onClick="{{ gotoHome }}" style="font-size:13px;font-weight:900;color:#e8a020;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;padding:14px 12px 14px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;">OLD CAR × NEW LIFE</button>
+  <button onClick="{{ gotoHome }}" style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900;color:#e8a020;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;padding:10px 12px 10px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;">
+    <img src="assets/logo.png" alt="logo" style="height:34px;width:34px;object-fit:contain;background:#fff;border-radius:7px;padding:3px;flex-shrink:0;">
+    OLD CAR × NEW LIFE
+  </button>
   <button id="nav-about" onClick="{{ gotoAbout }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">協會介紹</button>
   <button id="nav-videos" onClick="{{ gotoVideos }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">公益影片</button>
   <button id="nav-news" onClick="{{ gotoNews }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">媒體報導</button>

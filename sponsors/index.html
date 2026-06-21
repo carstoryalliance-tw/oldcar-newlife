@@ -12,9 +12,9 @@
 body{background:#0a0b0f;color:#fff;font-family:'Noto Sans TC',sans-serif;line-height:1.6;min-height:100vh;}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(10,11,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid #1a1c24;}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:rgba(10,11,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid #1a1c24;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.nav-logo img{height:32px;width:32px;object-fit:contain;filter:invert(1);}
+.nav-logo-img{height:36px;width:36px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;flex-shrink:0;}
 .nav-logo span{font-size:13px;font-weight:700;color:#fff;letter-spacing:1px;}
 .nav-links{display:flex;align-items:center;gap:8px;}
 .nav-links a{font-size:12px;color:#aaa;text-decoration:none;padding:6px 12px;border-radius:6px;transition:all .2s;}
@@ -83,7 +83,7 @@ footer a{color:#666;text-decoration:none;}
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="../">
-    <img src="../assets/logo.png" alt="logo" onerror="this.style.display='none'">
+    <img class="nav-logo-img" src="../assets/logo.png" alt="logo">
     <span>台灣人車公益協會</span>
   </a>
   <div class="nav-links">
@@ -95,6 +95,8 @@ footer a{color:#666;text-decoration:none;}
 
 <!-- PAGE HERO -->
 <div class="page-hero">
+  <img src="../assets/logo-full.png" alt="人車故事公益聯盟 OLD CAR × NEW LIFE"
+       style="height:56px;object-fit:contain;margin-bottom:20px;filter:brightness(0) invert(1);opacity:.85;">
   <div class="page-badge">HONOR SPONSORS</div>
   <h1>榮譽贊助夥伴</h1>
   <p>感謝每一位贊助夥伴的支持，讓協會的公益夢想得以落地實現。</p>
