@@ -1180,10 +1180,9 @@ class Component extends DCLogic {
     m.style.display=m.style.display==='flex'?'none':'flex';
   }
   window.toggleNav=_toggleNav;
-  document.addEventListener('DOMContentLoaded',function(){
-    var btn=document.getElementById('ham-btn');
-    if(btn) btn.addEventListener('click',function(e){e.stopPropagation();_toggleNav();});
-  });
+  // 腳本已在 </body> 前，DOM 已就緒，直接綁定
+  var btn=document.getElementById('ham-btn');
+  if(btn) btn.addEventListener('click',function(e){e.stopPropagation();_toggleNav();});
 })();
 </script>
 </body>
