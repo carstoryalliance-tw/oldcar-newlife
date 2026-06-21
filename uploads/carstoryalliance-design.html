@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社團法人台灣人車公益協會</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold: #e8a020; --green: #6dcc8a;
+  --bg: #0a0b0f; --card: #13151f; --border: #252830;
+  --text: #ffffff; --muted: #aaa; --dim: #555;
+}
+body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); }
+
+/* ── Tab Nav ── */
+.tab-nav { position: sticky; top: 0; z-index: 100; display: flex; background: #0f1117; border-bottom: 1px solid var(--border); }
+.tab-btn { flex: 1; padding: 14px; text-align: center; font-size: 14px; font-weight: 700; cursor: pointer; color: var(--muted); border: none; background: none; border-bottom: 3px solid transparent; transition: all 0.2s; font-family: 'Noto Sans TC', sans-serif; }
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ════ 共用 ════ */
+.divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 0 24px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.field label .req { color: var(--gold); margin-left: 2px; }
+.field input, .field select, .field textarea { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 14px; color: var(--text); font-family: 'Noto Sans TC', sans-serif; transition: border-color 0.2s; -webkit-appearance: none; }
+.field input::placeholder, .field textarea::placeholder { color: #666; }
+.field select option { background: #1a1d27; }
+.hint { font-size: 11px; color: #666; margin-top: 4px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:500px){ .form-grid { grid-template-columns: 1fr; } }
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #13151f; border: 1px solid var(--gold); color: var(--text); font-size: 14px; font-weight: 600; padding: 14px 28px; border-radius: 50px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 999; white-space: nowrap; }
+.toast.show { opacity: 1; }
+.toast.error { border-color: #ff6b6b; color: #ff6b6b; }
+
+/* ════ 首頁 ════ */
+.hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; text-align: center; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 30% 30%, rgba(232,160,32,0.08) 0%, transparent 70%), radial-gradient(ellipse 50% 40% at 70% 70%, rgba(109,204,138,0.05) 0%, transparent 70%); }
+.hero-badge { display: inline-block; background: rgba(232,160,32,0.12); border: 1px solid rgba(232,160,32,0.35); color: var(--gold); font-size: 12px; font-weight: 700; padding: 6px 18px; border-radius: 20px; letter-spacing: 2px; margin-bottom: 28px; }
+.hero h1 { font-size: clamp(28px, 6vw, 54px); font-weight: 900; line-height: 1.2; margin-bottom: 12px; position: relative; }
+.hero h1 em { color: var(--gold); font-style: normal; }
+.hero-sub { font-size: clamp(14px, 3vw, 18px); color: var(--muted); font-weight: 300; letter-spacing: 3px; margin-bottom: 20px; }
+.hero-slogan { font-size: clamp(13px, 2.5vw, 16px); color: var(--dim); letter-spacing: 2px; margin-bottom: 48px; line-height: 2; }
+.hero-slogan span { color: var(--gold); }
+.cta-wrap { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.btn-primary { padding: 16px 36px; background: linear-gradient(135deg, #e8a020, #d4821a); border: none; border-radius: 10px; font-size: 16px; font-weight: 900; color: var(--bg); text-decoration: none; letter-spacing: 1px; cursor: pointer; transition: opacity 0.2s, transform 0.1s; font-family: 'Noto Sans TC', sans-serif; }
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-secondary { padding: 16px 36px; background: rgba(109,204,138,0.1); border: 1px solid rgba(109,204,138,0.4); border-radius: 10px; font-size: 16px; font-weight: 700; color: var(--green); text-decoration: none; letter-spacing: 1px; transition: background 0.2s, transform 0.1s; }
+.btn-secondary:hover { background: rgba(109,204,138,0.16); transform: translateY(-1px); }
+.scroll-hint { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); color: var(--dim); font-size: 12px; letter-spacing: 2px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+.section { max-width: 800px; margin: 0 auto; padding: 80px 24px; }
+.section-head { text-align: center; margin-bottom: 48px; }
+.section-head .tag { display: inline-block; background: var(--gold); color: var(--bg); font-size: 10px; font-weight: 900; padding: 4px 14px; border-radius: 3px; letter-spacing: 2px; margin-bottom: 16px; }
+.section-head h2 { font-size: clamp(22px, 4vw, 32px); font-weight: 900; }
+.section-head p { font-size: 14px; color: var(--muted); line-height: 1.8; margin-top: 10px; }
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media(max-width:600px){ .features { grid-template-columns: 1fr; } }
+.feat-card { background: var(--card); border-radius: 14px; padding: 28px 22px; border: 1px solid var(--border); text-align: center; }
+.feat-icon { font-size: 36px; margin-bottom: 14px; }
+.feat-title { font-size: 16px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
+.feat-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.plans { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media(max-width:540px){ .plans { grid-template-columns: 1fr; } }
+.plan-card { background: var(--card); border-radius: 14px; padding: 24px 22px; border: 1px solid var(--border); }
+.plan-card.gold-border { border-color: var(--gold); }
+.plan-card.blue-border { border-color: #3a5a8a; }
+.plan-icon { font-size: 28px; margin-bottom: 10px; }
+.plan-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.plan-price { font-size: 26px; font-weight: 900; color: var(--gold); margin-bottom: 6px; }
+.plan-price small { font-size: 12px; color: var(--dim); font-weight: 400; }
+.plan-fee { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.plan-tax { font-size: 11px; color: var(--green); }
+.plan-btn { display: block; margin-top: 16px; padding: 10px; text-align: center; background: rgba(232,160,32,0.1); border: 1px solid rgba(232,160,32,0.35); border-radius: 8px; color: var(--gold); font-size: 13px; font-weight: 700; text-decoration: none; transition: background 0.2s; cursor: pointer; }
+.plan-btn:hover { background: rgba(232,160,32,0.18); }
+.schedule { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media(min-width:600px){ .schedule { grid-template-columns: repeat(4, 1fr); } }
+.sched-card { background: var(--card); border-radius: 12px; padding: 18px 14px; border: 1px solid var(--border); text-align: center; }
+.sched-card.next { border-color: var(--gold); background: rgba(232,160,32,0.05); }
+.sched-n { font-size: 11px; color: var(--dim); margin-bottom: 6px; }
+.sched-date { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
+.sched-venue { font-size: 12px; color: var(--muted); }
+.sched-badge { display: inline-block; margin-top: 8px; background: var(--gold); color: var(--bg); font-size: 9px; font-weight: 900; padding: 2px 10px; border-radius: 10px; }
+.footer { padding: 40px 24px; text-align: center; border-top: 1px solid var(--border); }
+.footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-links a { color: var(--muted); font-size: 13px; text-decoration: none; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 11px; color: var(--dim); letter-spacing: 1px; }
+
+/* ════ 入會申請頁 ════ */
+.j-header { background: linear-gradient(135deg, #0f1117 0%, #1a1d27 100%); border-bottom: 3px solid var(--gold); padding: 24px 20px; text-align: center; }
+.j-header-logo { font-size: 13px; color: var(--muted); letter-spacing: 2px; margin-bottom: 8px; }
+.j-header h1 { font-size: 24px; font-weight: 900; color: var(--text); }
+.j-header h1 span { color: var(--gold); }
+.fee-banner { max-width: 680px; margin: 28px auto 0; padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fee-card { background: var(--card); border-radius: 12px; padding: 16px 18px; border: 1px solid var(--border); }
+.fee-card.highlight { border-color: var(--gold); }
+.fee-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; letter-spacing: 1px; }
+.fee-name { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.fee-price { font-size: 20px; font-weight: 900; color: var(--gold); }
+.fee-price small { font-size: 12px; color: #666; font-weight: 400; }
+.fee-note { font-size: 11px; color: var(--green); margin-top: 6px; }
+.j-form-wrap { max-width: 680px; margin: 32px auto 0; padding: 0 20px 60px; }
+.j-section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; margin-top: 32px; }
+.j-section-tag { background: var(--gold); color: var(--bg); font-size: 10px; font-weight: 900; padding: 4px 12px; border-radius: 3px; letter-spacing: 1px; }
+.j-section-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.j-section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(232,160,32,0.3), transparent); }
+.j-radio-group { display: flex; flex-direction: column; gap: 10px; }
+.j-radio-item { display: flex; align-items: flex-start; gap: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: border-color 0.2s; }
+.j-radio-item:has(input:checked) { border-color: var(--gold); background: rgba(232,160,32,0.06); }
+.j-radio-item input[type="radio"] { accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; }
+.j-radio-label { font-size: 13px; color: var(--text); font-weight: 600; }
+.j-radio-desc { font-size: 11px; color: #666; margin-top: 2px; }
+.checkbox-item { display: flex; align-items: flex-start; gap: 10px; background: rgba(232,160,32,0.05); border: 1px solid rgba(232,160,32,0.3); border-radius: 8px; padding: 14px; cursor: pointer; }
+.checkbox-item input[type="checkbox"] { accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; }
+.checkbox-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.j-account-box { margin-top: 28px; padding: 20px; background: rgba(232,160,32,0.06); border: 1px solid rgba(232,160,32,0.3); border-radius: 10px; }
+.j-account-box h4 { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+.j-account-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.j-account-row:last-child { margin-bottom: 0; }
+.j-account-key { font-size: 12px; color: #666; }
+.j-account-val { font-size: 13px; color: var(--text); font-weight: 700; letter-spacing: 1px; }
+.j-btn-submit { width: 100%; padding: 16px; background: linear-gradient(135deg, #e8a020, #d4821a); border: none; border-radius: 10px; font-size: 16px; font-weight: 900; color: var(--bg); cursor: pointer; letter-spacing: 1px; transition: opacity 0.2s, transform 0.1s; font-family: 'Noto Sans TC', sans-serif; }
+.j-btn-submit:hover { opacity: 0.9; }
+.j-btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.j-success-screen { display: none; text-align: center; padding: 60px 20px; max-width: 480px; margin: 0 auto; }
+.j-success-screen .success-icon { font-size: 64px; margin-bottom: 20px; }
+.j-success-screen h2 { font-size: 24px; font-weight: 900; color: var(--gold); margin-bottom: 12px; }
+.j-success-screen p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.j-success-screen .back-home { display: inline-block; margin-top: 28px; padding: 12px 32px; background: var(--gold); color: var(--bg); border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 14px; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--gold); }
+#join .field input:focus, #join .field select:focus { border-color: var(--gold); }
+
+/* ════ 捐款頁 ════ */
+.d-header { background: linear-gradient(135deg, #0f1117 0%, #0d1a0f 100%); border-bottom: 3px solid var(--green); padding: 24px 20px; text-align: center; }
+.d-header-logo { font-size: 13px; color: var(--muted); letter-spacing: 2px; margin-bottom: 8px; }
+.d-header h1 { font-size: 24px; font-weight: 900; color: var(--text); }
+.d-header h1 span { color: var(--green); }
+.tax-banner { max-width: 680px; margin: 28px auto 0; background: rgba(109,204,138,0.07); border: 1px solid rgba(109,204,138,0.3); border-radius: 12px; padding: 16px 20px; text-align: center; }
+.tax-banner p { font-size: 13px; color: var(--green); line-height: 1.7; }
+.tax-banner strong { font-weight: 800; }
+.d-form-wrap { max-width: 680px; margin: 28px auto 0; padding: 0 20px 60px; }
+.d-section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; margin-top: 32px; }
+.d-section-tag { background: var(--green); color: var(--bg); font-size: 10px; font-weight: 900; padding: 4px 12px; border-radius: 3px; letter-spacing: 1px; }
+.d-section-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.d-section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(109,204,138,0.3), transparent); }
+#donate .field input:focus, #donate .field select:focus, #donate .field textarea:focus { outline: none; border-color: var(--green); }
+.amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.amount-btn { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all 0.2s; }
+.amount-btn:hover, .amount-btn.active { border-color: var(--green); background: rgba(109,204,138,0.06); }
+.amount-btn .num { font-size: 18px; font-weight: 900; color: var(--green); }
+.amount-btn .unit { font-size: 11px; color: #666; margin-top: 2px; }
+.amount-custom { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 14px; color: var(--text); font-family: 'Noto Sans TC', sans-serif; width: 100%; transition: border-color 0.2s; }
+.amount-custom:focus { outline: none; border-color: var(--green); }
+.amount-custom::placeholder { color: #666; }
+.d-radio-group { display: flex; flex-direction: column; gap: 10px; }
+.d-radio-item { display: flex; align-items: flex-start; gap: 10px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: border-color 0.2s; }
+.d-radio-item:has(input:checked) { border-color: var(--green); background: rgba(109,204,138,0.05); }
+.d-radio-item input[type="radio"] { accent-color: var(--green); margin-top: 2px; flex-shrink: 0; }
+.d-radio-label { font-size: 13px; color: var(--text); font-weight: 600; }
+.d-radio-desc { font-size: 11px; color: #666; margin-top: 2px; }
+.receipt-fields { display: none; margin-top: 14px; }
+.receipt-fields.show { display: block; }
+.account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width:500px){ .account-grid { grid-template-columns: 1fr; } }
+.d-account-box { padding: 16px 18px; border-radius: 10px; }
+.d-account-box.green { background: rgba(109,204,138,0.07); border: 1px solid rgba(109,204,138,0.3); }
+.d-account-box.gold { background: rgba(232,160,32,0.07); border: 1px solid rgba(232,160,32,0.3); }
+.d-account-box h4 { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+.d-account-box.green h4 { color: var(--green); }
+.d-account-box.gold h4 { color: var(--gold); }
+.d-account-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.d-account-key { font-size: 11px; color: #666; }
+.d-account-val { font-size: 12px; color: var(--text); font-weight: 700; letter-spacing: 1px; }
+.d-btn-submit { width: 100%; padding: 16px; margin-top: 32px; background: linear-gradient(135deg, #6dcc8a, #4aab6a); border: none; border-radius: 10px; font-size: 16px; font-weight: 900; color: var(--bg); cursor: pointer; letter-spacing: 1px; transition: opacity 0.2s; font-family: 'Noto Sans TC', sans-serif; }
+.d-btn-submit:hover { opacity: 0.9; }
+.d-btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.d-success-screen { display: none; text-align: center; padding: 60px 20px; max-width: 480px; margin: 0 auto; }
+.d-success-screen .success-icon { font-size: 64px; margin-bottom: 20px; }
+.d-success-screen h2 { font-size: 24px; font-weight: 900; color: var(--green); margin-bottom: 12px; }
+.d-success-screen p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.d-success-screen .back-home { display: inline-block; margin-top: 28px; padding: 12px 32px; background: var(--green); color: var(--bg); border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('home',this)">🏠 首頁</button>
+  <button class="tab-btn" onclick="switchTab('join',this)">🚗 入會申請</button>
+  <button class="tab-btn" onclick="switchTab('donate',this)">🌱 捐款頁</button>
+</div>
+
+<!-- ══════════════ 首頁 ══════════════ -->
+<div id="home" class="page active">
+<section class="hero">
+  <div class="hero-badge">OLD CAR × NEW LIFE</div>
+  <h1>社團法人<br><em>台灣人車公益協會</em></h1>
+  <div class="hero-sub">TAIWAN CAR STORY ALLIANCE</div>
+  <div class="hero-slogan"><span>以人為本</span> · <span>以車為橋</span> · <span>讓愛發動</span> · <span>讓希望前行</span></div>
+  <div class="cta-wrap">
+    <button class="btn-primary" onclick="switchTab('join',document.querySelectorAll('.tab-btn')[1])">🚗 立即入會申請</button>
+    <button class="btn-secondary" onclick="switchTab('donate',document.querySelectorAll('.tab-btn')[2])">🌱 捐款支持</button>
+  </div>
+  <div class="scroll-hint">↓ 了解更多</div>
+</section>
+<div class="divider"></div>
+<section class="section">
+  <div class="section-head"><div class="tag">ABOUT</div><h2>關於協會</h2><p>台灣人車公益協會結合車圈業者、自媒體創作者與公益精神，<br>透過定期例會、場地參訪、公益洗車、老車翻新等活動，<br>打造以車為媒介的公益交流平台。</p></div>
+  <div class="features">
+    <div class="feat-card"><div class="feat-icon">🤝</div><div class="feat-title">同業交流</div><div class="feat-desc">台灣車圈菁英聚集，認識洗車、鍍膜、包膜、改裝、自媒體各領域夥伴</div></div>
+    <div class="feat-card"><div class="feat-icon">🌱</div><div class="feat-title">公益行動</div><div class="feat-desc">公益洗車、淨灘、老車翻新，讓品牌更有溫度，幫助有需要的人</div></div>
+    <div class="feat-card"><div class="feat-icon">📣</div><div class="feat-title">媒體曝光</div><div class="feat-desc">例會輪流在會員店面辦理，帶自媒體進場，幫你產出優質內容</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+<section class="section">
+  <div class="section-head"><div class="tag">MEMBERSHIP</div><h2>會費方案</h2><p>所有會費及捐款均可申請稅務抵免</p></div>
+  <div class="plans">
+    <div class="plan-card gold-border"><div class="plan-icon">🚗</div><div class="plan-name">一般會員</div><div class="plan-price">$8,800<small>/年</small></div><div class="plan-fee">入會費 $2,000</div><div class="plan-tax">✅ 入會費 & 年費均可抵稅</div><button onclick="switchTab('join',document.querySelectorAll('.tab-btn')[1])" class="plan-btn">立即申請</button></div>
+    <div class="plan-card blue-border"><div class="plan-icon">🏢</div><div class="plan-name">團體會員</div><div class="plan-price" style="color:#7bbfff;">$28,800<small>/年</small></div><div class="plan-fee">入會費 $5,000</div><div class="plan-tax">✅ 入會費 & 年費均可抵稅</div><button onclick="switchTab('join',document.querySelectorAll('.tab-btn')[1])" class="plan-btn" style="border-color:rgba(74,158,255,0.35);color:#7bbfff;background:rgba(74,158,255,0.1);">立即申請</button></div>
+    <div class="plan-card" style="border-color:#6a4a9a;"><div class="plan-icon">⭐</div><div class="plan-name">核心理事</div><div class="plan-price" style="color:#c8a0f0;">$20,000<small>/年</small></div><div class="plan-fee">限 6 席 · 無需入會費</div><div class="plan-tax">✅ 年費可抵稅</div><button onclick="switchTab('join',document.querySelectorAll('.tab-btn')[1])" class="plan-btn" style="border-color:rgba(180,120,240,0.35);color:#c8a0f0;background:rgba(180,120,240,0.1);">申請理事</button></div>
+    <div class="plan-card"><div class="plan-icon">🤝</div><div class="plan-name">贊助捐款</div><div class="plan-price">$30,000<small>+</small></div><div class="plan-fee">純捐款 · 非會員資格</div><div class="plan-tax">✅ 捐款可申請抵稅</div><button onclick="switchTab('donate',document.querySelectorAll('.tab-btn')[2])" class="plan-btn" style="border-color:rgba(109,204,138,0.35);color:var(--green);background:rgba(109,204,138,0.08);">立即捐款</button></div>
+  </div>
+</section>
+<div class="divider"></div>
+<section class="section">
+  <div class="section-head"><div class="tag">2026 SCHEDULE</div><h2>年度例會時間表</h2></div>
+  <div class="schedule">
+    <div class="sched-card next"><div class="sched-n">第 1 場</div><div class="sched-date">6 / 30</div><div class="sched-venue">K-Wax Kevin 公司</div><div class="sched-badge">即將舉辦</div></div>
+    <div class="sched-card"><div class="sched-n">第 2 場</div><div class="sched-date">9 / 1</div><div class="sched-venue">Superior 卓越中和店</div></div>
+    <div class="sched-card"><div class="sched-n">第 3 場</div><div class="sched-date">10 / 27</div><div class="sched-venue">派威場地</div></div>
+    <div class="sched-card"><div class="sched-n">第 4 場</div><div class="sched-date">12 / 29</div><div class="sched-venue">絕世名膜 小劉場地</div></div>
+  </div>
+</section>
+<footer class="footer">
+  <div class="footer-links"><a href="#">入會申請</a><a href="#">捐款支持</a><a href="https://www.facebook.com/profile.php?id=61575342963645" target="_blank">Facebook</a><a href="https://www.instagram.com/oldcar.newlife" target="_blank">@oldcar.newlife</a></div>
+  <div class="footer-copy">社團法人台灣人車公益協會 · OLD CAR × NEW LIFE · 2026</div>
+</footer>
+</div>
+
+<!-- ══════════════ 入會申請頁 ══════════════ -->
+<div id="join" class="page">
+<div class="j-header">
+  <div class="j-header-logo">OLD CAR × NEW LIFE</div>
+  <h1>入會<span>申請</span></h1>
+</div>
+<div class="fee-banner">
+  <div class="fee-card highlight"><div class="fee-label">一般會員</div><div class="fee-name">車圈業者 · 自媒體</div><div class="fee-price">$8,800<small>/年</small></div><div class="fee-note">✅ 入會費 $2,000（可抵稅）</div></div>
+  <div class="fee-card" style="border-color:#3a5a8a;"><div class="fee-label">團體會員</div><div class="fee-name">企業 · 車廠 · 品牌</div><div class="fee-price" style="color:#7bbfff;">$28,800<small>/年</small></div><div class="fee-note" style="color:#7bbfff;">✅ 入會費 $5,000（可抵稅）</div></div>
+  <div class="fee-card" style="border-color:#6a4a9a;grid-column:span 2;"><div class="fee-label">核心理事</div><div class="fee-name">協會核心決策成員（限 6 席）· 無需額外入會費</div><div class="fee-price" style="color:#c8a0f0;">$20,000<small>/年</small></div><div class="fee-note" style="color:#c8a0f0;">✅ 年費可抵稅 · 入會需經理事會審核</div></div>
+</div>
+<div class="j-form-wrap">
+  <form id="joinForm">
+    <div class="j-section-header"><span class="j-section-tag">STEP 1</span><span class="j-section-name">基本資料</span><div class="j-section-line"></div></div>
+    <div class="form-grid">
+      <div class="field"><label>姓名（真實姓名）<span class="req">*</span></label><input type="text" name="name" placeholder="請填入真實姓名" required></div>
+      <div class="field"><label>聯絡電話<span class="req">*</span></label><input type="tel" name="phone" placeholder="0912-345-678" required></div>
+      <div class="field"><label>Email<span class="req">*</span></label><input type="email" name="email" placeholder="your@email.com" required></div>
+      <div class="field"><label>LINE ID<span class="req">*</span></label><input type="text" name="lineId" placeholder="請填入 LINE ID" required></div>
+      <div class="field"><label>公司 / 品牌名稱<span class="req">*</span></label><input type="text" name="company" placeholder="公司或品牌名稱" required></div>
+      <div class="field"><label>職稱 / 身份<span class="req">*</span></label><select name="role" required><option value="" disabled selected>請選擇</option><option>車圈業者</option><option>自媒體創作者</option><option>汽車改裝</option><option>汽車保養/美容</option><option>汽車零件/配件</option><option>其他</option></select></div>
+      <div class="field"><label>所在縣市<span class="req">*</span></label><select name="city" required><option value="" disabled selected>請選擇</option><option>台北市</option><option>新北市</option><option>桃園市</option><option>台中市</option><option>台南市</option><option>高雄市</option><option>基隆市</option><option>新竹市</option><option>新竹縣</option><option>苗栗縣</option><option>彰化縣</option><option>南投縣</option><option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option><option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option><option>台東縣</option><option>澎湖縣</option><option>金門縣</option><option>連江縣</option></select></div>
+    </div>
+    <div class="j-section-header"><span class="j-section-tag">STEP 2</span><span class="j-section-name">品牌社群帳號（選填）</span><div class="j-section-line"></div></div>
+    <div class="form-grid">
+      <div class="field"><label>IG 帳號</label><input type="text" name="ig" placeholder="@your_ig"></div>
+      <div class="field"><label>Facebook 粉絲專頁</label><input type="text" name="fb" placeholder="粉絲專頁名稱或網址"></div>
+      <div class="field"><label>推薦人 / 介紹人</label><input type="text" name="referral" placeholder="介紹你入會的會員名稱"></div>
+    </div>
+    <div class="j-section-header"><span class="j-section-tag">STEP 3</span><span class="j-section-name">選擇會員類型</span><div class="j-section-line"></div></div>
+    <div class="j-radio-group">
+      <label class="j-radio-item"><input type="radio" name="memberType" value="一般會員（年費$8,800 + 入會費$2,000）" required><div><div class="j-radio-label">🚗 一般會員</div><div class="j-radio-desc">年費 $8,800 + 入會費 $2,000｜適合車圈業者、自媒體創作者</div></div></label>
+      <label class="j-radio-item"><input type="radio" name="memberType" value="團體會員（年費$28,800 + 入會費$5,000）"><div><div class="j-radio-label">🏢 團體會員</div><div class="j-radio-desc">年費 $28,800 + 入會費 $5,000｜適合企業、車廠、品牌團隊</div></div></label>
+      <label class="j-radio-item"><input type="radio" name="memberType" value="核心理事申請（年費$20,000，需審核）"><div><div class="j-radio-label">⭐ 核心理事（限 6 席）</div><div class="j-radio-desc">年費 $20,000，無入會費｜需經理事會審核通過</div></div></label>
+    </div>
+    <div class="j-section-header"><span class="j-section-tag">STEP 4</span><span class="j-section-name">付款方式</span><div class="j-section-line"></div></div>
+    <div class="j-radio-group" style="margin-bottom:20px;">
+      <label class="j-radio-item"><input type="radio" name="paymentMethod" value="銀行匯款" required><div><div class="j-radio-label">🏦 銀行匯款</div><div class="j-radio-desc">請見下方帳戶資訊，匯款後填入後五碼</div></div></label>
+      <label class="j-radio-item"><input type="radio" name="paymentMethod" value="現場繳費"><div><div class="j-radio-label">💵 現場繳費</div><div class="j-radio-desc">於例會現場繳付（現金或轉帳）</div></div></label>
+    </div>
+    <div class="field"><label>匯款後五碼</label><input type="text" name="transferCode" placeholder="已匯款者請填入匯款帳號後五碼" maxlength="5"><div class="hint">選擇「現場繳費」者可略過此欄</div></div>
+    <div class="j-account-box"><h4>💳 會費匯款帳戶</h4><div class="j-account-row"><span class="j-account-key">銀行</span><span class="j-account-val">國泰銀行 新泰分行</span></div><div class="j-account-row"><span class="j-account-key">帳號</span><span class="j-account-val">214 · 03-50107-18</span></div><div class="j-account-row"><span class="j-account-key">戶名</span><span class="j-account-val">社團法人台灣人車公益協會</span></div></div>
+    <div style="margin-top:28px;"><label class="checkbox-item"><input type="checkbox" id="agree" required><span class="checkbox-text">我已閱讀並同意加入社團法人台灣人車公益協會，遵守協會章程與公益理念，且提交之個人資料僅供協會內部管理使用。</span></label></div>
+    <div style="margin-top:32px;"><button type="submit" class="j-btn-submit" id="joinSubmitBtn">送出入會申請</button></div>
+  </form>
+  <div class="j-success-screen" id="joinSuccessScreen">
+    <div class="success-icon">🎉</div>
+    <h2>申請已送出！</h2>
+    <p>感謝您申請加入社團法人台灣人車公益協會！<br><br>我們將於 3 個工作天內以 Email 或 LINE 與您聯繫確認入會資格。<br><br><strong style="color:var(--gold);">一起讓車圈力量改變社會 🚗</strong></p>
+    <a href="#" onclick="switchTab('home',document.querySelectorAll('.tab-btn')[0])" class="back-home">返回首頁</a>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════ 捐款頁 ══════════════ -->
+<div id="donate" class="page">
+<div class="d-header">
+  <div class="d-header-logo">OLD CAR × NEW LIFE</div>
+  <h1>捐款<span>支持</span></h1>
+</div>
+<div class="tax-banner"><p>🌱 &nbsp;依社團法人台灣人車公益協會章程，<strong>所有捐款均可申請稅務抵免</strong><br>捐款收據由協會統一開立，可用於個人及企業所得稅申報</p></div>
+<div class="d-form-wrap">
+  <form id="donateForm">
+    <div class="d-section-header"><span class="d-section-tag">STEP 1</span><span class="d-section-name">捐款人資料</span><div class="d-section-line"></div></div>
+    <div class="form-grid">
+      <div class="field"><label>姓名（真實姓名）<span class="req" style="color:var(--green);">*</span></label><input type="text" name="dname" placeholder="請填入真實姓名" required></div>
+      <div class="field"><label>聯絡電話<span class="req" style="color:var(--green);">*</span></label><input type="tel" name="dphone" placeholder="0912-345-678" required></div>
+      <div class="field"><label>Email<span class="req" style="color:var(--green);">*</span></label><input type="email" name="demail" placeholder="your@email.com" required></div>
+      <div class="field"><label>身分證字號 / 統一編號</label><input type="text" name="idNumber" placeholder="開立捐款收據用（選填）"></div>
+    </div>
+    <div class="field" style="margin-top:16px;"><label>通訊地址</label><input type="text" name="address" placeholder="紙本收據郵寄地址（選填）"></div>
+    <div class="d-section-header"><span class="d-section-tag">STEP 2</span><span class="d-section-name">捐款金額</span><div class="d-section-line"></div></div>
+    <div class="amount-grid">
+      <div class="amount-btn" onclick="setAmount(30000,this)"><div class="num">$30,000</div><div class="unit">基本捐款</div></div>
+      <div class="amount-btn" onclick="setAmount(50000,this)"><div class="num">$50,000</div><div class="unit">銅牌支持</div></div>
+      <div class="amount-btn" onclick="setAmount(100000,this)"><div class="num">$100,000</div><div class="unit">銀牌支持</div></div>
+    </div>
+    <input type="hidden" name="amount" id="amountVal">
+    <input type="number" class="amount-custom" id="customAmount" placeholder="或輸入自訂金額（元）" min="1" oninput="onCustomAmount(this.value)">
+    <div class="d-section-header"><span class="d-section-tag">STEP 3</span><span class="d-section-name">捐款方式</span><div class="d-section-line"></div></div>
+    <div class="d-radio-group" style="margin-bottom:20px;">
+      <label class="d-radio-item"><input type="radio" name="paymentMethod2" value="永豐銀行匯款" required><div><div class="d-radio-label">🏦 永豐銀行匯款</div><div class="d-radio-desc">新莊副都心分行｜帳號：13201-80110-2656</div></div></label>
+      <label class="d-radio-item"><input type="radio" name="paymentMethod2" value="郵局劃撥"><div><div class="d-radio-label">📮 郵局劃撥</div><div class="d-radio-desc">劃撥帳號：50485386</div></div></label>
+    </div>
+    <div class="account-grid">
+      <div class="d-account-box green"><h4>🌱 捐款帳戶（永豐）</h4><div class="d-account-row"><span class="d-account-key">銀行</span><span class="d-account-val">永豐 新莊副都心</span></div><div class="d-account-row"><span class="d-account-key">帳號</span><span class="d-account-val">132 · 01-80110-2656</span></div><div class="d-account-row"><span class="d-account-key">戶名</span><span class="d-account-val" style="font-size:11px;">社團法人台灣人車公益協會</span></div></div>
+      <div class="d-account-box gold"><h4>📮 郵局劃撥帳戶</h4><div class="d-account-row"><span class="d-account-key">劃撥帳號</span><span class="d-account-val">50485386</span></div><div class="d-account-row"><span class="d-account-key">戶名</span><span class="d-account-val" style="font-size:11px;">社團法人台灣人車公益協會</span></div></div>
+    </div>
+    <div class="field" style="margin-top:20px;"><label>匯款後五碼<span class="req" style="color:var(--green);">*</span></label><input type="text" name="transferCode" placeholder="請填入匯款帳號後五碼" maxlength="5" required><div class="hint">方便協會對帳確認，感謝配合</div></div>
+    <div class="d-section-header"><span class="d-section-tag">STEP 4</span><span class="d-section-name">指定用途 & 收據設定</span><div class="d-section-line"></div></div>
+    <div class="field" style="margin-bottom:20px;"><label>捐款指定用途<span class="req" style="color:var(--green);">*</span></label><select name="purpose" required><option value="" disabled selected>請選擇</option><option>不指定（由協會統籌運用）</option><option>公益洗車活動</option><option>老車翻新專案</option><option>例會與行政費用</option></select></div>
+    <div class="field" style="margin-bottom:16px;"><label>是否需要捐款收據<span class="req" style="color:var(--green);">*</span></label><select name="receipt" id="receiptSelect" onchange="onReceiptChange(this.value)" required><option value="" disabled selected>請選擇</option><option value="不需要">不需要</option><option value="需要（個人）">需要（個人姓名）</option><option value="需要（公司）">需要（公司／抬頭自填）</option></select></div>
+    <div class="receipt-fields" id="receiptNameField"><div class="field"><label>收據抬頭</label><input type="text" name="receiptName" placeholder="請填入公司名稱或統一編號"></div></div>
+    <div class="field" style="margin-top:16px;"><label>是否匿名公開<span class="req" style="color:var(--green);">*</span></label><select name="anonymous" required><option value="" disabled selected>請選擇</option><option>不匿名（感謝頁公開芳名）</option><option>匿名（不公開姓名）</option></select></div>
+    <div class="field" style="margin-top:16px;"><label>備註 / 留言</label><textarea name="note" rows="3" placeholder="如有其他說明請填寫（選填）"></textarea></div>
+    <button type="submit" class="d-btn-submit" id="donateSubmitBtn">送出捐款申請</button>
+  </form>
+  <div class="d-success-screen" id="donateSuccessScreen">
+    <div class="success-icon">🌱</div>
+    <h2>感謝您的捐款！</h2>
+    <p>您的愛心已送達社團法人台灣人車公益協會！<br><br>我們將於 3–5 個工作天內確認匯款並開立捐款收據。<br><br><strong style="color:var(--green);">以人為本 · 以車為橋 · 讓愛發動 🚗💚</strong></p>
+    <a href="#" onclick="switchTab('home',document.querySelectorAll('.tab-btn')[0])" class="back-home">返回首頁</a>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxGxEtzGo7y8n-2rgDuRLJKox7Qo8cy1AQkdr8Chg6_bjXy4v9drbt7oL07tQGnqY1o/exec';
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function setAmount(val, el) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('amountVal').value = val;
+  document.getElementById('customAmount').value = '';
+}
+function onCustomAmount(val) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('amountVal').value = val;
+}
+function onReceiptChange(val) {
+  document.getElementById('receiptNameField').className = 'receipt-fields' + (val === '需要（公司）' ? ' show' : '');
+}
+
+const toast = document.getElementById('toast');
+function showToast(msg, type='') {
+  toast.textContent = msg; toast.className = 'toast show ' + type;
+  setTimeout(() => { toast.className = 'toast'; }, 3500);
+}
+
+// 入會申請
+document.getElementById('joinForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('joinSubmitBtn');
+  btn.disabled = true; btn.textContent = '送出中…';
+  const fd = new FormData(e.target);
+  const data = { type: 'join' };
+  fd.forEach((v,k) => { data[k] = v; });
+  try {
+    const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(data) });
+    const json = await res.json();
+    if (json.status === 'success') {
+      e.target.style.display = 'none';
+      document.getElementById('joinSuccessScreen').style.display = 'block';
+    } else { showToast('送出失敗，請稍後再試','error'); btn.disabled = false; btn.textContent = '送出入會申請'; }
+  } catch { showToast('網路錯誤，請稍後再試','error'); btn.disabled = false; btn.textContent = '送出入會申請'; }
+});
+
+// 捐款
+document.getElementById('donateForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!document.getElementById('amountVal').value) { showToast('請選擇或輸入捐款金額','error'); return; }
+  const btn = document.getElementById('donateSubmitBtn');
+  btn.disabled = true; btn.textContent = '送出中…';
+  const fd = new FormData(e.target);
+  const data = { type:'donate', name: fd.get('dname'), phone: fd.get('dphone'), email: fd.get('demail') };
+  fd.forEach((v,k) => { if(!['dname','dphone','demail'].includes(k)) data[k] = v; });
+  try {
+    const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(data) });
+    const json = await res.json();
+    if (json.status === 'success') {
+      e.target.style.display = 'none';
+      document.getElementById('donateSuccessScreen').style.display = 'block';
+    } else { showToast('送出失敗，請稍後再試','error'); btn.disabled = false; btn.textContent = '送出捐款申請'; }
+  } catch { showToast('網路錯誤，請稍後再試','error'); btn.disabled = false; btn.textContent = '送出捐款申請'; }
+});
+</script>
+</body>
+</html>

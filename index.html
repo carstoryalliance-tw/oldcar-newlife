@@ -1,325 +1,1045 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>社團法人台灣人車公益協會</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --gold: #e8a020;
-  --green: #6dcc8a;
-  --bg: #0a0b0f;
-  --card: #13151f;
-  --border: #252830;
-  --text: #ffffff;
-  --muted: #aaa;
-  --dim: #555;
-}
-body {
-  font-family: 'Noto Sans TC', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-}
-
-/* ── Hero ── */
-.hero {
-  position: relative;
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 60px 24px;
-  text-align: center;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 30% 30%, rgba(232,160,32,0.08) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 70% 70%, rgba(109,204,138,0.05) 0%, transparent 70%);
-}
-.hero-badge {
-  display: inline-block;
-  background: rgba(232,160,32,0.12); border: 1px solid rgba(232,160,32,0.35);
-  color: var(--gold); font-size: 12px; font-weight: 700;
-  padding: 6px 18px; border-radius: 20px; letter-spacing: 2px;
-  margin-bottom: 28px;
-}
-.hero h1 {
-  font-size: clamp(28px, 6vw, 54px);
-  font-weight: 900; line-height: 1.2;
-  margin-bottom: 12px; position: relative;
-}
-.hero h1 em { color: var(--gold); font-style: normal; }
-.hero-sub {
-  font-size: clamp(14px, 3vw, 18px);
-  color: var(--muted); font-weight: 300;
-  letter-spacing: 3px; margin-bottom: 20px;
-}
-.hero-slogan {
-  font-size: clamp(13px, 2.5vw, 16px);
-  color: var(--dim); letter-spacing: 2px;
-  margin-bottom: 48px; line-height: 2;
-}
-.hero-slogan span { color: var(--gold); }
-
-.cta-wrap { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
-.btn-primary {
-  padding: 16px 36px;
-  background: linear-gradient(135deg, #e8a020, #d4821a);
-  border: none; border-radius: 10px;
-  font-size: 16px; font-weight: 900; color: var(--bg);
-  text-decoration: none; letter-spacing: 1px;
-  transition: opacity 0.2s, transform 0.1s;
-  cursor: pointer;
-}
-.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-.btn-secondary {
-  padding: 16px 36px;
-  background: rgba(109,204,138,0.1); border: 1px solid rgba(109,204,138,0.4);
-  border-radius: 10px;
-  font-size: 16px; font-weight: 700; color: var(--green);
-  text-decoration: none; letter-spacing: 1px;
-  transition: background 0.2s, transform 0.1s;
-}
-.btn-secondary:hover { background: rgba(109,204,138,0.16); transform: translateY(-1px); }
-
-.scroll-hint {
-  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-  color: var(--dim); font-size: 12px; letter-spacing: 2px;
-  animation: bounce 2s infinite;
-}
-@keyframes bounce {
-  0%,100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(6px); }
-}
-
-/* ── 關於協會 ── */
-.section {
-  max-width: 800px; margin: 0 auto; padding: 80px 24px;
-}
-.section-head { text-align: center; margin-bottom: 48px; }
-.section-head .tag {
-  display: inline-block;
-  background: var(--gold); color: var(--bg);
-  font-size: 10px; font-weight: 900;
-  padding: 4px 14px; border-radius: 3px; letter-spacing: 2px;
-  margin-bottom: 16px;
-}
-.section-head h2 { font-size: clamp(22px, 4vw, 32px); font-weight: 900; }
-.section-head p { font-size: 14px; color: var(--muted); line-height: 1.8; margin-top: 10px; }
-
-/* 三欄特色 */
-.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-@media(max-width:600px){ .features { grid-template-columns: 1fr; } }
-.feat-card {
-  background: var(--card); border-radius: 14px;
-  padding: 28px 22px; border: 1px solid var(--border);
-  text-align: center;
-}
-.feat-icon { font-size: 36px; margin-bottom: 14px; }
-.feat-title { font-size: 16px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
-.feat-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
-/* 分隔 */
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-  margin: 0 24px;
-}
-
-/* 會費方案 */
-.plans { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-@media(max-width:540px){ .plans { grid-template-columns: 1fr; } }
-.plan-card {
-  background: var(--card); border-radius: 14px;
-  padding: 24px 22px; border: 1px solid var(--border);
-}
-.plan-card.gold-border { border-color: var(--gold); }
-.plan-card.blue-border { border-color: #3a5a8a; }
-.plan-icon { font-size: 28px; margin-bottom: 10px; }
-.plan-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
-.plan-price { font-size: 26px; font-weight: 900; color: var(--gold); margin-bottom: 6px; }
-.plan-price small { font-size: 12px; color: var(--dim); font-weight: 400; }
-.plan-fee { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
-.plan-tax { font-size: 11px; color: var(--green); }
-.plan-btn {
-  display: block; margin-top: 16px;
-  padding: 10px; text-align: center;
-  background: rgba(232,160,32,0.1); border: 1px solid rgba(232,160,32,0.35);
-  border-radius: 8px; color: var(--gold);
-  font-size: 13px; font-weight: 700; text-decoration: none;
-  transition: background 0.2s;
-}
-.plan-btn:hover { background: rgba(232,160,32,0.18); }
-
-/* 例會時間 */
-.schedule { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-@media(min-width:600px){ .schedule { grid-template-columns: repeat(4, 1fr); } }
-.sched-card {
-  background: var(--card); border-radius: 12px;
-  padding: 18px 14px; border: 1px solid var(--border);
-  text-align: center;
-}
-.sched-card.next { border-color: var(--gold); background: rgba(232,160,32,0.05); }
-.sched-n { font-size: 11px; color: var(--dim); margin-bottom: 6px; }
-.sched-date { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
-.sched-venue { font-size: 12px; color: var(--muted); }
-.sched-badge {
-  display: inline-block; margin-top: 8px;
-  background: var(--gold); color: var(--bg);
-  font-size: 9px; font-weight: 900;
-  padding: 2px 10px; border-radius: 10px;
-}
-
-/* Footer */
-.footer {
-  padding: 40px 24px;
-  text-align: center;
-  border-top: 1px solid var(--border);
-}
-.footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
-.footer-links a { color: var(--muted); font-size: 13px; text-decoration: none; }
-.footer-links a:hover { color: var(--gold); }
-.footer-copy { font-size: 11px; color: var(--dim); letter-spacing: 1px; }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans TC',sans-serif;background:#0a0b0f;color:#fff;scroll-behavior:smooth}
+input,select,textarea{font-family:'Noto Sans TC',sans-serif;-webkit-appearance:none;color:#fff;width:100%}
+input::placeholder,textarea::placeholder{color:#555}
+select option{background:#1a1d27}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !important}
+#donateForm input:focus,#donateForm select:focus,#donateForm textarea:focus{border-color:#6dcc8a !important}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+@keyframes fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<script>
+(function(){
+  var _o=console.error;
+  console.error=function(){
+    var a=arguments;
+    if(a.length===1&&a[0]!==null&&typeof a[0]==='object'&&!(a[0] instanceof Error)&&Object.keys(a[0]).length===0)return;
+    _o.apply(console,a);
+  };
+  window.addEventListener('unhandledrejection',function(e){e.preventDefault();});
+  window.addEventListener('error',function(e){
+    if(!e.message||e.message==='{}')e.stopImmediatePropagation();
+  },true);
+  window.onerror=function(m,s,l,c,e){
+    if(!m||(e&&Object.keys(e).length===0))return true;
+  };
+})();
+</script>
+</helmet>
+
+<div id="csa-toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#13151f;border:1px solid #e8a020;color:#fff;font-size:14px;font-weight:600;padding:14px 28px;border-radius:50px;box-shadow:0 8px 40px rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .3s;z-index:9999;white-space:nowrap;"></div>
+
+<!-- ── 導覽列 ── -->
+<nav style="position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.92);backdrop-filter:blur(14px);border-bottom:1px solid #252830;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
+  <button onClick="{{ gotoHome }}" style="font-size:13px;font-weight:900;color:#e8a020;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;padding:14px 12px 14px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;">OLD CAR × NEW LIFE</button>
+  <button onClick="{{ gotoAbout }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">協會介紹</button>
+  <button onClick="{{ gotoVideos }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">公益影片</button>
+  <button onClick="{{ gotoNews }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">媒體報導</button>
+  <button onClick="{{ gotoMembers }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">成員介紹</button>
+  <div style="flex:1;"></div>
+  <button onClick="{{ gotoJoin }}" style="padding:7px 13px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;flex-shrink:0;">🚗 入會申請</button>
+  <button onClick="{{ gotoDonate }}" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;margin-left:8px;flex-shrink:0;">🌱 捐款支持</button>
+  <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="padding:7px 12px;background:rgba(255,0,0,.1);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ff6b6b;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">▶ YouTube</a>
+  <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="padding:7px 12px;background:rgba(200,120,240,.1);border:1px solid rgba(200,120,240,.35);border-radius:8px;font-size:12px;font-weight:700;color:#c878f0;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">📷 IG</a>
+</nav>
+
+<!-- ══════════ 首頁 ══════════ -->
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
 
 <!-- Hero -->
-<section class="hero">
-  <div class="hero-badge">OLD CAR × NEW LIFE</div>
-  <h1>社團法人<br><em>台灣人車公益協會</em></h1>
-  <div class="hero-sub">TAIWAN CAR STORY ALLIANCE</div>
-  <div class="hero-slogan">
-    <span>以人為本</span> · <span>以車為橋</span> · <span>讓愛發動</span> · <span>讓希望前行</span>
+<section style="position:relative;min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px 40px;text-align:center;overflow:hidden;">
+  <div style="position:absolute;inset:0;overflow:hidden;background:#000;">
+    <video id="hero-bg-video" autoplay muted loop playsinline style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;opacity:.55;pointer-events:none;">
+      <source src="uploads/第一個案例-02cfa197.mp4" type="video/mp4">
+      <source src="uploads/第一個案例.mp4" type="video/mp4">
+    </video>
   </div>
-  <div class="cta-wrap">
-    <a href="join/" class="btn-primary">🚗 立即入會申請</a>
-    <a href="donate/" class="btn-secondary">🌱 捐款支持</a>
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,11,15,.5) 0%,rgba(10,11,15,.3) 35%,rgba(10,11,15,.8) 78%,#0a0b0f 100%);"></div>
+  <div style="position:relative;max-width:700px;">
+    <div style="display:inline-block;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.4);color:#e8a020;font-size:11px;font-weight:700;padding:6px 18px;border-radius:20px;letter-spacing:3px;margin-bottom:28px;">OLD CAR × NEW LIFE</div>
+    <h1 style="font-size:clamp(30px,6vw,58px);font-weight:900;line-height:1.15;margin-bottom:14px;text-shadow:0 2px 20px rgba(0,0,0,.5);">社團法人<br><span style="color:#e8a020;">台灣人車公益協會</span></h1>
+    <div style="font-size:clamp(13px,2.5vw,17px);color:#bbb;font-weight:300;letter-spacing:4px;margin-bottom:18px;">TAIWAN CAR STORY ALLIANCE</div>
+    <div style="font-size:clamp(13px,2vw,15px);color:rgba(232,160,32,.85);letter-spacing:2px;margin-bottom:14px;line-height:2.2;">以人為本 · 以車為橋 · 讓愛發動 · 讓希望前行</div>
+    <p style="font-size:14px;color:#aaa;line-height:2;margin-bottom:40px;">致力協助弱勢族群解決交通與生活困難，讓車圈的熱情與專業<br>成為改變社會的善的力量。</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <button onClick="{{ gotoJoin }}" style="padding:15px 34px;background:linear-gradient(135deg,#e8a020,#d4821a);border:none;border-radius:10px;font-size:15px;font-weight:900;color:#0a0b0f;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;box-shadow:0 4px 20px rgba(232,160,32,.3);">🚗 立即入會申請</button>
+      <button onClick="{{ gotoDonate }}" style="padding:15px 34px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.45);border-radius:10px;font-size:15px;font-weight:700;color:#6dcc8a;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;">🌱 立即捐款</button>
+    </div>
   </div>
-  <div class="scroll-hint">↓ 了解更多</div>
+  <div style="position:absolute;bottom:28px;left:50%;animation:bounce 2s infinite;color:#555;font-size:11px;letter-spacing:2px;">↓ 了解更多</div>
 </section>
 
-<div class="divider"></div>
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
 
-<!-- 關於 -->
-<section class="section">
-  <div class="section-head">
-    <div class="tag">ABOUT</div>
-    <h2>關於協會</h2>
-    <p>台灣人車公益協會結合車圈業者、自媒體創作者與公益精神，<br>透過定期例會、場地參訪、公益洗車、老車翻新等活動，<br>打造以車為媒介的公益交流平台。</p>
+<!-- 關於協會 -->
+<section id="about" style="max-width:860px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:48px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">ABOUT</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">關於協會</h2>
+    <p style="font-size:14px;color:#aaa;line-height:2;margin-top:12px;">台灣人車公益協會結合車圈業者、自媒體創作者與公益精神，透過定期例會、<br>場地參訪、公益洗車、老車翻新等活動，打造以車為媒介的公益交流平台。</p>
   </div>
-  <div class="features">
-    <div class="feat-card">
-      <div class="feat-icon">🤝</div>
-      <div class="feat-title">同業交流</div>
-      <div class="feat-desc">台灣車圈菁英聚集，認識洗車、鍍膜、包膜、改裝、自媒體各領域夥伴</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+    <div style="background:#13151f;border-radius:14px;padding:28px 22px;border:1px solid #252830;text-align:center;">
+      <div style="font-size:38px;margin-bottom:14px;">🤝</div>
+      <div style="font-size:16px;font-weight:800;color:#e8a020;margin-bottom:10px;">同業交流</div>
+      <div style="font-size:13px;color:#aaa;line-height:1.8;">台灣車圈菁英聚集，認識洗車、鍍膜、包膜、改裝、自媒體各領域夥伴</div>
     </div>
-    <div class="feat-card">
-      <div class="feat-icon">🌱</div>
-      <div class="feat-title">公益行動</div>
-      <div class="feat-desc">公益洗車、淨灘、老車翻新，讓品牌更有溫度，幫助有需要的人</div>
+    <div style="background:#13151f;border-radius:14px;padding:28px 22px;border:1px solid #252830;text-align:center;">
+      <div style="font-size:38px;margin-bottom:14px;">🌱</div>
+      <div style="font-size:16px;font-weight:800;color:#e8a020;margin-bottom:10px;">公益行動</div>
+      <div style="font-size:13px;color:#aaa;line-height:1.8;">公益洗車、淨灘、老車翻新，讓品牌更有溫度，幫助有需要的人</div>
     </div>
-    <div class="feat-card">
-      <div class="feat-icon">📣</div>
-      <div class="feat-title">媒體曝光</div>
-      <div class="feat-desc">例會輪流在會員店面辦理，帶自媒體進場，幫你產出優質內容</div>
+    <div style="background:#13151f;border-radius:14px;padding:28px 22px;border:1px solid #252830;text-align:center;">
+      <div style="font-size:38px;margin-bottom:14px;">📣</div>
+      <div style="font-size:16px;font-weight:800;color:#e8a020;margin-bottom:10px;">媒體曝光</div>
+      <div style="font-size:13px;color:#aaa;line-height:1.8;">例會輪流在會員店面辦理，帶自媒體進場，幫你產出優質內容</div>
     </div>
   </div>
 </section>
 
-<div class="divider"></div>
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 創立初衷 -->
+<section style="max-width:900px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:52px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">ORIGIN</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">創立初衷</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:center;">
+    <div>
+      <div style="border-radius:16px;overflow:hidden;margin-bottom:0;line-height:0;">
+        <img src="uploads/DSC08324.jpg" alt="創立初衷" style="width:100%;height:440px;object-fit:cover;object-position:center top;">
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size:22px;font-weight:900;color:#e8a020;margin-bottom:18px;line-height:1.4;">源自對人與車的熱愛</h3>
+      <p style="font-size:14px;color:#aaa;line-height:2.1;margin-bottom:16px;">我們相信每一輛車都有它的故事，每一個人都值得被看見。台灣人車公益協會從一群熱愛汽車的人開始，用專業和熱情，透過資源媒合與關懷行動，改善更多人的生活。</p>
+      <p style="font-size:14px;color:#aaa;line-height:2.1;margin-bottom:28px;">協助弱勢族群解決交通與生活上的困難，讓愛心與善念透過車輪滾動，成為改變的力量。</p>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:#13151f;border:1px solid rgba(232,160,32,.25);border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:center;">
+          <span style="font-size:20px;">🚗</span>
+          <div><div style="font-size:13px;font-weight:800;margin-bottom:2px;">以車為橋</div><div style="font-size:12px;color:#aaa;">將汽車文化轉化為連結人與人的橋梁</div></div>
+        </div>
+        <div style="background:#13151f;border:1px solid rgba(109,204,138,.25);border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:center;">
+          <span style="font-size:20px;">❤️</span>
+          <div><div style="font-size:13px;font-weight:800;margin-bottom:2px;">以人為本</div><div style="font-size:12px;color:#aaa;">結合各方資源，真正改善弱勢族群的生活</div></div>
+        </div>
+        <div style="background:#13151f;border:1px solid rgba(200,160,240,.25);border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:center;">
+          <span style="font-size:20px;">🌟</span>
+          <div><div style="font-size:13px;font-weight:800;margin-bottom:2px;">讓希望前行</div><div style="font-size:12px;color:#aaa;">每一次公益行動，都讓希望繼續前行</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 公益影片 -->
+<section id="videos" style="max-width:960px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:48px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">VIDEOS</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">公益影片</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一支影片，都是我們用行動訴說的故事</p>
+  </div>
+  <!-- 滿版主影片 -->
+  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
+    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+      <iframe src="https://www.youtube.com/embed/UdIXadkrXTs?si=XOGKMQ_IdtrIMDju" title="第一個案例｜台灣人車公益協會" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+    </div>
+    <div style="background:#13151f;padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;">公益影片</div>
+          <div style="font-size:10px;color:#555;letter-spacing:1px;">EPISODE 01</div>
+        </div>
+        <div style="font-size:18px;font-weight:900;margin-bottom:6px;">第一個案例</div>
+        <div style="font-size:13px;color:#aaa;line-height:1.8;">台灣人車公益協會公益紀錄片——第一個真實案例的故事，<br>記錄我們如何用一台車改變一個家庭的生活。</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
+        <div style="font-size:10px;color:#555;">社團法人台灣人車公益協會</div>
+        <div style="font-size:10px;color:#e8a020;">OLD CAR × NEW LIFE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第二個案例 滿版 -->
+  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
+    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+      <iframe src="https://www.youtube.com/embed/-d5XNS0wxlo?si=HOSsibGvmLUgxRvU" title="第二個案例｜台灣人車公益協會" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+    </div>
+    <div style="background:#13151f;padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;">公益影片</div>
+          <div style="font-size:10px;color:#555;letter-spacing:1px;">EPISODE 02</div>
+        </div>
+        <div style="font-size:18px;font-weight:900;margin-bottom:6px;">第二個案例</div>
+        <div style="font-size:13px;color:#aaa;line-height:1.8;">台灣人車公益協會幫助的第二個真實案例，<br>記錄我們如何持續用行動改變更多人的生活。</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
+        <div style="font-size:10px;color:#555;">社團法人台灣人車公益協會</div>
+        <div style="font-size:10px;color:#e8a020;">OLD CAR × NEW LIFE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 其他影片（佔位） -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
+    <div style="display:none;"></div>
+    <div style="background:#13151f;border:1px solid #252830;border-radius:14px;overflow:hidden;">
+      <div style="aspect-ratio:16/9;background:linear-gradient(135deg,#181b26,#252830);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;">
+        <div style="font-size:44px;">🎬</div>
+        <div style="font-size:12px;color:#555;letter-spacing:2px;">影片即將上線</div>
+        <div style="position:absolute;bottom:10px;right:12px;background:rgba(200,160,240,.15);border:1px solid rgba(200,160,240,.3);border-radius:20px;padding:3px 10px;font-size:10px;color:#c8a0f0;font-weight:700;">年度回顧</div>
+      </div>
+      <div style="padding:18px;">
+        <div style="font-size:14px;font-weight:800;margin-bottom:6px;">協會年度成果回顧</div>
+        <div style="font-size:12px;color:#aaa;line-height:1.7;">2026 年度公益足跡、活動成果與感謝故事</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 媒體報導 / 活動回顧 -->
+<section id="news" style="max-width:960px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:48px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">MEDIA</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">媒體報導與活動回顧</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一場活動都是愛的累積與希望的延續</p>
+  </div>
+  <!-- 活動主視覺 -->
+  <div style="border-radius:16px;overflow:hidden;margin-bottom:28px;position:relative;line-height:0;">
+    <img src="uploads/DJI_20260421172026_0023_D_1776775104392.jpg" alt="2026全台最大公益洗車活動" style="width:100%;height:400px;object-fit:cover;object-position:center;">
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.92) 0%,rgba(10,11,15,.3) 55%,transparent 100%);"></div>
+    <div style="position:absolute;top:20px;left:20px;background:rgba(232,160,32,.9);color:#0a0b0f;font-size:11px;font-weight:900;padding:5px 14px;border-radius:20px;letter-spacing:1px;">2026.04.29</div>
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:28px 28px;">
+      <div style="font-size:12px;color:#e8a020;letter-spacing:2px;margin-bottom:10px;">2026 全台最大公益洗車活動</div>
+      <div style="font-size:clamp(18px,3vw,26px);font-weight:900;line-height:1.3;margin-bottom:14px;">從洗車到修復人生：<br>車圈職人用雙手齊心做公益</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <div style="background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.4);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;color:#e8a020;">📺 電視新聞 3 家</div>
+        <div style="background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.35);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;color:#6dcc8a;">📰 15 家媒體報導</div>
+        <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;color:#fff;">🚗 138 台愛心車</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 電視新聞三強 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:28px;">
+    <a href="https://news.tvbs.com.tw/life/3194614" target="_blank" style="background:linear-gradient(135deg,rgba(232,160,32,.1),rgba(232,160,32,.04));border:1px solid rgba(232,160,32,.35);border-radius:14px;padding:20px;text-decoration:none;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">📺</span><span style="font-size:13px;font-weight:900;color:#e8a020;">TVBS 新聞台</span></div>
+      <div style="font-size:12px;color:#ddd;line-height:1.6;">從洗車到修復人生：車圈職人用雙手齊心做公益</div>
+      <div style="font-size:11px;color:#e8a020;margin-top:4px;font-weight:700;">閱讀報導 →</div>
+    </a>
+    <a href="https://www.nexttv.com.tw/NextTV/News/Home/Society/2026-04-29/2329865.html" target="_blank" style="background:linear-gradient(135deg,rgba(232,160,32,.1),rgba(232,160,32,.04));border:1px solid rgba(232,160,32,.35);border-radius:14px;padding:20px;text-decoration:none;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">📺</span><span style="font-size:13px;font-weight:900;color:#e8a020;">壹 電 視</span></div>
+      <div style="font-size:12px;color:#ddd;line-height:1.6;">從洗車到修復人生：車圈職人用雙手齊心做公益</div>
+      <div style="font-size:11px;color:#e8a020;margin-top:4px;font-weight:700;">閱讀報導 →</div>
+    </a>
+    <a href="https://www.eracom.com.tw/EraNews/Home/Society/2026-04-29/2329867.html" target="_blank" style="background:linear-gradient(135deg,rgba(232,160,32,.1),rgba(232,160,32,.04));border:1px solid rgba(232,160,32,.35);border-radius:14px;padding:20px;text-decoration:none;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">📺</span><span style="font-size:13px;font-weight:900;color:#e8a020;">年 代 新 聞</span></div>
+      <div style="font-size:12px;color:#ddd;line-height:1.6;">從洗車到修復人生：車圈職人用雙手齊心做公益</div>
+      <div style="font-size:11px;color:#e8a020;margin-top:4px;font-weight:700;">閱讀報導 →</div>
+    </a>
+  </div>
+
+  <!-- 所有媒體報導 Grid -->
+  <div style="margin-bottom:20px;font-size:11px;color:#555;letter-spacing:1px;text-align:center;">全媒體報導一覽</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+    <a href="https://www.ctee.com.tw/news/20260429701637-431208" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;" style-hover="border-color:#e8a020;">
+      <span style="font-size:16px;flex-shrink:0;">📰</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">工商時報</div><div style="font-size:10px;color:#555;margin-top:2px;">閱讀報導 →</div></div>
+    </a>
+    <a href="https://app.storm.mg/article/11126404#wholePage" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📰</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">風 傳 媒</div><div style="font-size:10px;color:#555;margin-top:2px;">用雙手洗亮善意！</div></div>
+    </a>
+    <a href="https://www.carture.com.tw/csr/article/40462-%E8%81%9A%E6%B2%99%E6%88%90%E5%A1%94%EF%BC%812026%E5%8F%B0%E7%81%A3%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%A4%A7%E5%85%AC%E7%9B%8A%E6%B4%97%E8%BB%8A%E6%B4%BB%E5%8B%95%E8%90%BD%E5%B9%95%EF%BC%8C138%E5%8F%B0%E8%BB%8A%E8%A6%8B%E8%AD%89%E8%BB%8A%E5%9C%88%E6%9A%96%E5%AF%A6%E5%8A%9B" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">🚗</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">車勢文化</div><div style="font-size:10px;color:#555;margin-top:2px;">138台車見證暖實力</div></div>
+    </a>
+    <a href="https://www.contentplatform.info/articles/459083/%e5%be%9e%e6%b4%97%e8%bb%8a%e5%88%b0%e4%bf%ae%e5%be%a9%e4%ba%ba%e7%94%9f%ef%bc%9a%e8%bb%8a%e5%9c%88%e8%81%b7%e4%ba%ba%e7%94%a8%e9%9b%99%e6%89%8b%e9%bd%8a%e5%bf%83%e5%81%9a%e5%85%ac%e7%9b%8a/" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📰</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">報 新 聞</div><div style="font-size:10px;color:#555;margin-top:2px;">閱讀報導 →</div></div>
+    </a>
+    <a href="https://share.google/i6HCklXllbx7dBESW" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📊</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">行 銷 人</div><div style="font-size:10px;color:#555;margin-top:2px;">閱讀報導 →</div></div>
+    </a>
+    <a href="https://share.google/1ghdZGVQQp1a2V32x" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📰</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">yam 蕃新聞</div><div style="font-size:10px;color:#555;margin-top:2px;">閱讀報導 →</div></div>
+    </a>
+    <a href="https://share.google/rFIDqjFqAf2NauNAm" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📰</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">奧丁丁新聞</div><div style="font-size:10px;color:#555;margin-top:2px;">閱讀報導 →</div></div>
+    </a>
+    <a href="https://share.google/VntVfN9Aj2HeC3xDF" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">💻</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">PChome 新聞</div><div style="font-size:10px;color:#555;margin-top:2px;">閱讀報導 →</div></div>
+    </a>
+    <a href="https://share.google/7iWcDayjR8s9F1Qug" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📰</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">索引新聞</div><div style="font-size:10px;color:#555;margin-top:2px;">INDEX News</div></div>
+    </a>
+    <a href="https://share.google/lIqN9rcZJOXoNXbDX" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📰</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">台灣新聞日報</div><div style="font-size:10px;color:#555;margin-top:2px;">閱讀報導 →</div></div>
+    </a>
+    <a href="https://share.google/xqMtSEfHMLhZg0gnJ" target="_blank" style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📡</span>
+      <div><div style="font-size:12px;font-weight:700;color:#fff;">ENN 台灣電報</div><div style="font-size:10px;color:#555;margin-top:2px;">閱讀報導 →</div></div>
+    </a>
+    <div style="background:#13151f;border:1px solid #252830;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:16px;flex-shrink:0;">📰</span>
+      <div><div style="font-size:12px;font-weight:700;color:#aaa;">中時新聞網</div><div style="font-size:10px;color:#555;margin-top:2px;">從洗車到修復人生</div></div>
+    </div>
+  </div>
+
+  <!-- 活動照片 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px;">
+    <div style="border-radius:12px;overflow:hidden;position:relative;line-height:0;">
+      <img src="uploads/DSC08180.jpg" alt="活動合照" style="width:100%;height:180px;object-fit:cover;object-position:center;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;"><div style="font-size:12px;font-weight:700;">理事與成員活動合影</div></div>
+    </div>
+    <div style="border-radius:12px;overflow:hidden;position:relative;line-height:0;">
+      <img src="uploads/DSC08251.jpg" alt="大合照" style="width:100%;height:180px;object-fit:cover;object-position:center top;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;"><div style="font-size:12px;font-weight:700;">全體夥伴大合照</div></div>
+    </div>
+    <div style="border-radius:12px;overflow:hidden;position:relative;line-height:0;">
+      <img src="uploads/DSC08234.jpg" alt="立案證書" style="width:100%;height:180px;object-fit:cover;object-position:center top;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;"><div style="font-size:12px;font-weight:700;">協會立案證書頒發</div></div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 成員介紹 -->
+<section id="members" style="max-width:960px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:48px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">MEMBERS</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">成員介紹</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">熱血專業、願意付出的夥伴，讓公益的力量持續擴散</p>
+  </div>
+  <!-- 理事長的話 -->
+  <div style="background:linear-gradient(135deg,rgba(232,160,32,.06),rgba(232,160,32,.02));border:1px solid rgba(232,160,32,.25);border-radius:16px;padding:28px 32px;margin-bottom:32px;position:relative;">
+    <div style="font-size:11px;color:#e8a020;letter-spacing:2px;margin-bottom:12px;">理事長的話</div>
+    <p style="font-size:14px;color:#aaa;line-height:2.1;font-weight:300;">在人與車的故事裡，我們看見的不只是交通工具，更是回憶、情感與生活的延續。OLD CAR NEW LIFE 以專業與熱情，讓每一台老車重獲新生，也讓每一段珍貴故事被好好保存。我們相信，老車不只是經典，更是一種精神；透過修復、交流與分享，讓愛車文化持續傳承，凝聚更多志同道合的夥伴，一起創造屬於人與車的新價值。</p>
+    <div style="margin-top:16px;font-size:13px;font-weight:800;color:#e8a020;">— 理事長 曾聖凱</div>
+  </div>
+  <!-- 成員卡片 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start;">
+    <!-- 照片 -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="border-radius:16px;overflow:hidden;line-height:0;position:relative;">
+        <img src="uploads/DSC08324.jpg" alt="理監事成員" style="width:100%;height:260px;object-fit:cover;object-position:center top;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.85) 0%,transparent 55%);"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:18px;line-height:1.5;">
+          <div style="font-size:11px;color:#e8a020;letter-spacing:1px;margin-bottom:4px;">協會組織 · 理監事成員</div>
+          <div style="font-size:15px;font-weight:900;">核心理事與監事團隊</div>
+        </div>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;line-height:0;position:relative;">
+        <img src="uploads/DSC08234.jpg" alt="理事長曾聖凱" style="width:100%;height:220px;object-fit:cover;object-position:center top;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.85) 0%,transparent 55%);"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
+          <div style="font-size:11px;color:#e8a020;margin-bottom:3px;">理事長</div>
+          <div style="font-size:14px;font-weight:900;">曾聖凱</div>
+        </div>
+      </div>
+    </div>
+    <!-- 成員資料 -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <!-- 理事長 -->
+      <div style="background:#13151f;border:1px solid #e8a020;border-radius:14px;padding:20px 18px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div style="background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">理事長</div>
+          <div style="font-size:16px;font-weight:900;">曾聖凱</div>
+        </div>
+        <div style="font-size:12px;color:#aaa;line-height:1.8;">K-WAX凱閎國際 執行長暨創辦人<br>美國德州大學商學院管理碩士<br>台北科技大學 高階管理碩士</div>
+      </div>
+      <!-- 常務理事 馬成傑 -->
+      <div style="background:#13151f;border:1px solid #252830;border-radius:14px;padding:20px 18px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div style="background:#252830;color:#aaa;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務理事</div>
+          <div style="font-size:16px;font-weight:900;">馬成傑</div>
+        </div>
+        <div style="font-size:12px;color:#aaa;line-height:1.8;">卓越汽車凹痕修復中心 創辦人</div>
+      </div>
+      <!-- 常務理事 吳建勳 -->
+      <div style="background:#13151f;border:1px solid #252830;border-radius:14px;padding:20px 18px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div style="background:#252830;color:#aaa;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務理事</div>
+          <div style="font-size:16px;font-weight:900;">吳建勳</div>
+        </div>
+        <div style="font-size:12px;color:#aaa;line-height:1.8;">派威汽車醫美 創辦人<br>人車故事公益聯盟 發起人</div>
+      </div>
+      <!-- 常務監事 劉育誠 -->
+      <div style="background:#13151f;border:1px solid #3a5a8a;border-radius:14px;padding:20px 18px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div style="background:rgba(74,158,255,.15);color:#7bbfff;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務監事</div>
+          <div style="font-size:16px;font-weight:900;">劉育誠</div>
+        </div>
+        <div style="font-size:12px;color:#aaa;line-height:1.8;">中華民國包膜檢定協會 理事長<br>中華包膜股份有限公司 董事長<br>桃園市包膜職業工會 執行長</div>
+      </div>
+      <!-- 加入 -->
+      <div style="background:linear-gradient(135deg,rgba(109,204,138,.07),rgba(109,204,138,.02));border:1px solid rgba(109,204,138,.3);border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px;">
+        <div style="font-size:28px;flex-shrink:0;">🤝</div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:800;">歡迎加入核心理事</div><div style="font-size:11px;color:#aaa;margin-top:3px;">席位尚有空缺，歡迎車圈業者共同推動公益</div></div>
+        <button onClick="{{ gotoJoin }}" style="padding:8px 14px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);border-radius:8px;color:#6dcc8a;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;flex-shrink:0;">立即申請</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 協會目的 數字 -->
+<section style="background:linear-gradient(135deg,#0d0f15,#13151f);padding:60px 24px;text-align:center;">
+  <div style="max-width:800px;margin:0 auto;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:18px;">MISSION</div>
+    <h2 style="font-size:clamp(20px,4vw,30px);font-weight:900;margin-bottom:14px;">協會目的</h2>
+    <p style="font-size:14px;color:#aaa;line-height:2;max-width:560px;margin:0 auto 40px;">透過關懷、資源整合與行動支持，幫助更多需要的人，建立更有愛的社會。讓公益的力量透過車輪滾動，帶著希望前行。</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;">
+      <div style="padding:20px;border-right:1px solid #252830;">
+        <div style="font-size:32px;margin-bottom:8px;">🏎️</div>
+        <div style="font-size:28px;font-weight:900;color:#e8a020;">100+</div>
+        <div style="font-size:12px;color:#aaa;margin-top:4px;">車圈業者夥伴</div>
+      </div>
+      <div style="padding:20px;border-right:1px solid #252830;">
+        <div style="font-size:32px;margin-bottom:8px;">🌿</div>
+        <div style="font-size:28px;font-weight:900;color:#6dcc8a;">4</div>
+        <div style="font-size:12px;color:#aaa;margin-top:4px;">年度例會場次</div>
+      </div>
+      <div style="padding:20px;border-right:1px solid #252830;">
+        <div style="font-size:32px;margin-bottom:8px;">❤️</div>
+        <div style="font-size:28px;font-weight:900;color:#c8a0f0;">∞</div>
+        <div style="font-size:12px;color:#aaa;margin-top:4px;">公益愛心行動</div>
+      </div>
+      <div style="padding:20px;">
+        <div style="font-size:32px;margin-bottom:8px;">🤲</div>
+        <div style="font-size:28px;font-weight:900;color:#7bbfff;">持續</div>
+        <div style="font-size:12px;color:#aaa;margin-top:4px;">受助個案增加中</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
 
 <!-- 會費方案 -->
-<section class="section">
-  <div class="section-head">
-    <div class="tag">MEMBERSHIP</div>
-    <h2>會費方案</h2>
-    <p>所有會費及捐款均可申請稅務抵免</p>
+<section style="max-width:860px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:48px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">MEMBERSHIP</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">會費方案</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">所有會費及捐款均可申請稅務抵免</p>
   </div>
-  <div class="plans">
-    <div class="plan-card gold-border">
-      <div class="plan-icon">🚗</div>
-      <div class="plan-name">一般會員</div>
-      <div class="plan-price">$8,800<small>/年</small></div>
-      <div class="plan-fee">入會費 $2,000</div>
-      <div class="plan-tax">✅ 入會費 & 年費均可抵稅</div>
-      <a href="join/" class="plan-btn">立即申請</a>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+    <div style="background:#13151f;border-radius:14px;padding:24px 20px;border:1px solid #e8a020;">
+      <div style="font-size:28px;margin-bottom:10px;">🚗</div>
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px;">一般會員</div>
+      <div style="font-size:26px;font-weight:900;color:#e8a020;margin-bottom:4px;">$8,800<span style="font-size:12px;color:#555;font-weight:400;">/年</span></div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:8px;">入會費 $2,000</div>
+      <div style="font-size:11px;color:#6dcc8a;margin-bottom:16px;">✅ 入會費 &amp; 年費均可抵稅</div>
+      <button onClick="{{ gotoJoin }}" style="display:block;width:100%;padding:10px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;color:#e8a020;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">立即申請</button>
     </div>
-    <div class="plan-card blue-border">
-      <div class="plan-icon">🏢</div>
-      <div class="plan-name">團體會員</div>
-      <div class="plan-price" style="color:#7bbfff;">$28,800<small>/年</small></div>
-      <div class="plan-fee">入會費 $5,000</div>
-      <div class="plan-tax">✅ 入會費 & 年費均可抵稅</div>
-      <a href="join/" class="plan-btn" style="border-color:rgba(74,158,255,0.35);color:#7bbfff;background:rgba(74,158,255,0.1);">立即申請</a>
+    <div style="background:#13151f;border-radius:14px;padding:24px 20px;border:1px solid #3a5a8a;">
+      <div style="font-size:28px;margin-bottom:10px;">🏢</div>
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px;">團體會員</div>
+      <div style="font-size:26px;font-weight:900;color:#7bbfff;margin-bottom:4px;">$28,800<span style="font-size:12px;color:#555;font-weight:400;">/年</span></div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:8px;">入會費 $5,000</div>
+      <div style="font-size:11px;color:#6dcc8a;margin-bottom:16px;">✅ 入會費 &amp; 年費均可抵稅</div>
+      <button onClick="{{ gotoJoin }}" style="display:block;width:100%;padding:10px;background:rgba(74,158,255,.1);border:1px solid rgba(74,158,255,.35);border-radius:8px;color:#7bbfff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">立即申請</button>
     </div>
-    <div class="plan-card" style="border-color:#6a4a9a;">
-      <div class="plan-icon">⭐</div>
-      <div class="plan-name">核心理事</div>
-      <div class="plan-price" style="color:#c8a0f0;">$20,000<small>/年</small></div>
-      <div class="plan-fee">限 6 席 · 無需入會費</div>
-      <div class="plan-tax">✅ 年費可抵稅</div>
-      <a href="join/" class="plan-btn" style="border-color:rgba(180,120,240,0.35);color:#c8a0f0;background:rgba(180,120,240,0.1);">申請理事</a>
+    <div style="background:#13151f;border-radius:14px;padding:24px 20px;border:1px solid #6a4a9a;">
+      <div style="font-size:28px;margin-bottom:10px;">⭐</div>
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px;">核心理事</div>
+      <div style="font-size:26px;font-weight:900;color:#c8a0f0;margin-bottom:4px;">$20,000<span style="font-size:12px;color:#555;font-weight:400;">/年</span></div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:8px;">限 6 席 · 無需入會費</div>
+      <div style="font-size:11px;color:#6dcc8a;margin-bottom:16px;">✅ 年費可抵稅</div>
+      <button onClick="{{ gotoJoin }}" style="display:block;width:100%;padding:10px;background:rgba(180,120,240,.1);border:1px solid rgba(180,120,240,.35);border-radius:8px;color:#c8a0f0;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">申請理事</button>
     </div>
-    <div class="plan-card">
-      <div class="plan-icon">🤝</div>
-      <div class="plan-name">贊助捐款</div>
-      <div class="plan-price">$30,000<small>+</small></div>
-      <div class="plan-fee">純捐款 · 非會員資格</div>
-      <div class="plan-tax">✅ 捐款可申請抵稅</div>
-      <a href="donate/" class="plan-btn" style="border-color:rgba(109,204,138,0.35);color:var(--green);background:rgba(109,204,138,0.08);">立即捐款</a>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- 例會時間 -->
-<section class="section">
-  <div class="section-head">
-    <div class="tag">2026 SCHEDULE</div>
-    <h2>年度例會時間表</h2>
-  </div>
-  <div class="schedule">
-    <div class="sched-card next">
-      <div class="sched-n">第 1 場</div>
-      <div class="sched-date">6 / 30</div>
-      <div class="sched-venue">K-Wax Kevin 公司</div>
-      <div class="sched-badge">即將舉辦</div>
-    </div>
-    <div class="sched-card">
-      <div class="sched-n">第 2 場</div>
-      <div class="sched-date">9 / 1</div>
-      <div class="sched-venue">Superior 卓越中和店</div>
-    </div>
-    <div class="sched-card">
-      <div class="sched-n">第 3 場</div>
-      <div class="sched-date">10 / 27</div>
-      <div class="sched-venue">派威場地</div>
-    </div>
-    <div class="sched-card">
-      <div class="sched-n">第 4 場</div>
-      <div class="sched-date">12 / 29</div>
-      <div class="sched-venue">絕世名膜 小劉場地</div>
+    <div style="background:#13151f;border-radius:14px;padding:24px 20px;border:1px solid #252830;">
+      <div style="font-size:28px;margin-bottom:10px;">🤝</div>
+      <div style="font-size:15px;font-weight:800;margin-bottom:4px;">贊助捐款</div>
+      <div style="font-size:26px;font-weight:900;color:#e8a020;margin-bottom:4px;">$30,000<span style="font-size:12px;color:#555;font-weight:400;">+</span></div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:8px;">純捐款 · 非會員資格</div>
+      <div style="font-size:11px;color:#6dcc8a;margin-bottom:16px;">✅ 捐款可申請抵稅</div>
+      <button onClick="{{ gotoDonate }}" style="display:block;width:100%;padding:10px;background:rgba(109,204,138,.08);border:1px solid rgba(109,204,138,.35);border-radius:8px;color:#6dcc8a;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">立即捐款</button>
     </div>
   </div>
 </section>
 
-<footer class="footer">
-  <div class="footer-links">
-    <a href="join/">入會申請</a>
-    <a href="donate/">捐款支持</a>
-    <a href="https://www.facebook.com/profile.php?id=61575342963645" target="_blank">Facebook</a>
-    <a href="https://www.instagram.com/oldcar.newlife" target="_blank">@oldcar.newlife</a>
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 一起行動 CTA -->
+<section style="max-width:860px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:40px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">ACTION</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">一起行動</h2>
   </div>
-  <div class="footer-copy">社團法人台灣人車公益協會 · OLD CAR × NEW LIFE · 2026</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;">
+    <div style="background:linear-gradient(135deg,rgba(109,204,138,.07),rgba(109,204,138,.02));border:1px solid rgba(109,204,138,.3);border-radius:16px;padding:28px 20px;text-align:center;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:34px;">💚</div>
+      <div style="font-size:16px;font-weight:800;">捐款支持</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.8;flex:1;">您的每份捐款，都是改變的開始</div>
+      <button onClick="{{ gotoDonate }}" style="padding:10px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.5);border-radius:8px;color:#6dcc8a;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">立即捐款 →</button>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(232,160,32,.07),rgba(232,160,32,.02));border:1px solid rgba(232,160,32,.3);border-radius:16px;padding:28px 20px;text-align:center;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:34px;">🚗</div>
+      <div style="font-size:16px;font-weight:800;">成為會員</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.8;flex:1;">加入我們，讓愛與關懷持續發光</div>
+      <button onClick="{{ gotoJoin }}" style="padding:10px;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.5);border-radius:8px;color:#e8a020;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">立即加入 →</button>
+    </div>
+    <div style="background:#13151f;border:1px solid #252830;border-radius:16px;padding:28px 20px;text-align:center;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:34px;">📝</div>
+      <div style="font-size:16px;font-weight:800;">個案投稿</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.8;flex:1;">有需要協助的個案，歡迎投稿給我們</div>
+      <a href="https://oldcarnewlif.wixsite.com/home/notifications" target="_blank" style="display:block;padding:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#aaa;font-size:13px;font-weight:700;text-decoration:none;">立即投稿 →</a>
+    </div>
+    <div style="background:#13151f;border:1px solid #252830;border-radius:16px;padding:28px 20px;text-align:center;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:34px;">🤝</div>
+      <div style="font-size:16px;font-weight:800;">合作洽談</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.8;flex:1;">歡迎各界夥伴共同推動公益</div>
+      <a href="https://www.facebook.com/profile.php?id=61575342963645" target="_blank" style="display:block;padding:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#aaa;font-size:13px;font-weight:700;text-decoration:none;">聯絡我們 →</a>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 年度例會 -->
+<section style="max-width:800px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:48px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">2026 SCHEDULE</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">年度例會時間表</h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;">
+    <div style="background:rgba(232,160,32,.05);border-radius:12px;padding:20px 14px;border:1px solid #e8a020;text-align:center;">
+      <div style="font-size:11px;color:#555;margin-bottom:6px;">第 1 場</div>
+      <div style="font-size:24px;font-weight:900;color:#e8a020;margin-bottom:6px;">6 / 30</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.5;">K-Wax Kevin 公司</div>
+      <div style="display:inline-block;margin-top:10px;background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;">即將舉辦</div>
+    </div>
+    <div style="background:#13151f;border-radius:12px;padding:20px 14px;border:1px solid #252830;text-align:center;">
+      <div style="font-size:11px;color:#555;margin-bottom:6px;">第 2 場</div>
+      <div style="font-size:24px;font-weight:900;color:#e8a020;margin-bottom:6px;">9 / 1</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.5;">Superior 卓越中和店</div>
+    </div>
+    <div style="background:#13151f;border-radius:12px;padding:20px 14px;border:1px solid #252830;text-align:center;">
+      <div style="font-size:11px;color:#555;margin-bottom:6px;">第 3 場</div>
+      <div style="font-size:24px;font-weight:900;color:#e8a020;margin-bottom:6px;">10 / 27</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.5;">派威場地</div>
+    </div>
+    <div style="background:#13151f;border-radius:12px;padding:20px 14px;border:1px solid #252830;text-align:center;">
+      <div style="font-size:11px;color:#555;margin-bottom:6px;">第 4 場</div>
+      <div style="font-size:24px;font-weight:900;color:#e8a020;margin-bottom:6px;">12 / 29</div>
+      <div style="font-size:12px;color:#aaa;line-height:1.5;">絕世名膜 小劉場地</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="padding:40px 24px;text-align:center;border-top:1px solid #252830;background:#0a0b0f;">
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+    <button onClick="{{ gotoJoin }}" style="background:none;border:none;color:#aaa;font-size:13px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">入會申請</button>
+    <button onClick="{{ gotoDonate }}" style="background:none;border:none;color:#aaa;font-size:13px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">捐款支持</button>
+    <a href="https://www.facebook.com/profile.php?id=61575342963645" target="_blank" style="color:#aaa;font-size:13px;text-decoration:none;">Facebook</a>
+    <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="color:#c878f0;font-size:13px;text-decoration:none;">📷 @oldcar.newlife</a>
+    <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="color:#ff6b6b;font-size:13px;text-decoration:none;">▶ YouTube @OLDCARNEWLIFE</a>
+    <a href="https://oldcarnewlif.wixsite.com/home" target="_blank" style="color:#aaa;font-size:13px;text-decoration:none;">官方網站</a>
+  </div>
+  <div style="font-size:11px;color:#444;letter-spacing:1px;">社團法人台灣人車公益協會 · OLD CAR × NEW LIFE · 2026</div>
 </footer>
 
+</sc-if>
+
+<!-- ══════════ 入會申請 ══════════ -->
+<sc-if value="{{ isJoin }}" hint-placeholder-val="{{ false }}">
+<div style="background:linear-gradient(135deg,#0f1117 0%,#1a1d27 100%);border-bottom:3px solid #e8a020;padding:28px 20px;text-align:center;">
+  <div style="font-size:12px;color:#aaa;letter-spacing:2px;margin-bottom:8px;">OLD CAR × NEW LIFE</div>
+  <h1 style="font-size:24px;font-weight:900;">入會<span style="color:#e8a020;">申請</span></h1>
+</div>
+<!-- 費用摘要 -->
+<div style="max-width:680px;margin:28px auto 0;padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+  <div style="background:#13151f;border-radius:12px;padding:16px 18px;border:1px solid #e8a020;">
+    <div style="font-size:11px;color:#aaa;margin-bottom:6px;letter-spacing:1px;">一般會員</div>
+    <div style="font-size:15px;font-weight:800;">車圈業者 · 自媒體</div>
+    <div style="font-size:22px;font-weight:900;color:#e8a020;">$8,800<span style="font-size:12px;color:#555;font-weight:400;">/年</span></div>
+    <div style="font-size:11px;color:#6dcc8a;margin-top:6px;">✅ 入會費 $2,000（可抵稅）</div>
+  </div>
+  <div style="background:#13151f;border-radius:12px;padding:16px 18px;border:1px solid #3a5a8a;">
+    <div style="font-size:11px;color:#aaa;margin-bottom:6px;letter-spacing:1px;">團體會員</div>
+    <div style="font-size:15px;font-weight:800;">企業 · 車廠 · 品牌</div>
+    <div style="font-size:22px;font-weight:900;color:#7bbfff;">$28,800<span style="font-size:12px;color:#555;font-weight:400;">/年</span></div>
+    <div style="font-size:11px;color:#7bbfff;margin-top:6px;">✅ 入會費 $5,000（可抵稅）</div>
+  </div>
+  <div style="background:#13151f;border-radius:12px;padding:16px 18px;border:1px solid #6a4a9a;grid-column:span 2;">
+    <div style="font-size:11px;color:#aaa;margin-bottom:4px;letter-spacing:1px;">核心理事（限 6 席）</div>
+    <div style="font-size:15px;font-weight:800;">協會核心決策成員 · 無需額外入會費</div>
+    <div style="font-size:22px;font-weight:900;color:#c8a0f0;">$20,000<span style="font-size:12px;color:#555;font-weight:400;">/年</span></div>
+    <div style="font-size:11px;color:#c8a0f0;margin-top:4px;">✅ 年費可抵稅 · 入會需經理事會審核</div>
+  </div>
+</div>
+<!-- 表單 -->
+<div style="max-width:680px;margin:32px auto 0;padding:0 20px 60px;">
+  <form id="joinForm">
+    <!-- STEP 1 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:32px;">
+      <span style="background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">STEP 1</span>
+      <span style="font-size:15px;font-weight:800;">基本資料</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(232,160,32,.3),transparent);"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">姓名（真實姓名）<span style="color:#e8a020;">*</span></label><input type="text" name="name" placeholder="請填入真實姓名" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">聯絡電話<span style="color:#e8a020;">*</span></label><input type="tel" name="phone" placeholder="0912-345-678" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">Email<span style="color:#e8a020;">*</span></label><input type="email" name="email" placeholder="your@email.com" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">LINE ID<span style="color:#e8a020;">*</span></label><input type="text" name="lineId" placeholder="請填入 LINE ID" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">公司 / 品牌名稱<span style="color:#e8a020;">*</span></label><input type="text" name="company" placeholder="公司或品牌名稱" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">職稱 / 身份<span style="color:#e8a020;">*</span></label><select name="role" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"><option value="" disabled selected>請選擇</option><option>車圈業者</option><option>自媒體創作者</option><option>汽車改裝</option><option>汽車保養/美容</option><option>汽車零件/配件</option><option>其他</option></select></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">所在縣市<span style="color:#e8a020;">*</span></label><select name="city" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"><option value="" disabled selected>請選擇</option><option>台北市</option><option>新北市</option><option>桃園市</option><option>台中市</option><option>台南市</option><option>高雄市</option><option>基隆市</option><option>新竹市</option><option>新竹縣</option><option>苗栗縣</option><option>彰化縣</option><option>南投縣</option><option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option><option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option><option>台東縣</option></select></div>
+    </div>
+    <!-- STEP 2 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:32px;">
+      <span style="background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">STEP 2</span>
+      <span style="font-size:15px;font-weight:800;">品牌社群帳號（選填）</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(232,160,32,.3),transparent);"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">IG 帳號</label><input type="text" name="ig" placeholder="@your_ig" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">Facebook 粉絲專頁</label><input type="text" name="fb" placeholder="粉絲專頁名稱或網址" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">推薦人 / 介紹人</label><input type="text" name="referral" placeholder="介紹你入會的會員名稱" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+    </div>
+    <!-- STEP 3 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:32px;">
+      <span style="background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">STEP 3</span>
+      <span style="font-size:15px;font-weight:800;">選擇會員類型</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(232,160,32,.3),transparent);"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <label data-ri style="display:flex;align-items:flex-start;gap:10px;background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px;cursor:pointer;transition:border-color .2s;"><input type="radio" name="memberType" value="一般會員（年費$8,800 + 入會費$2,000）" required style="width:auto;accent-color:#e8a020;margin-top:2px;flex-shrink:0;"><div><div style="font-size:13px;font-weight:700;">🚗 一般會員</div><div style="font-size:11px;color:#666;margin-top:3px;">年費 $8,800 + 入會費 $2,000｜適合車圈業者、自媒體創作者</div></div></label>
+      <label data-ri style="display:flex;align-items:flex-start;gap:10px;background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px;cursor:pointer;"><input type="radio" name="memberType" value="團體會員（年費$28,800 + 入會費$5,000）" style="width:auto;accent-color:#e8a020;margin-top:2px;flex-shrink:0;"><div><div style="font-size:13px;font-weight:700;">🏢 團體會員</div><div style="font-size:11px;color:#666;margin-top:3px;">年費 $28,800 + 入會費 $5,000｜適合企業、車廠、品牌團隊</div></div></label>
+      <label data-ri style="display:flex;align-items:flex-start;gap:10px;background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px;cursor:pointer;"><input type="radio" name="memberType" value="核心理事申請（年費$20,000，需審核）" style="width:auto;accent-color:#e8a020;margin-top:2px;flex-shrink:0;"><div><div style="font-size:13px;font-weight:700;">⭐ 核心理事（限 6 席）</div><div style="font-size:11px;color:#666;margin-top:3px;">年費 $20,000，無入會費｜需經理事會審核通過</div></div></label>
+    </div>
+    <!-- STEP 4 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:32px;">
+      <span style="background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">STEP 4</span>
+      <span style="font-size:15px;font-weight:800;">付款方式</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(232,160,32,.3),transparent);"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <label data-ri style="display:flex;align-items:flex-start;gap:10px;background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px;cursor:pointer;"><input type="radio" name="paymentMethod" value="銀行匯款" required style="width:auto;accent-color:#e8a020;margin-top:2px;flex-shrink:0;"><div><div style="font-size:13px;font-weight:700;">🏦 銀行匯款</div><div style="font-size:11px;color:#666;margin-top:3px;">請見下方帳戶資訊，匯款後填入後五碼</div></div></label>
+      <label data-ri style="display:flex;align-items:flex-start;gap:10px;background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px;cursor:pointer;"><input type="radio" name="paymentMethod" value="現場繳費" style="width:auto;accent-color:#e8a020;margin-top:2px;flex-shrink:0;"><div><div style="font-size:13px;font-weight:700;">💵 現場繳費</div><div style="font-size:11px;color:#666;margin-top:3px;">於例會現場繳付（現金或轉帳）</div></div></label>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;"><label style="font-size:13px;font-weight:600;color:#aaa;">匯款後五碼</label><input type="text" name="transferCode" placeholder="已匯款者請填入匯款帳號後五碼" maxlength="5" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"><div style="font-size:11px;color:#555;margin-top:4px;">選擇「現場繳費」者可略過此欄</div></div>
+    <div style="padding:20px;background:rgba(232,160,32,.06);border:1px solid rgba(232,160,32,.3);border-radius:10px;margin-bottom:24px;">
+      <div style="font-size:13px;color:#e8a020;font-weight:700;margin-bottom:12px;">💳 會費匯款帳戶</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:#555;">銀行</span><span style="font-size:13px;font-weight:700;">國泰銀行 新泰分行</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:#555;">帳號</span><span style="font-size:13px;font-weight:700;letter-spacing:1px;">214 · 03-50107-18</span></div>
+      <div style="display:flex;justify-content:space-between;"><span style="font-size:12px;color:#555;">戶名</span><span style="font-size:13px;font-weight:700;">社團法人台灣人車公益協會</span></div>
+    </div>
+    <label style="display:flex;align-items:flex-start;gap:10px;background:rgba(232,160,32,.05);border:1px solid rgba(232,160,32,.3);border-radius:8px;padding:14px;cursor:pointer;margin-bottom:28px;"><input type="checkbox" id="agree" required style="width:auto;accent-color:#e8a020;margin-top:2px;flex-shrink:0;width:16px;height:16px;"><span style="font-size:13px;color:#aaa;line-height:1.6;">我已閱讀並同意加入社團法人台灣人車公益協會，遵守協會章程與公益理念，且提交之個人資料僅供協會內部管理使用。</span></label>
+    <button type="submit" id="jSubBtn" style="width:100%;padding:16px;background:linear-gradient(135deg,#e8a020,#d4821a);border:none;border-radius:10px;font-size:16px;font-weight:900;color:#0a0b0f;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;">送出入會申請</button>
+  </form>
+  <div id="jSuccess" style="display:none;text-align:center;padding:60px 20px;max-width:480px;margin:0 auto;">
+    <div style="font-size:64px;margin-bottom:20px;">🎉</div>
+    <h2 style="font-size:24px;font-weight:900;color:#e8a020;margin-bottom:12px;">申請已送出！</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;">感謝您申請加入社團法人台灣人車公益協會！<br><br>我們將於 3 個工作天內以 Email 或 LINE 與您聯繫確認入會資格。<br><br><strong style="color:#e8a020;">一起讓車圈力量改變社會 🚗</strong></p>
+    <button onClick="{{ gotoHome }}" style="display:inline-block;margin-top:28px;padding:12px 32px;background:#e8a020;color:#0a0b0f;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">返回首頁</button>
+  </div>
+</div>
+</sc-if>
+
+<!-- ══════════ 捐款頁 ══════════ -->
+<sc-if value="{{ isDonate }}" hint-placeholder-val="{{ false }}">
+<div style="background:linear-gradient(135deg,#0f1117 0%,#0d1a0f 100%);border-bottom:3px solid #6dcc8a;padding:28px 20px;text-align:center;">
+  <div style="font-size:12px;color:#aaa;letter-spacing:2px;margin-bottom:8px;">OLD CAR × NEW LIFE</div>
+  <h1 style="font-size:24px;font-weight:900;">捐款<span style="color:#6dcc8a;">支持</span></h1>
+</div>
+<sc-if value="{{ donateNotConfirmed }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:720px;margin:0 auto;padding:28px 20px 60px;">
+
+  <!-- 一、捐款回饋與權益 -->
+  <div style="margin-bottom:28px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+      <div style="background:#6dcc8a;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">一</div>
+      <div style="font-size:16px;font-weight:900;">守護同行：捐款回饋與權益</div>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(109,204,138,.3),transparent);"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;">
+        <span style="font-size:24px;flex-shrink:0;">🏆</span>
+        <div><div style="font-size:14px;font-weight:800;color:#6dcc8a;margin-bottom:6px;">榮譽感謝狀</div><div style="font-size:13px;color:#aaa;line-height:1.8;">頒發【年度公益感謝狀】，這不僅是您投入社會公益、保存車輛文化的榮譽紀錄，更是愛心付出的最佳見證。</div></div>
+      </div>
+      <div style="background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;">
+        <span style="font-size:24px;flex-shrink:0;">🚗</span>
+        <div><div style="font-size:14px;font-weight:800;color:#6dcc8a;margin-bottom:6px;">特約廠商尊榮禮遇</div><div style="font-size:13px;color:#aaa;line-height:1.8;">憑協會感謝狀/認證，可享有全台合作特約廠商之專屬優惠（涵蓋汽車美容、板金烤漆、維修零件、包膜服務等），讓您養車輕鬆、公益有保障。</div></div>
+      </div>
+      <div style="background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;">
+        <span style="font-size:24px;flex-shrink:0;">🔧</span>
+        <div><div style="font-size:14px;font-weight:800;color:#6dcc8a;margin-bottom:6px;">文化與技術參與</div><div style="font-size:13px;color:#aaa;line-height:1.8;">優先受邀參與協會舉辦之「老車修復工藝」工作坊，並可優先申請將您的人車故事納入協會數位資料庫保存。</div></div>
+      </div>
+      <div style="background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;">
+        <span style="font-size:24px;flex-shrink:0;">❤️</span>
+        <div><div style="font-size:14px;font-weight:800;color:#6dcc8a;margin-bottom:6px;">公益第一線見證</div><div style="font-size:13px;color:#aaa;line-height:1.8;">優先受邀參與翻新車輛的受贈儀式、偏鄉物資支援行動，親眼見證您的善款轉化為實質的移動力量。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 二、捐款方式與財務透明 -->
+  <div style="margin-bottom:28px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+      <div style="background:#6dcc8a;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">二</div>
+      <div style="font-size:16px;font-weight:900;">捐款方式與財務透明</div>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(109,204,138,.3),transparent);"></div>
+    </div>
+    <div style="background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:20px 22px;margin-bottom:12px;">
+      <p style="font-size:13px;color:#aaa;line-height:2;margin-bottom:16px;">本會為依法設立之公益團體，所有善款均依法公開透明運用。您所捐助的每一筆款項，均會正式開立可抵稅之「捐款收據」，可用於個人或公司之年度稅務抵免。</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;"><span style="color:#6dcc8a;font-weight:900;flex-shrink:0;">◆</span><div style="font-size:13px;color:#aaa;line-height:1.7;"><strong style="color:#fff;">單次隨喜捐款：</strong>金額不限，由您自由填寫，點亮老車翻新與公益救助的希望。</div></div>
+        <div style="display:flex;gap:10px;"><span style="color:#6dcc8a;font-weight:900;flex-shrink:0;">◆</span><div style="font-size:13px;color:#aaa;line-height:1.7;"><strong style="color:#fff;">定期定額支持：</strong>可選擇按月或按年定期定額，成為協會長期推動社會溫暖的堅實後盾。</div></div>
+        <div style="display:flex;gap:10px;"><span style="color:#6dcc8a;font-weight:900;flex-shrink:0;">◆</span><div style="font-size:13px;color:#aaa;line-height:1.7;"><strong style="color:#fff;">專案榮譽贊助：</strong>凡有意針對特定「老車翻新專案」進行大額指定捐款者，歡迎與本會秘書處聯繫，理事會將致贈榮譽證書並於大會公開致謝。</div></div>
+      </div>
+    </div>
+    <div style="background:rgba(109,204,138,.06);border:1px solid rgba(109,204,138,.25);border-radius:10px;padding:16px 20px;">
+      <p style="font-size:13px;color:#6dcc8a;line-height:1.9;">📋 完成填單與匯款後，協會將於 <strong>7–14 個工作天</strong>內開立並寄送正式捐款抵稅收據。<br>✅ 請務必填寫「匯款帳號末五碼」與「捐款金額」，以便秘書處核對帳款並開立收據。</p>
+    </div>
+  </div>
+
+  <!-- 注意事項 -->
+  <div style="margin-bottom:28px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="background:#252830;color:#aaa;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">注意事項</div>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,#252830,transparent);"></div>
+    </div>
+    <div style="background:#13151f;border:1px solid #252830;border-radius:12px;padding:20px 22px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;"><span style="color:#555;flex-shrink:0;font-size:13px;min-width:18px;">1.</span><span style="font-size:13px;color:#aaa;line-height:1.7;">捐款一旦完成匯款，恕不退款，請確認捐款金額正確後再進行匯款。</span></div>
+        <div style="display:flex;gap:10px;"><span style="color:#555;flex-shrink:0;font-size:13px;min-width:18px;">2.</span><span style="font-size:13px;color:#aaa;line-height:1.7;">請確認收款帳戶資訊正確，因填寫錯誤導致之款項損失，協會恕不負責。</span></div>
+        <div style="display:flex;gap:10px;"><span style="color:#555;flex-shrink:0;font-size:13px;min-width:18px;">3.</span><span style="font-size:13px;color:#aaa;line-height:1.7;">捐款收據將於核帳確認後 7–14 個工作天內開立並寄送，如需加急請聯絡秘書處。</span></div>
+        <div style="display:flex;gap:10px;"><span style="color:#555;flex-shrink:0;font-size:13px;min-width:18px;">4.</span><span style="font-size:13px;color:#aaa;line-height:1.7;">本會財務報告每年定期公開於會員大會及官方網站，確保每筆善款透明合法運用。</span></div>
+        <div style="display:flex;gap:10px;"><span style="color:#555;flex-shrink:0;font-size:13px;min-width:18px;">5.</span><span style="font-size:13px;color:#aaa;line-height:1.7;">您所填寫之個人資料，依個人資料保護法規定，僅供協會開立收據及業務聯絡使用，不對外提供或出售。</span></div>
+        <div style="display:flex;gap:10px;"><span style="color:#555;flex-shrink:0;font-size:13px;min-width:18px;">6.</span><span style="font-size:13px;color:#aaa;line-height:1.7;">本會保留對捐款使用方式之最終解釋權，並依章程規定運用於各項公益業務。</span></div>
+        <div style="display:flex;gap:10px;"><span style="color:#555;flex-shrink:0;font-size:13px;min-width:18px;">7.</span><span style="font-size:13px;color:#aaa;line-height:1.7;">如有任何疑問，請透過 Facebook、Instagram 或官方網站與本會秘書處聯繫。</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 確認勾選 -->
+  <label style="display:flex;align-items:flex-start;gap:12px;background:rgba(109,204,138,.05);border:1px solid rgba(109,204,138,.35);border-radius:10px;padding:16px 18px;cursor:pointer;margin-bottom:20px;">
+    <input type="checkbox" id="donateReadCheck" style="width:18px;height:18px;min-width:18px;accent-color:#6dcc8a;margin-top:2px;flex-shrink:0;">
+    <span style="font-size:13px;color:#aaa;line-height:1.8;">我已閱讀並充分了解上述捐款說明、回饋權益與注意事項，同意依據以上條件進行捐款。</span>
+  </label>
+  <button onClick="{{ confirmDonate }}" style="width:100%;padding:16px;background:linear-gradient(135deg,#6dcc8a,#4aab6a);border:none;border-radius:10px;font-size:16px;font-weight:900;color:#0a0b0f;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;">我已閱讀，前往填寫捐款資料 →</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ donateConfirmed }}" hint-placeholder-val="{{ false }}">
+<div style="max-width:680px;margin:28px auto 0;background:rgba(109,204,138,.07);border:1px solid rgba(109,204,138,.3);border-radius:12px;padding:16px 20px;text-align:center;padding:0 20px;">
+  <div style="background:rgba(109,204,138,.07);border:1px solid rgba(109,204,138,.3);border-radius:12px;padding:16px 20px;text-align:center;">
+    <p style="font-size:13px;color:#6dcc8a;line-height:1.8;">🌱 &nbsp;依社團法人台灣人車公益協會章程，<strong>所有捐款均可申請稅務抵免</strong><br>捐款收據由協會統一開立，可用於個人及企業所得稅申報</p>
+  </div>
+</div>
+<div style="max-width:680px;margin:28px auto 0;padding:0 20px 60px;">
+  <form id="donateForm">
+    <!-- STEP 1 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:8px;">
+      <span style="background:#6dcc8a;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">STEP 1</span>
+      <span style="font-size:15px;font-weight:800;">捐款人資料</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(109,204,138,.3),transparent);"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:14px;">
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">姓名<span style="color:#6dcc8a;">*</span></label><input type="text" name="dname" placeholder="請填入真實姓名" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">聯絡電話<span style="color:#6dcc8a;">*</span></label><input type="tel" name="dphone" placeholder="0912-345-678" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">Email<span style="color:#6dcc8a;">*</span></label><input type="email" name="demail" placeholder="your@email.com" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">身分證字號 / 統一編號</label><input type="text" name="idNumber" placeholder="開立捐款收據用（選填）" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;"><label style="font-size:13px;font-weight:600;color:#aaa;">通訊地址</label><input type="text" name="address" placeholder="紙本收據郵寄地址（選填）" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div>
+    <!-- STEP 2 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:12px;">
+      <span style="background:#6dcc8a;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">STEP 2</span>
+      <span style="font-size:15px;font-weight:800;">捐款金額</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(109,204,138,.3),transparent);"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">
+      <button type="button" id="amtbtn-a30k" onClick="{{ set30k }}" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px 10px;text-align:center;cursor:pointer;font-family:'Noto Sans TC',sans-serif;"><div style="font-size:18px;font-weight:900;color:#6dcc8a;">$30,000</div><div style="font-size:11px;color:#555;margin-top:3px;">基本捐款</div></button>
+      <button type="button" id="amtbtn-a50k" onClick="{{ set50k }}" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px 10px;text-align:center;cursor:pointer;font-family:'Noto Sans TC',sans-serif;"><div style="font-size:18px;font-weight:900;color:#6dcc8a;">$50,000</div><div style="font-size:11px;color:#555;margin-top:3px;">銅牌支持</div></button>
+      <button type="button" id="amtbtn-a100k" onClick="{{ set100k }}" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px 10px;text-align:center;cursor:pointer;font-family:'Noto Sans TC',sans-serif;"><div style="font-size:18px;font-weight:900;color:#6dcc8a;">$100,000</div><div style="font-size:11px;color:#555;margin-top:3px;">銀牌支持</div></button>
+    </div>
+    <input type="hidden" name="amount" id="amountVal">
+    <input type="number" id="customAmount" placeholder="或輸入自訂金額（元）" min="1" onChange="{{ onCustomAmt }}" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;width:100%;margin-bottom:20px;">
+    <!-- STEP 3 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <span style="background:#6dcc8a;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">STEP 3</span>
+      <span style="font-size:15px;font-weight:800;">捐款方式</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(109,204,138,.3),transparent);"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <label data-ri style="display:flex;align-items:flex-start;gap:10px;background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px;cursor:pointer;"><input type="radio" name="paymentMethod2" value="永豐銀行匯款" required style="width:auto;accent-color:#6dcc8a;margin-top:2px;flex-shrink:0;"><div><div style="font-size:13px;font-weight:700;">🏦 永豐銀行匯款</div><div style="font-size:11px;color:#666;margin-top:3px;">新莊副都心分行｜帳號：13201-80110-2656</div></div></label>
+      <label data-ri style="display:flex;align-items:flex-start;gap:10px;background:#13151f;border:1px solid #252830;border-radius:8px;padding:14px;cursor:pointer;"><input type="radio" name="paymentMethod2" value="郵局劃撥" style="width:auto;accent-color:#6dcc8a;margin-top:2px;flex-shrink:0;"><div><div style="font-size:13px;font-weight:700;">📮 郵局劃撥</div><div style="font-size:11px;color:#666;margin-top:3px;">劃撥帳號：50485386</div></div></label>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+      <div style="background:rgba(109,204,138,.07);border:1px solid rgba(109,204,138,.3);border-radius:10px;padding:16px 18px;">
+        <div style="font-size:12px;color:#6dcc8a;font-weight:700;margin-bottom:10px;">🌱 捐款帳戶（永豐）</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:11px;color:#555;">銀行</span><span style="font-size:12px;font-weight:700;">永豐 新莊副都心</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:11px;color:#555;">帳號</span><span style="font-size:12px;font-weight:700;letter-spacing:1px;">132 · 01-80110-2656</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="font-size:11px;color:#555;">戶名</span><span style="font-size:11px;font-weight:700;">社團法人台灣人車公益協會</span></div>
+      </div>
+      <div style="background:rgba(232,160,32,.07);border:1px solid rgba(232,160,32,.3);border-radius:10px;padding:16px 18px;">
+        <div style="font-size:12px;color:#e8a020;font-weight:700;margin-bottom:10px;">📮 郵局劃撥帳戶</div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:11px;color:#555;">劃撥帳號</span><span style="font-size:12px;font-weight:700;">50485386</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="font-size:11px;color:#555;">戶名</span><span style="font-size:11px;font-weight:700;">社團法人台灣人車公益協會</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:20px;"><label style="font-size:13px;font-weight:600;color:#aaa;">匯款後五碼<span style="color:#6dcc8a;">*</span></label><input type="text" name="transferCode" placeholder="請填入匯款帳號後五碼" maxlength="5" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"><div style="font-size:11px;color:#555;margin-top:4px;">方便協會對帳確認，感謝配合</div></div>
+    <!-- STEP 4 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <span style="background:#6dcc8a;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;">STEP 4</span>
+      <span style="font-size:15px;font-weight:800;">指定用途 &amp; 收據設定</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(109,204,138,.3),transparent);"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;"><label style="font-size:13px;font-weight:600;color:#aaa;">捐款指定用途<span style="color:#6dcc8a;">*</span></label><select name="purpose" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"><option value="" disabled selected>請選擇</option><option>不指定（由協會統籌運用）</option><option>公益洗車活動</option><option>老車翻新專案</option><option>例會與行政費用</option></select></div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;"><label style="font-size:13px;font-weight:600;color:#aaa;">是否需要捐款收據<span style="color:#6dcc8a;">*</span></label><select name="receipt" id="receiptSel" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"><option value="" disabled selected>請選擇</option><option value="不需要">不需要</option><option value="需要（個人）">需要（個人姓名）</option><option value="需要（公司）">需要（公司／抬頭自填）</option></select></div>
+    <div id="receiptNameWrap" style="display:none;margin-bottom:14px;"><div style="display:flex;flex-direction:column;gap:6px;"><label style="font-size:13px;font-weight:600;color:#aaa;">收據抬頭</label><input type="text" name="receiptName" placeholder="請填入公司名稱或統一編號" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"></div></div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;"><label style="font-size:13px;font-weight:600;color:#aaa;">是否匿名公開<span style="color:#6dcc8a;">*</span></label><select name="anonymous" required style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;"><option value="" disabled selected>請選擇</option><option>不匿名（感謝頁公開芳名）</option><option>匿名（不公開姓名）</option></select></div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:28px;"><label style="font-size:13px;font-weight:600;color:#aaa;">備註 / 留言</label><textarea name="note" rows="3" placeholder="如有其他說明請填寫（選填）" style="background:#13151f;border:1px solid #252830;border-radius:8px;padding:12px 14px;font-size:14px;resize:vertical;"></textarea></div>
+    <button type="submit" id="dSubBtn" style="width:100%;padding:16px;background:linear-gradient(135deg,#6dcc8a,#4aab6a);border:none;border-radius:10px;font-size:16px;font-weight:900;color:#0a0b0f;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;">送出捐款申請</button>
+  </form>
+  <div id="dSuccess" style="display:none;text-align:center;padding:60px 20px;max-width:480px;margin:0 auto;">
+    <div style="font-size:64px;margin-bottom:20px;">🌱</div>
+    <h2 style="font-size:24px;font-weight:900;color:#6dcc8a;margin-bottom:12px;">感謝您的捐款！</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;">您的愛心已送達社團法人台灣人車公益協會！<br><br>我們將於 3–5 個工作天內確認匯款並開立捐款收據。<br><br><strong style="color:#6dcc8a;">以人為本 · 以車為橋 · 讓愛發動 🚗💚</strong></p>
+    <button onClick="{{ gotoHome }}" style="display:inline-block;margin-top:28px;padding:12px 32px;background:#6dcc8a;color:#0a0b0f;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;">返回首頁</button>
+  </div>
+</div>
+</sc-if>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1280, &quot;height&quot;: 900}}">
+
+class Component extends DCLogic {
+  state = { tab: 'home', amount: '', amountBtn: '', donateConfirmed: false };
+
+  switchTab(tab) {
+    this.setState({ tab, donateConfirmed: false });
+    window.scrollTo({ top: 0 });
+  }
+
+  confirmDonate() {
+    const cb = document.getElementById('donateReadCheck');
+    if (!cb || !cb.checked) { this.toast('請先勾選確認已閱讀', true); return; }
+    this.setState({ donateConfirmed: true });
+    window.scrollTo({ top: 0 });
+  }
+
+  goTo(id) {
+    const go = () => {
+      const el = document.getElementById(id);
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 56 });
+    };
+    if (this.state.tab !== 'home') {
+      this.setState({ tab: 'home' }, () => setTimeout(go, 80));
+    } else {
+      go();
+    }
+  }
+
+  setAmt(v, id) {
+    this.setState({ amount: v, amountBtn: id });
+    const hid = document.getElementById('amountVal');
+    if (hid) hid.value = v;
+    this._syncAmtBtns(id);
+  }
+
+  onCustomAmt(e) {
+    const v = e.target ? e.target.value : e;
+    this.setState({ amount: v, amountBtn: '' });
+    const hid = document.getElementById('amountVal');
+    if (hid) hid.value = v;
+    this._syncAmtBtns('');
+  }
+
+  _syncAmtBtns(activeId) {
+    ['a30k', 'a50k', 'a100k'].forEach(id => {
+      const el = document.getElementById('amtbtn-' + id);
+      if (!el) return;
+      const on = id === activeId;
+      el.style.borderColor = on ? '#6dcc8a' : '#252830';
+      el.style.background = on ? 'rgba(109,204,138,0.06)' : '#13151f';
+    });
+  }
+
+  toast(msg, err) {
+    const t = document.getElementById('csa-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.style.opacity = '1';
+    t.style.borderColor = err ? '#ff6b6b' : '#e8a020';
+    t.style.color = err ? '#ff6b6b' : '#fff';
+    clearTimeout(this._tt);
+    this._tt = setTimeout(() => { t.style.opacity = '0'; }, 3500);
+  }
+
+  componentDidMount() {
+    this._bind();
+    const v = document.getElementById('hero-bg-video');
+    if (v) {
+      v.muted = true;
+      v.volume = 0;
+      v.defaultMuted = true;
+      v.addEventListener('volumechange', () => { v.muted = true; v.volume = 0; });
+      v.addEventListener('loadeddata', () => { v.muted = true; v.volume = 0; });
+      const p = v.play();
+      if (p) p.catch(() => {});
+    }
+    // suppress preview-only empty-object errors (CORS / DC runtime)
+    if (!window._csaErrBound) {
+      window._csaErrBound = true;
+      window.addEventListener('unhandledrejection', e => { e.preventDefault(); });
+      const _origErr = console.error;
+      console.error = (...a) => {
+        if (a.length === 1 && a[0] !== null && typeof a[0] === 'object' && !(a[0] instanceof Error) && Object.keys(a[0]).length === 0) return;
+        _origErr.apply(console, a);
+      };
+    }
+  }
+  componentDidUpdate(_, ps) {
+    if (ps.tab !== this.state.tab) this._bind();
+  }
+
+  _bind() {
+    const GS = 'https://script.google.com/macros/s/AKfycbxGxEtzGo7y8n-2rgDuRLJKox7Qo8cy1AQkdr8Chg6_bjXy4v9drbt7oL07tQGnqY1o/exec';
+
+    // Radio styling
+    document.querySelectorAll('input[type=radio]').forEach(el => {
+      if (el._rb) return;
+      el._rb = true;
+      el.addEventListener('change', () => {
+        const inDonate = !!el.closest('#donateForm');
+        const color = inDonate ? '#6dcc8a' : '#e8a020';
+        const bg = inDonate ? 'rgba(109,204,138,0.05)' : 'rgba(232,160,32,0.06)';
+        document.querySelectorAll(`input[name="${el.name}"]`).forEach(r => {
+          const p = r.closest('[data-ri]');
+          if (!p) return;
+          p.style.borderColor = r.checked ? color : '#252830';
+          p.style.background = r.checked ? bg : '#13151f';
+        });
+      });
+    });
+
+    // Join form
+    const jf = document.getElementById('joinForm');
+    if (jf && !jf._b) {
+      jf._b = true;
+      jf.addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = document.getElementById('jSubBtn');
+        btn.disabled = true; btn.textContent = '送出中…';
+        const data = { type: 'join' };
+        new FormData(e.target).forEach((v, k) => { data[k] = v; });
+        try {
+          const r = await fetch(GS, { method: 'POST', body: JSON.stringify(data) });
+          const j = await r.json().catch(() => ({}));
+          if (j.status === 'success') {
+            e.target.style.display = 'none';
+            document.getElementById('jSuccess').style.display = 'block';
+            window.scrollTo({ top: 0 });
+          } else { this.toast('送出失敗，請稍後再試', true); btn.disabled = false; btn.textContent = '送出入會申請'; }
+        } catch(err) {
+          this.toast('網路錯誤，請稍後再試', true);
+          btn.disabled = false; btn.textContent = '送出入會申請';
+        }
+      });
+    }
+
+    // Donate form
+    const df = document.getElementById('donateForm');
+    if (df && !df._b) {
+      df._b = true;
+      df.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!this.state.amount) { this.toast('請選擇或輸入捐款金額', true); return; }
+        const btn = document.getElementById('dSubBtn');
+        btn.disabled = true; btn.textContent = '送出中…';
+        const data = { type: 'donate', amount: this.state.amount };
+        new FormData(e.target).forEach((v, k) => { data[k] = v; });
+        try {
+          const r = await fetch(GS, { method: 'POST', body: JSON.stringify(data) });
+          const j = await r.json().catch(() => ({}));
+          if (j.status === 'success') {
+            e.target.style.display = 'none';
+            document.getElementById('dSuccess').style.display = 'block';
+            window.scrollTo({ top: 0 });
+          } else { this.toast('送出失敗，請稍後再試', true); btn.disabled = false; btn.textContent = '送出捐款申請'; }
+        } catch(err) {
+          this.toast('網路錯誤，請稍後再試', true);
+          btn.disabled = false; btn.textContent = '送出捐款申請';
+        }
+      });
+    }
+
+    // Receipt toggle
+    const rs = document.getElementById('receiptSel');
+    if (rs && !rs._b) {
+      rs._b = true;
+      rs.addEventListener('change', e => {
+        const f = document.getElementById('receiptNameWrap');
+        if (f) f.style.display = e.target.value === '需要（公司）' ? 'block' : 'none';
+      });
+    }
+  }
+
+  renderVals() {
+    const { tab } = this.state;
+    const vid = (this.props.heroVideoId || '').trim();
+    const heroEmbedUrl = vid
+      ? `https://www.youtube.com/embed/${vid}?autoplay=1&mute=1&loop=1&playlist=${vid}&controls=0&rel=0&modestbranding=1`
+      : '';
+    return {
+      isHome: tab === 'home',
+      isJoin: tab === 'join',
+      isDonate: tab === 'donate',
+      donateConfirmed: this.state.donateConfirmed,
+      donateNotConfirmed: !this.state.donateConfirmed,
+      confirmDonate: () => this.confirmDonate(),
+      hasHeroVideo: !!vid,
+      noHeroVideo: !vid,
+      heroEmbedUrl,
+      gotoHome: () => this.switchTab('home'),
+      gotoJoin: () => this.switchTab('join'),
+      gotoDonate: () => this.switchTab('donate'),
+      gotoAbout: () => this.goTo('about'),
+      gotoVideos: () => this.goTo('videos'),
+      gotoNews: () => this.goTo('news'),
+      gotoMembers: () => this.goTo('members'),
+      set30k: () => this.setAmt(30000, 'a30k'),
+      set50k: () => this.setAmt(50000, 'a50k'),
+      set100k: () => this.setAmt(100000, 'a100k'),
+      onCustomAmt: e => this.onCustomAmt(e),
+    };
+  }
+}
+
+</script>
 </body>
 </html>
