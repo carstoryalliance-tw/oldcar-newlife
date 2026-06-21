@@ -25,8 +25,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 /* ── Mobile RWD ── */
 @media(max-width:640px){
-  /* Nav：隱藏次要項目，只留 Logo + 入會 + 捐款 */
+  /* Nav：隱藏所有按鈕，只留 Logo + 漢堡 */
   #nav-about,#nav-videos,#nav-news,#nav-members,#nav-yt,#nav-ig{display:none !important;}
+  nav button[onClick],nav a[href="sponsors/"],nav a[href="https://www.youtube.com/@OLDCARNEWLIFE"],nav a[href="https://www.instagram.com/oldcar.newlife/"]{display:none !important;}
+  #ham-btn{display:flex !important;}
   .pc-br{display:none !important;}
 
   /* Hero：背景影片，縮短高度讓影片橫向顯示更多 */
@@ -80,7 +82,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 <!-- ── 導覽列 ── -->
 <nav style="position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.92);backdrop-filter:blur(14px);border-bottom:1px solid #252830;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
   <button onClick="{{ gotoHome }}" style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900;color:#e8a020;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;padding:10px 12px 10px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;">
-    <img src="assets/logo.png" alt="logo" style="height:34px;width:34px;object-fit:contain;background:#fff;border-radius:7px;padding:3px;flex-shrink:0;">
+    <img src="assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
     OLD CAR × NEW LIFE
   </button>
   <button id="nav-about" onClick="{{ gotoAbout }}" style="padding:14px 9px;font-size:12px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">協會介紹</button>
@@ -99,7 +101,25 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
     IG
   </a>
+  <!-- 手機漢堡 -->
+  <button id="ham-btn" onclick="toggleNav()" style="display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;margin-left:8px;" aria-label="選單">
+    <span style="display:block;width:22px;height:2px;background:#aaa;border-radius:2px;"></span>
+    <span style="display:block;width:22px;height:2px;background:#aaa;border-radius:2px;"></span>
+    <span style="display:block;width:22px;height:2px;background:#aaa;border-radius:2px;"></span>
+  </button>
 </nav>
+<!-- 手機下拉選單 -->
+<div id="mobile-nav" style="display:none;flex-direction:column;background:#111318;border-bottom:1px solid #1a1c24;padding:12px 20px 16px;position:sticky;top:52px;z-index:99;">
+  <button onclick="toggleNav();gotoAbout()" style="display:block;padding:10px 0;font-size:14px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">協會介紹</button>
+  <button onclick="toggleNav();gotoVideos()" style="display:block;padding:10px 0;font-size:14px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">公益影片</button>
+  <button onclick="toggleNav();gotoNews()" style="display:block;padding:10px 0;font-size:14px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">媒體報導</button>
+  <button onclick="toggleNav();gotoMembers()" style="display:block;padding:10px 0;font-size:14px;color:#aaa;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">成員介紹</button>
+  <button onclick="toggleNav();gotoJoin()" style="margin-top:8px;padding:11px 16px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">🚗 入會申請</button>
+  <button onclick="toggleNav();gotoDonate()" style="margin-top:8px;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">🌱 捐款支持</button>
+  <a href="sponsors/" onclick="toggleNav()" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">✦ 贊助夥伴</a>
+  <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(255,0,0,.08);border:1px solid rgba(255,80,80,.3);color:#ff6b6b;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">▶ YouTube</a>
+  <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(200,120,240,.08);border:1px solid rgba(200,120,240,.3);color:#c878f0;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">📷 Instagram</a>
+</div>
 
 <!-- ══════════ 首頁 ══════════ -->
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
@@ -987,6 +1007,16 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    window.toggleNav = function() {
+      const m = document.getElementById('mobile-nav');
+      if (!m) return;
+      m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+    };
+    // expose DC methods globally for mobile menu onclick
+    const self = this;
+    ['gotoHome','gotoJoin','gotoDonate','gotoAbout','gotoVideos','gotoNews','gotoMembers'].forEach(fn => {
+      window[fn] = (...args) => self[fn] ? self[fn](...args) : self.renderVals()[fn]?.();
+    });
     this._bind();
     // Hero 影片：立即載入播放
     (function(){

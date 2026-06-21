@@ -12,14 +12,25 @@
 body{background:#0a0b0f;color:#fff;font-family:'Noto Sans TC',sans-serif;line-height:1.6;min-height:100vh;}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:10px 24px;background:rgba(10,11,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid #1a1c24;}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(10,11,15,.95);backdrop-filter:blur(12px);border-bottom:1px solid #1a1c24;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.nav-logo-img{height:36px;width:36px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;flex-shrink:0;}
+.nav-logo img{height:38px;width:38px;object-fit:contain;flex-shrink:0;}
 .nav-logo span{font-size:13px;font-weight:700;color:#fff;letter-spacing:1px;}
 .nav-links{display:flex;align-items:center;gap:8px;}
 .nav-links a{font-size:12px;color:#aaa;text-decoration:none;padding:6px 12px;border-radius:6px;transition:all .2s;}
 .nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);}
 .nav-btn{background:linear-gradient(135deg,#e8a020,#d4821a)!important;color:#000!important;font-weight:700!important;border-radius:7px!important;}
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
+.hamburger span{display:block;width:22px;height:2px;background:#aaa;border-radius:2px;transition:all .3s;}
+.mobile-menu{display:none;flex-direction:column;background:#111318;border-bottom:1px solid #1a1c24;padding:12px 20px 16px;}
+.mobile-menu a,.mobile-menu button{display:block;padding:10px 0;font-size:14px;color:#aaa;text-decoration:none;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;}
+.mobile-menu a:hover,.mobile-menu button:hover{color:#e8a020;}
+.mobile-menu .m-btn{margin-top:8px;padding:11px 16px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#000;border-radius:8px;font-weight:700;text-align:center;}
+@media(max-width:640px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+}
 
 /* HERO BANNER */
 .page-hero{padding:48px 24px 36px;text-align:center;background:linear-gradient(180deg,rgba(232,160,32,.04) 0%,transparent 100%);border-bottom:1px solid #1a1c24;}
@@ -83,7 +94,7 @@ footer a{color:#666;text-decoration:none;}
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="../">
-    <img class="nav-logo-img" src="../assets/logo.png" alt="logo">
+    <img src="../assets/logo.png" alt="logo">
     <span>台灣人車公益協會</span>
   </a>
   <div class="nav-links">
@@ -91,12 +102,22 @@ footer a{color:#666;text-decoration:none;}
     <a href="../join/" class="nav-btn">入會申請</a>
     <a href="../donate/">捐款</a>
   </div>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="選單">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="../">首頁</a>
+  <a href="../join/" class="m-btn">入會申請</a>
+  <a href="../donate/">捐款</a>
+</div>
 
 <!-- PAGE HERO -->
 <div class="page-hero">
-  <img src="../assets/logo-full.png" alt="人車故事公益聯盟 OLD CAR × NEW LIFE"
-       style="height:56px;object-fit:contain;margin-bottom:20px;filter:brightness(0) invert(1);opacity:.85;">
+  <img src="../assets/logo-full2.png" alt="人車故事公益聯盟 OLD CAR × NEW LIFE"
+       style="height:52px;object-fit:contain;margin-bottom:18px;">
   <div class="page-badge">HONOR SPONSORS</div>
   <h1>榮譽贊助夥伴</h1>
   <p>感謝每一位贊助夥伴的支持，讓協會的公益夢想得以落地實現。</p>
@@ -192,6 +213,10 @@ document.querySelectorAll('video').forEach(v => {
   v.muted = true;
   v.play().catch(() => {});
 });
+function toggleMenu() {
+  const m = document.getElementById('mobileMenu');
+  m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+}
 </script>
 </body>
 </html>
