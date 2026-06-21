@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>入會申請 — 社團法人台灣人車公益協會</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold: #e8a020;
+  --gold-light: #f5c842;
+  --bg: #0a0b0f;
+  --card: #13151f;
+  --border: #252830;
+  --text: #ffffff;
+  --muted: #aaa;
+  --dim: #666;
+}
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* ── Header ── */
+.header {
+  background: linear-gradient(135deg, #0f1117 0%, #1a1d27 100%);
+  border-bottom: 3px solid var(--gold);
+  padding: 24px 20px;
+  text-align: center;
+  position: relative;
+}
+.header-logo { font-size: 13px; color: var(--muted); letter-spacing: 2px; margin-bottom: 8px; }
+.header h1 { font-size: 24px; font-weight: 900; color: var(--text); }
+.header h1 span { color: var(--gold); }
+.header-back {
+  position: absolute; left: 20px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold); text-decoration: none;
+  font-size: 14px; font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* ── 費用提示 ── */
+.fee-banner {
+  max-width: 680px; margin: 28px auto 0; padding: 0 20px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.fee-card {
+  background: var(--card); border-radius: 12px;
+  padding: 16px 18px; border: 1px solid var(--border);
+}
+.fee-card.highlight { border-color: var(--gold); }
+.fee-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; letter-spacing: 1px; }
+.fee-name { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.fee-price { font-size: 20px; font-weight: 900; color: var(--gold); }
+.fee-price small { font-size: 12px; color: var(--dim); font-weight: 400; }
+.fee-note { font-size: 11px; color: #6dcc8a; margin-top: 6px; }
+
+/* ── Form Container ── */
+.form-wrap { max-width: 680px; margin: 32px auto 0; padding: 0 20px; }
+
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px; margin-top: 32px;
+}
+.section-tag {
+  background: var(--gold); color: var(--bg);
+  font-size: 10px; font-weight: 900;
+  padding: 4px 12px; border-radius: 3px; letter-spacing: 1px;
+}
+.section-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(232,160,32,0.3), transparent); }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid.full { grid-template-columns: 1fr; }
+@media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.field label .req { color: var(--gold); margin-left: 2px; }
+.field input, .field select, .field textarea {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: 14px; color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--gold);
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--dim); }
+.field select { cursor: pointer; }
+.field select option { background: #1a1d27; }
+
+/* 單選按鈕 */
+.radio-group { display: flex; flex-direction: column; gap: 10px; }
+.radio-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.radio-item:has(input:checked) { border-color: var(--gold); background: rgba(232,160,32,0.06); }
+.radio-item input[type="radio"] { accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; }
+.radio-label { font-size: 13px; color: var(--text); font-weight: 600; }
+.radio-desc { font-size: 11px; color: var(--dim); margin-top: 2px; }
+
+/* 勾選 */
+.checkbox-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(232,160,32,0.05); border: 1px solid rgba(232,160,32,0.3);
+  border-radius: 8px; padding: 14px; cursor: pointer;
+}
+.checkbox-item input[type="checkbox"] { accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; }
+.checkbox-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.checkbox-text a { color: var(--gold); }
+
+/* 提示文字 */
+.hint { font-size: 11px; color: var(--dim); margin-top: 4px; }
+
+/* ── Submit ── */
+.submit-wrap { margin-top: 32px; }
+.btn-submit {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, #e8a020, #d4821a);
+  border: none; border-radius: 10px;
+  font-size: 16px; font-weight: 900; color: var(--bg);
+  cursor: pointer; letter-spacing: 1px;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn-submit:hover { opacity: 0.9; }
+.btn-submit:active { transform: scale(0.99); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── 匯款帳戶提示 ── */
+.account-box {
+  margin-top: 28px; padding: 20px;
+  background: rgba(232,160,32,0.06); border: 1px solid rgba(232,160,32,0.3);
+  border-radius: 10px;
+}
+.account-box h4 { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+.account-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.account-row:last-child { margin-bottom: 0; }
+.account-key { font-size: 12px; color: var(--dim); }
+.account-val { font-size: 13px; color: var(--text); font-weight: 700; letter-spacing: 1px; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: #13151f; border: 1px solid var(--gold);
+  color: var(--text); font-size: 14px; font-weight: 600;
+  padding: 14px 28px; border-radius: 50px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 999; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+.toast.success { border-color: #6dcc8a; color: #6dcc8a; }
+.toast.error { border-color: #ff6b6b; color: #ff6b6b; }
+
+/* ── 成功畫面 ── */
+.success-screen {
+  display: none; text-align: center;
+  padding: 60px 20px; max-width: 480px; margin: 0 auto;
+}
+.success-icon { font-size: 64px; margin-bottom: 20px; }
+.success-screen h2 { font-size: 24px; font-weight: 900; color: var(--gold); margin-bottom: 12px; }
+.success-screen p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.success-screen .back-home {
+  display: inline-block; margin-top: 28px;
+  padding: 12px 32px; background: var(--gold);
+  color: var(--bg); border-radius: 8px; font-weight: 700;
+  text-decoration: none; font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="../" class="header-back">← 返回</a>
+  <div class="header-logo">OLD CAR × NEW LIFE</div>
+  <h1>入會<span>申請</span></h1>
+</div>
+
+<!-- 費用說明 -->
+<div class="fee-banner">
+  <div class="fee-card highlight">
+    <div class="fee-label">一般會員</div>
+    <div class="fee-name">車圈業者 · 自媒體</div>
+    <div class="fee-price">$8,800<small>/年</small></div>
+    <div class="fee-note">✅ 入會費 $2,000（可抵稅）</div>
+  </div>
+  <div class="fee-card" style="border-color:#3a5a8a;">
+    <div class="fee-label">團體會員</div>
+    <div class="fee-name">企業 · 車廠 · 品牌</div>
+    <div class="fee-price" style="color:#7bbfff;">$28,800<small>/年</small></div>
+    <div class="fee-note" style="color:#7bbfff;">✅ 入會費 $5,000（可抵稅）</div>
+  </div>
+  <div class="fee-card" style="border-color:#6a4a9a; grid-column: span 2;">
+    <div class="fee-label">核心理事</div>
+    <div class="fee-name">協會核心決策成員（限 6 席）· 無需額外入會費</div>
+    <div class="fee-price" style="color:#c8a0f0;">$20,000<small>/年</small></div>
+    <div class="fee-note" style="color:#c8a0f0;">✅ 年費可抵稅 · 入會需經理事會審核</div>
+  </div>
+</div>
+
+<!-- 表單 -->
+<div class="form-wrap" id="formWrap">
+  <form id="joinForm">
+
+    <!-- 基本資料 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 1</span>
+      <span class="section-name">基本資料</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>姓名（真實姓名）<span class="req">*</span></label>
+        <input type="text" name="name" placeholder="請填入真實姓名" required>
+      </div>
+      <div class="field">
+        <label>聯絡電話<span class="req">*</span></label>
+        <input type="tel" name="phone" placeholder="0912-345-678" required>
+      </div>
+      <div class="field">
+        <label>Email<span class="req">*</span></label>
+        <input type="email" name="email" placeholder="your@email.com" required>
+      </div>
+      <div class="field">
+        <label>LINE ID<span class="req">*</span></label>
+        <input type="text" name="lineId" placeholder="請填入 LINE ID" required>
+      </div>
+      <div class="field">
+        <label>公司 / 品牌名稱<span class="req">*</span></label>
+        <input type="text" name="company" placeholder="公司或品牌名稱" required>
+      </div>
+      <div class="field">
+        <label>職稱 / 身份<span class="req">*</span></label>
+        <select name="role" required>
+          <option value="" disabled selected>請選擇</option>
+          <option>車圈業者</option>
+          <option>自媒體創作者</option>
+          <option>汽車改裝</option>
+          <option>汽車保養/美容</option>
+          <option>汽車零件/配件</option>
+          <option>其他</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>所在縣市<span class="req">*</span></label>
+        <select name="city" required>
+          <option value="" disabled selected>請選擇</option>
+          <option>台北市</option><option>新北市</option><option>桃園市</option>
+          <option>台中市</option><option>台南市</option><option>高雄市</option>
+          <option>基隆市</option><option>新竹市</option><option>新竹縣</option>
+          <option>苗栗縣</option><option>彰化縣</option><option>南投縣</option>
+          <option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
+          <option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option>
+          <option>台東縣</option><option>澎湖縣</option><option>金門縣</option>
+          <option>連江縣</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 品牌帳號 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 2</span>
+      <span class="section-name">品牌社群帳號（選填）</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>IG 帳號</label>
+        <input type="text" name="ig" placeholder="@your_ig">
+      </div>
+      <div class="field">
+        <label>Facebook 粉絲專頁</label>
+        <input type="text" name="fb" placeholder="粉絲專頁名稱或網址">
+      </div>
+      <div class="field">
+        <label>推薦人 / 介紹人</label>
+        <input type="text" name="referral" placeholder="介紹你入會的會員名稱">
+      </div>
+    </div>
+
+    <!-- 入會類型 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 3</span>
+      <span class="section-name">選擇會員類型</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="radio-group">
+      <label class="radio-item">
+        <input type="radio" name="memberType" value="一般會員（年費$8,800 + 入會費$2,000）" required>
+        <div>
+          <div class="radio-label">🚗 一般會員</div>
+          <div class="radio-desc">年費 $8,800 + 入會費 $2,000｜適合車圈業者、自媒體創作者</div>
+        </div>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="memberType" value="團體會員（年費$28,800 + 入會費$5,000）">
+        <div>
+          <div class="radio-label">🏢 團體會員</div>
+          <div class="radio-desc">年費 $28,800 + 入會費 $5,000｜適合企業、車廠、品牌團隊</div>
+        </div>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="memberType" value="核心理事申請（年費$20,000，需審核）">
+        <div>
+          <div class="radio-label">⭐ 核心理事（限 6 席）</div>
+          <div class="radio-desc">年費 $20,000，無入會費｜需經理事會審核通過</div>
+        </div>
+      </label>
+    </div>
+
+    <!-- 付款 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 4</span>
+      <span class="section-name">付款方式</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="radio-group" style="margin-bottom:20px;">
+      <label class="radio-item">
+        <input type="radio" name="paymentMethod" value="銀行匯款" required>
+        <div>
+          <div class="radio-label">🏦 銀行匯款</div>
+          <div class="radio-desc">請見下方帳戶資訊，匯款後填入後五碼</div>
+        </div>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="paymentMethod" value="現場繳費">
+        <div>
+          <div class="radio-label">💵 現場繳費</div>
+          <div class="radio-desc">於例會現場繳付（現金或轉帳）</div>
+        </div>
+      </label>
+    </div>
+
+    <div class="field">
+      <label>匯款後五碼</label>
+      <input type="text" name="transferCode" placeholder="已匯款者請填入匯款帳號後五碼" maxlength="5">
+      <div class="hint">選擇「現場繳費」者可略過此欄</div>
+    </div>
+
+    <!-- 匯款帳戶 -->
+    <div class="account-box">
+      <h4>💳 會費匯款帳戶</h4>
+      <div class="account-row">
+        <span class="account-key">銀行</span>
+        <span class="account-val">國泰銀行 新泰分行</span>
+      </div>
+      <div class="account-row">
+        <span class="account-key">帳號</span>
+        <span class="account-val">214 · 03-50107-18</span>
+      </div>
+      <div class="account-row">
+        <span class="account-key">戶名</span>
+        <span class="account-val">社團法人台灣人車公益協會</span>
+      </div>
+    </div>
+
+    <!-- 同意條款 -->
+    <div style="margin-top:28px;">
+      <label class="checkbox-item">
+        <input type="checkbox" id="agree" required>
+        <span class="checkbox-text">
+          我已閱讀並同意加入社團法人台灣人車公益協會，遵守協會章程與公益理念，
+          且提交之個人資料僅供協會內部管理使用。
+        </span>
+      </label>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit" id="submitBtn">送出入會申請</button>
+    </div>
+
+  </form>
+
+  <!-- 成功畫面 -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🎉</div>
+    <h2>申請已送出！</h2>
+    <p>
+      感謝您申請加入社團法人台灣人車公益協會！<br><br>
+      我們將於 3 個工作天內以 Email 或 LINE 與您聯繫確認入會資格。<br><br>
+      <strong style="color: var(--gold);">一起讓車圈力量改變社會 🚗</strong>
+    </p>
+    <a href="../" class="back-home">返回首頁</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE'; // 部署後填入
+
+const form = document.getElementById('joinForm');
+const submitBtn = document.getElementById('submitBtn');
+const toast = document.getElementById('toast');
+
+function showToast(msg, type = '') {
+  toast.textContent = msg;
+  toast.className = 'toast show ' + type;
+  setTimeout(() => { toast.className = 'toast'; }, 3500);
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  submitBtn.disabled = true;
+  submitBtn.textContent = '送出中…';
+
+  const fd = new FormData(form);
+  const data = { type: 'join' };
+  fd.forEach((v, k) => { data[k] = v; });
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.status === 'success') {
+      form.style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+    } else {
+      showToast('送出失敗，請稍後再試', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送出入會申請';
+    }
+  } catch {
+    showToast('網路錯誤，請稍後再試', 'error');
+    submitBtn.disabled = false;
+    submitBtn.textContent = '送出入會申請';
+  }
+});
+</script>
+</body>
+</html>

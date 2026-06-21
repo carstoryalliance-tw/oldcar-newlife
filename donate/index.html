@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>捐款支持 — 社團法人台灣人車公益協會</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold: #e8a020;
+  --green: #6dcc8a;
+  --bg: #0a0b0f;
+  --card: #13151f;
+  --border: #252830;
+  --text: #ffffff;
+  --muted: #aaa;
+  --dim: #666;
+}
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+.header {
+  background: linear-gradient(135deg, #0f1117 0%, #0d1a0f 100%);
+  border-bottom: 3px solid var(--green);
+  padding: 24px 20px;
+  text-align: center;
+  position: relative;
+}
+.header-logo { font-size: 13px; color: var(--muted); letter-spacing: 2px; margin-bottom: 8px; }
+.header h1 { font-size: 24px; font-weight: 900; color: var(--text); }
+.header h1 span { color: var(--green); }
+.header-back {
+  position: absolute; left: 20px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--green); text-decoration: none;
+  font-size: 14px; font-weight: 600;
+}
+
+/* 稅務說明 */
+.tax-banner {
+  max-width: 680px; margin: 28px auto 0; padding: 0 20px;
+  background: rgba(109,204,138,0.07); border: 1px solid rgba(109,204,138,0.3);
+  border-radius: 12px; padding: 16px 20px; text-align: center;
+  max-width: 680px; margin: 28px 20px 0;
+}
+@media(min-width:720px){ .tax-banner { margin: 28px auto 0; } }
+.tax-banner p { font-size: 13px; color: var(--green); line-height: 1.7; }
+.tax-banner strong { font-weight: 800; }
+
+.form-wrap { max-width: 680px; margin: 28px auto 0; padding: 0 20px; }
+
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px; margin-top: 32px;
+}
+.section-tag {
+  background: var(--green); color: var(--bg);
+  font-size: 10px; font-weight: 900;
+  padding: 4px 12px; border-radius: 3px; letter-spacing: 1px;
+}
+.section-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(109,204,138,0.3), transparent); }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.field label .req { color: var(--green); margin-left: 2px; }
+.field input, .field select, .field textarea {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: 14px; color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--green);
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--dim); }
+.field select option { background: #1a1d27; }
+.hint { font-size: 11px; color: var(--dim); margin-top: 4px; }
+
+/* 金額選擇 */
+.amount-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-bottom: 14px;
+}
+.amount-btn {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 10px;
+  text-align: center; cursor: pointer;
+  transition: all 0.2s;
+}
+.amount-btn:hover, .amount-btn.active {
+  border-color: var(--green);
+  background: rgba(109,204,138,0.06);
+}
+.amount-btn .num { font-size: 18px; font-weight: 900; color: var(--green); }
+.amount-btn .unit { font-size: 11px; color: var(--dim); margin-top: 2px; }
+.amount-custom {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: 14px; color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  width: 100%; transition: border-color 0.2s;
+}
+.amount-custom:focus { outline: none; border-color: var(--green); }
+.amount-custom::placeholder { color: var(--dim); }
+
+/* 單選 */
+.radio-group { display: flex; flex-direction: column; gap: 10px; }
+.radio-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px; cursor: pointer;
+  transition: border-color 0.2s;
+}
+.radio-item:has(input:checked) { border-color: var(--green); background: rgba(109,204,138,0.05); }
+.radio-item input[type="radio"] { accent-color: var(--green); margin-top: 2px; flex-shrink: 0; }
+.radio-label { font-size: 13px; color: var(--text); font-weight: 600; }
+.radio-desc { font-size: 11px; color: var(--dim); margin-top: 2px; }
+
+/* 收據條件顯示 */
+.receipt-fields { display: none; margin-top: 14px; }
+.receipt-fields.show { display: block; }
+
+/* 帳戶 */
+.account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 0; }
+@media(max-width:500px){ .account-grid { grid-template-columns: 1fr; } }
+.account-box {
+  padding: 16px 18px;
+  border-radius: 10px;
+}
+.account-box.green {
+  background: rgba(109,204,138,0.07); border: 1px solid rgba(109,204,138,0.3);
+}
+.account-box.gold {
+  background: rgba(232,160,32,0.07); border: 1px solid rgba(232,160,32,0.3);
+}
+.account-box h4 { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+.account-box.green h4 { color: var(--green); }
+.account-box.gold h4 { color: var(--gold); }
+.account-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.account-key { font-size: 11px; color: var(--dim); }
+.account-val { font-size: 12px; color: var(--text); font-weight: 700; letter-spacing: 1px; }
+
+/* Submit */
+.btn-submit {
+  width: 100%; padding: 16px; margin-top: 32px;
+  background: linear-gradient(135deg, #6dcc8a, #4aab6a);
+  border: none; border-radius: 10px;
+  font-size: 16px; font-weight: 900; color: var(--bg);
+  cursor: pointer; letter-spacing: 1px;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn-submit:hover { opacity: 0.9; }
+.btn-submit:active { transform: scale(0.99); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: #13151f; border: 1px solid var(--green);
+  color: var(--text); font-size: 14px; font-weight: 600;
+  padding: 14px 28px; border-radius: 50px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s; z-index: 999; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+.toast.error { border-color: #ff6b6b; color: #ff6b6b; }
+
+.success-screen {
+  display: none; text-align: center;
+  padding: 60px 20px; max-width: 480px; margin: 0 auto;
+}
+.success-icon { font-size: 64px; margin-bottom: 20px; }
+.success-screen h2 { font-size: 24px; font-weight: 900; color: var(--green); margin-bottom: 12px; }
+.success-screen p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.success-screen .back-home {
+  display: inline-block; margin-top: 28px;
+  padding: 12px 32px; background: var(--green);
+  color: var(--bg); border-radius: 8px; font-weight: 700;
+  text-decoration: none; font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="../" class="header-back">← 返回</a>
+  <div class="header-logo">OLD CAR × NEW LIFE</div>
+  <h1>捐款<span>支持</span></h1>
+</div>
+
+<div class="tax-banner">
+  <p>
+    🌱 &nbsp;依社團法人台灣人車公益協會章程，<strong>所有捐款均可申請稅務抵免</strong><br>
+    捐款收據由協會統一開立，可用於個人及企業所得稅申報
+  </p>
+</div>
+
+<div class="form-wrap" id="formWrap">
+  <form id="donateForm">
+
+    <!-- 捐款人資料 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 1</span>
+      <span class="section-name">捐款人資料</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>姓名（真實姓名）<span class="req">*</span></label>
+        <input type="text" name="name" placeholder="請填入真實姓名" required>
+      </div>
+      <div class="field">
+        <label>聯絡電話<span class="req">*</span></label>
+        <input type="tel" name="phone" placeholder="0912-345-678" required>
+      </div>
+      <div class="field">
+        <label>Email<span class="req">*</span></label>
+        <input type="email" name="email" placeholder="your@email.com" required>
+      </div>
+      <div class="field">
+        <label>身分證字號 / 統一編號</label>
+        <input type="text" name="idNumber" placeholder="開立捐款收據用（選填）">
+      </div>
+    </div>
+    <div class="field" style="margin-top:16px;">
+      <label>通訊地址</label>
+      <input type="text" name="address" placeholder="紙本收據郵寄地址（選填）">
+    </div>
+
+    <!-- 捐款金額 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 2</span>
+      <span class="section-name">捐款金額</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="amount-grid">
+      <div class="amount-btn" onclick="setAmount(30000, this)">
+        <div class="num">$30,000</div>
+        <div class="unit">基本捐款</div>
+      </div>
+      <div class="amount-btn" onclick="setAmount(50000, this)">
+        <div class="num">$50,000</div>
+        <div class="unit">銅牌支持</div>
+      </div>
+      <div class="amount-btn" onclick="setAmount(100000, this)">
+        <div class="num">$100,000</div>
+        <div class="unit">銀牌支持</div>
+      </div>
+    </div>
+    <input type="hidden" name="amount" id="amountVal">
+    <input type="number" class="amount-custom" id="customAmount" placeholder="或輸入自訂金額（元）" min="1" oninput="onCustomAmount(this.value)">
+
+    <!-- 捐款方式 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 3</span>
+      <span class="section-name">捐款方式</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="radio-group" style="margin-bottom:20px;">
+      <label class="radio-item">
+        <input type="radio" name="paymentMethod" value="永豐銀行匯款" required>
+        <div>
+          <div class="radio-label">🏦 永豐銀行匯款</div>
+          <div class="radio-desc">新莊副都心分行｜帳號：13201-80110-2656</div>
+        </div>
+      </label>
+      <label class="radio-item">
+        <input type="radio" name="paymentMethod" value="郵局劃撥">
+        <div>
+          <div class="radio-label">📮 郵局劃撥</div>
+          <div class="radio-desc">劃撥帳號：50485386</div>
+        </div>
+      </label>
+    </div>
+
+    <div class="account-grid">
+      <div class="account-box green">
+        <h4>🌱 捐款帳戶（永豐）</h4>
+        <div class="account-row">
+          <span class="account-key">銀行</span>
+          <span class="account-val">永豐 新莊副都心</span>
+        </div>
+        <div class="account-row">
+          <span class="account-key">帳號</span>
+          <span class="account-val">132 · 01-80110-2656</span>
+        </div>
+        <div class="account-row">
+          <span class="account-key">戶名</span>
+          <span class="account-val" style="font-size:11px;">社團法人台灣人車公益協會</span>
+        </div>
+      </div>
+      <div class="account-box gold">
+        <h4>📮 郵局劃撥帳戶</h4>
+        <div class="account-row">
+          <span class="account-key">劃撥帳號</span>
+          <span class="account-val">50485386</span>
+        </div>
+        <div class="account-row">
+          <span class="account-key">戶名</span>
+          <span class="account-val" style="font-size:11px;">社團法人台灣人車公益協會</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:20px;">
+      <label>匯款後五碼<span class="req">*</span></label>
+      <input type="text" name="transferCode" placeholder="請填入匯款帳號後五碼" maxlength="5" required>
+      <div class="hint">方便協會對帳確認，感謝配合</div>
+    </div>
+
+    <!-- 指定用途 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 4</span>
+      <span class="section-name">指定用途 & 收據設定</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="field" style="margin-bottom:20px;">
+      <label>捐款指定用途<span class="req">*</span></label>
+      <select name="purpose" required>
+        <option value="" disabled selected>請選擇</option>
+        <option>不指定（由協會統籌運用）</option>
+        <option>公益洗車活動</option>
+        <option>老車翻新專案</option>
+        <option>例會與行政費用</option>
+      </select>
+    </div>
+
+    <div class="field" style="margin-bottom:16px;">
+      <label>是否需要捐款收據<span class="req">*</span></label>
+      <select name="receipt" id="receiptSelect" onchange="onReceiptChange(this.value)" required>
+        <option value="" disabled selected>請選擇</option>
+        <option value="不需要">不需要</option>
+        <option value="需要（個人）">需要（個人姓名）</option>
+        <option value="需要（公司）">需要（公司／抬頭自填）</option>
+      </select>
+    </div>
+
+    <div class="receipt-fields" id="receiptNameField">
+      <div class="field">
+        <label>收據抬頭</label>
+        <input type="text" name="receiptName" placeholder="請填入公司名稱或統一編號">
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:16px;">
+      <label>是否匿名公開<span class="req">*</span></label>
+      <select name="anonymous" required>
+        <option value="" disabled selected>請選擇</option>
+        <option>不匿名（感謝頁公開芳名）</option>
+        <option>匿名（不公開姓名）</option>
+      </select>
+    </div>
+
+    <div class="field" style="margin-top:16px;">
+      <label>備註 / 留言</label>
+      <textarea name="note" rows="3" placeholder="如有其他說明請填寫（選填）"></textarea>
+    </div>
+
+    <button type="submit" class="btn-submit" id="submitBtn">送出捐款申請</button>
+
+  </form>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🌱</div>
+    <h2>感謝您的捐款！</h2>
+    <p>
+      您的愛心已送達社團法人台灣人車公益協會！<br><br>
+      我們將於 3–5 個工作天內確認匯款並開立捐款收據。<br><br>
+      <strong style="color: var(--green);">以人為本 · 以車為橋 · 讓愛發動 🚗💚</strong>
+    </p>
+    <a href="../" class="back-home">返回首頁</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+let selectedAmount = '';
+
+function setAmount(val, el) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  selectedAmount = val;
+  document.getElementById('amountVal').value = val;
+  document.getElementById('customAmount').value = '';
+}
+
+function onCustomAmount(val) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  selectedAmount = val;
+  document.getElementById('amountVal').value = val;
+}
+
+function onReceiptChange(val) {
+  const f = document.getElementById('receiptNameField');
+  f.className = 'receipt-fields' + (val === '需要（公司）' ? ' show' : '');
+}
+
+const form = document.getElementById('donateForm');
+const submitBtn = document.getElementById('submitBtn');
+const toast = document.getElementById('toast');
+
+function showToast(msg, type = '') {
+  toast.textContent = msg;
+  toast.className = 'toast show ' + type;
+  setTimeout(() => { toast.className = 'toast'; }, 3500);
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!document.getElementById('amountVal').value) {
+    showToast('請選擇或輸入捐款金額', 'error'); return;
+  }
+  submitBtn.disabled = true;
+  submitBtn.textContent = '送出中…';
+
+  const fd = new FormData(form);
+  const data = { type: 'donate' };
+  fd.forEach((v, k) => { data[k] = v; });
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (json.status === 'success') {
+      form.style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+    } else {
+      showToast('送出失敗，請稍後再試', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送出捐款申請';
+    }
+  } catch {
+    showToast('網路錯誤，請稍後再試', 'error');
+    submitBtn.disabled = false;
+    submitBtn.textContent = '送出捐款申請';
+  }
+});
+</script>
+</body>
+</html>

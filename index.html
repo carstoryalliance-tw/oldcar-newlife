@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社團法人台灣人車公益協會</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold: #e8a020;
+  --green: #6dcc8a;
+  --bg: #0a0b0f;
+  --card: #13151f;
+  --border: #252830;
+  --text: #ffffff;
+  --muted: #aaa;
+  --dim: #555;
+}
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 30%, rgba(232,160,32,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 70% 70%, rgba(109,204,138,0.05) 0%, transparent 70%);
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(232,160,32,0.12); border: 1px solid rgba(232,160,32,0.35);
+  color: var(--gold); font-size: 12px; font-weight: 700;
+  padding: 6px 18px; border-radius: 20px; letter-spacing: 2px;
+  margin-bottom: 28px;
+}
+.hero h1 {
+  font-size: clamp(28px, 6vw, 54px);
+  font-weight: 900; line-height: 1.2;
+  margin-bottom: 12px; position: relative;
+}
+.hero h1 em { color: var(--gold); font-style: normal; }
+.hero-sub {
+  font-size: clamp(14px, 3vw, 18px);
+  color: var(--muted); font-weight: 300;
+  letter-spacing: 3px; margin-bottom: 20px;
+}
+.hero-slogan {
+  font-size: clamp(13px, 2.5vw, 16px);
+  color: var(--dim); letter-spacing: 2px;
+  margin-bottom: 48px; line-height: 2;
+}
+.hero-slogan span { color: var(--gold); }
+
+.cta-wrap { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.btn-primary {
+  padding: 16px 36px;
+  background: linear-gradient(135deg, #e8a020, #d4821a);
+  border: none; border-radius: 10px;
+  font-size: 16px; font-weight: 900; color: var(--bg);
+  text-decoration: none; letter-spacing: 1px;
+  transition: opacity 0.2s, transform 0.1s;
+  cursor: pointer;
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-secondary {
+  padding: 16px 36px;
+  background: rgba(109,204,138,0.1); border: 1px solid rgba(109,204,138,0.4);
+  border-radius: 10px;
+  font-size: 16px; font-weight: 700; color: var(--green);
+  text-decoration: none; letter-spacing: 1px;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-secondary:hover { background: rgba(109,204,138,0.16); transform: translateY(-1px); }
+
+.scroll-hint {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  color: var(--dim); font-size: 12px; letter-spacing: 2px;
+  animation: bounce 2s infinite;
+}
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ── 關於協會 ── */
+.section {
+  max-width: 800px; margin: 0 auto; padding: 80px 24px;
+}
+.section-head { text-align: center; margin-bottom: 48px; }
+.section-head .tag {
+  display: inline-block;
+  background: var(--gold); color: var(--bg);
+  font-size: 10px; font-weight: 900;
+  padding: 4px 14px; border-radius: 3px; letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.section-head h2 { font-size: clamp(22px, 4vw, 32px); font-weight: 900; }
+.section-head p { font-size: 14px; color: var(--muted); line-height: 1.8; margin-top: 10px; }
+
+/* 三欄特色 */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+@media(max-width:600px){ .features { grid-template-columns: 1fr; } }
+.feat-card {
+  background: var(--card); border-radius: 14px;
+  padding: 28px 22px; border: 1px solid var(--border);
+  text-align: center;
+}
+.feat-icon { font-size: 36px; margin-bottom: 14px; }
+.feat-title { font-size: 16px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
+.feat-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+/* 分隔 */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 24px;
+}
+
+/* 會費方案 */
+.plans { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media(max-width:540px){ .plans { grid-template-columns: 1fr; } }
+.plan-card {
+  background: var(--card); border-radius: 14px;
+  padding: 24px 22px; border: 1px solid var(--border);
+}
+.plan-card.gold-border { border-color: var(--gold); }
+.plan-card.blue-border { border-color: #3a5a8a; }
+.plan-icon { font-size: 28px; margin-bottom: 10px; }
+.plan-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.plan-price { font-size: 26px; font-weight: 900; color: var(--gold); margin-bottom: 6px; }
+.plan-price small { font-size: 12px; color: var(--dim); font-weight: 400; }
+.plan-fee { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.plan-tax { font-size: 11px; color: var(--green); }
+.plan-btn {
+  display: block; margin-top: 16px;
+  padding: 10px; text-align: center;
+  background: rgba(232,160,32,0.1); border: 1px solid rgba(232,160,32,0.35);
+  border-radius: 8px; color: var(--gold);
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  transition: background 0.2s;
+}
+.plan-btn:hover { background: rgba(232,160,32,0.18); }
+
+/* 例會時間 */
+.schedule { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media(min-width:600px){ .schedule { grid-template-columns: repeat(4, 1fr); } }
+.sched-card {
+  background: var(--card); border-radius: 12px;
+  padding: 18px 14px; border: 1px solid var(--border);
+  text-align: center;
+}
+.sched-card.next { border-color: var(--gold); background: rgba(232,160,32,0.05); }
+.sched-n { font-size: 11px; color: var(--dim); margin-bottom: 6px; }
+.sched-date { font-size: 22px; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
+.sched-venue { font-size: 12px; color: var(--muted); }
+.sched-badge {
+  display: inline-block; margin-top: 8px;
+  background: var(--gold); color: var(--bg);
+  font-size: 9px; font-weight: 900;
+  padding: 2px 10px; border-radius: 10px;
+}
+
+/* Footer */
+.footer {
+  padding: 40px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-links a { color: var(--muted); font-size: 13px; text-decoration: none; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 11px; color: var(--dim); letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">OLD CAR × NEW LIFE</div>
+  <h1>社團法人<br><em>台灣人車公益協會</em></h1>
+  <div class="hero-sub">TAIWAN CAR STORY ALLIANCE</div>
+  <div class="hero-slogan">
+    <span>以人為本</span> · <span>以車為橋</span> · <span>讓愛發動</span> · <span>讓希望前行</span>
+  </div>
+  <div class="cta-wrap">
+    <a href="join/" class="btn-primary">🚗 立即入會申請</a>
+    <a href="donate/" class="btn-secondary">🌱 捐款支持</a>
+  </div>
+  <div class="scroll-hint">↓ 了解更多</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 關於 -->
+<section class="section">
+  <div class="section-head">
+    <div class="tag">ABOUT</div>
+    <h2>關於協會</h2>
+    <p>台灣人車公益協會結合車圈業者、自媒體創作者與公益精神，<br>透過定期例會、場地參訪、公益洗車、老車翻新等活動，<br>打造以車為媒介的公益交流平台。</p>
+  </div>
+  <div class="features">
+    <div class="feat-card">
+      <div class="feat-icon">🤝</div>
+      <div class="feat-title">同業交流</div>
+      <div class="feat-desc">台灣車圈菁英聚集，認識洗車、鍍膜、包膜、改裝、自媒體各領域夥伴</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🌱</div>
+      <div class="feat-title">公益行動</div>
+      <div class="feat-desc">公益洗車、淨灘、老車翻新，讓品牌更有溫度，幫助有需要的人</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📣</div>
+      <div class="feat-title">媒體曝光</div>
+      <div class="feat-desc">例會輪流在會員店面辦理，帶自媒體進場，幫你產出優質內容</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 會費方案 -->
+<section class="section">
+  <div class="section-head">
+    <div class="tag">MEMBERSHIP</div>
+    <h2>會費方案</h2>
+    <p>所有會費及捐款均可申請稅務抵免</p>
+  </div>
+  <div class="plans">
+    <div class="plan-card gold-border">
+      <div class="plan-icon">🚗</div>
+      <div class="plan-name">一般會員</div>
+      <div class="plan-price">$8,800<small>/年</small></div>
+      <div class="plan-fee">入會費 $2,000</div>
+      <div class="plan-tax">✅ 入會費 & 年費均可抵稅</div>
+      <a href="join/" class="plan-btn">立即申請</a>
+    </div>
+    <div class="plan-card blue-border">
+      <div class="plan-icon">🏢</div>
+      <div class="plan-name">團體會員</div>
+      <div class="plan-price" style="color:#7bbfff;">$28,800<small>/年</small></div>
+      <div class="plan-fee">入會費 $5,000</div>
+      <div class="plan-tax">✅ 入會費 & 年費均可抵稅</div>
+      <a href="join/" class="plan-btn" style="border-color:rgba(74,158,255,0.35);color:#7bbfff;background:rgba(74,158,255,0.1);">立即申請</a>
+    </div>
+    <div class="plan-card" style="border-color:#6a4a9a;">
+      <div class="plan-icon">⭐</div>
+      <div class="plan-name">核心理事</div>
+      <div class="plan-price" style="color:#c8a0f0;">$20,000<small>/年</small></div>
+      <div class="plan-fee">限 6 席 · 無需入會費</div>
+      <div class="plan-tax">✅ 年費可抵稅</div>
+      <a href="join/" class="plan-btn" style="border-color:rgba(180,120,240,0.35);color:#c8a0f0;background:rgba(180,120,240,0.1);">申請理事</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-icon">🤝</div>
+      <div class="plan-name">贊助捐款</div>
+      <div class="plan-price">$30,000<small>+</small></div>
+      <div class="plan-fee">純捐款 · 非會員資格</div>
+      <div class="plan-tax">✅ 捐款可申請抵稅</div>
+      <a href="donate/" class="plan-btn" style="border-color:rgba(109,204,138,0.35);color:var(--green);background:rgba(109,204,138,0.08);">立即捐款</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- 例會時間 -->
+<section class="section">
+  <div class="section-head">
+    <div class="tag">2026 SCHEDULE</div>
+    <h2>年度例會時間表</h2>
+  </div>
+  <div class="schedule">
+    <div class="sched-card next">
+      <div class="sched-n">第 1 場</div>
+      <div class="sched-date">6 / 30</div>
+      <div class="sched-venue">K-Wax Kevin 公司</div>
+      <div class="sched-badge">即將舉辦</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-n">第 2 場</div>
+      <div class="sched-date">9 / 1</div>
+      <div class="sched-venue">Superior 卓越中和店</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-n">第 3 場</div>
+      <div class="sched-date">10 / 27</div>
+      <div class="sched-venue">派威場地</div>
+    </div>
+    <div class="sched-card">
+      <div class="sched-n">第 4 場</div>
+      <div class="sched-date">12 / 29</div>
+      <div class="sched-venue">絕世名膜 小劉場地</div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="join/">入會申請</a>
+    <a href="donate/">捐款支持</a>
+    <a href="https://www.facebook.com/profile.php?id=61575342963645" target="_blank">Facebook</a>
+    <a href="https://www.instagram.com/oldcar.newlife" target="_blank">@oldcar.newlife</a>
+  </div>
+  <div class="footer-copy">社團法人台灣人車公益協會 · OLD CAR × NEW LIFE · 2026</div>
+</footer>
+
+</body>
+</html>
