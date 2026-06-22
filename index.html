@@ -236,8 +236,31 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
     </div>
   </div>
 
-  <div style="position:relative;">
-    <div id="impact-map"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;">
+    <!-- 左：地圖 -->
+    <div style="position:relative;min-height:480px;">
+      <div id="impact-map" style="height:100%;min-height:480px;"></div>
+    </div>
+    <!-- 右：影片面板 -->
+    <div id="case-video-panel" style="background:#0d0f17;border-radius:14px;border:1px solid #252830;overflow:hidden;display:flex;flex-direction:column;">
+      <div id="case-video-placeholder" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;">
+        <div style="font-size:40px;opacity:.3;">▶</div>
+        <div style="font-size:13px;color:#555;line-height:1.8;">點擊地圖上的<br><span style="color:#e8a020;">橘色標點</span>查看個案影片</div>
+      </div>
+      <div id="case-video-wrap" style="display:none;flex-direction:column;height:100%;">
+        <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;flex-shrink:0;">
+          <iframe id="case-video-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+        </div>
+        <div style="padding:18px 20px;flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <span id="case-video-ep" style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;"></span>
+            <span style="font-size:10px;color:#555;letter-spacing:1px;">OLD CAR × NEW LIFE</span>
+          </div>
+          <div id="case-video-title" style="font-size:16px;font-weight:900;margin-bottom:6px;"></div>
+          <div id="case-video-desc" style="font-size:12px;color:#aaa;line-height:1.8;"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1111,32 +1134,47 @@ class Component extends DCLogic {
   var btn=document.getElementById('ham-btn');
   if(btn) btn.addEventListener('click',function(e){e.stopPropagation();_toggleNav();});
 
-  // Leaflet 地圖 — MutationObserver 等 React 渲染完才初始化
+  // Leaflet 地圖 + 右側影片互動
   (function(){
-    var _mapInstance=null;
+    var CASES=[
+      {lat:24.9937,lng:121.3010,ep:'EP 01',title:'第一個案例｜桃園',desc:'第一個真實案例——用一台車改變一個家庭的生活。',vid:'XT_F3p2LyaU?si=Huy5Br0R-wklOhNR'},
+      {lat:25.0128,lng:121.5147,ep:'EP 02',title:'第二個案例｜永和',desc:'第二個真實案例——持續用行動改變更多人的生活。',vid:'-d5XNS0wxlo?si=HOSsibGvmLUgxRvU'},
+      {lat:24.7021,lng:121.7378,ep:'EP 03',title:'第三個案例｜宜蘭',desc:'第三個真實案例——讓愛心透過車輪繼續滾動。',vid:'UdIXadkrXTs?si=XOGKMQ_IdtrIMDju'}
+    ];
+    function showVideo(i){
+      var c=CASES[i];
+      var ph=document.getElementById('case-video-placeholder');
+      var wr=document.getElementById('case-video-wrap');
+      var fr=document.getElementById('case-video-iframe');
+      var ep=document.getElementById('case-video-ep');
+      var ti=document.getElementById('case-video-title');
+      var de=document.getElementById('case-video-desc');
+      if(!ph||!wr||!fr)return;
+      fr.src='https://www.youtube.com/embed/'+c.vid;
+      ep.textContent=c.ep;
+      ti.textContent=c.title;
+      de.textContent=c.desc;
+      ph.style.display='none';
+      wr.style.display='flex';
+    }
+    var _map=null;
     function buildMap(el){
       if(el._mapInit)return; el._mapInit=true;
       if(typeof L==='undefined'){el._mapInit=false;return;}
-      _mapInstance=L.map(el,{
+      _map=L.map(el,{
         center:[23.6,121.0],zoom:7.5,
         zoomControl:false,scrollWheelZoom:false,attributionControl:false,
         dragging:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,
         maxBounds:[[21.5,119.5],[26.0,122.5]],maxBoundsViscosity:1.0
       });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:6,subdomains:'abcd'}).addTo(_mapInstance);
-      var cases=[
-        {lat:24.9937,lng:121.3010,label:'第一個案例',area:'桃園市'},
-        {lat:25.0128,lng:121.5147,label:'第二個案例',area:'新北市永和區'},
-        {lat:24.7021,lng:121.7378,label:'第三個案例',area:'宜蘭縣'}
-      ];
-      cases.forEach(function(c){
-        var html='<div style="position:relative;width:24px;height:24px;"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;"></div></div>';
-        L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
-          .addTo(_mapInstance)
-          .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',{className:'custom-popup'});
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:6,subdomains:'abcd'}).addTo(_map);
+      CASES.forEach(function(c,i){
+        var html='<div style="position:relative;width:28px;height:28px;cursor:pointer;"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:14px;height:14px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:7px;left:7px;"></div></div>';
+        L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[28,28],iconAnchor:[14,14]})})
+          .addTo(_map).on('click',function(){showVideo(i);});
       });
-      setTimeout(function(){if(_mapInstance)_mapInstance.invalidateSize();},200);
-      setTimeout(function(){if(_mapInstance)_mapInstance.invalidateSize();},800);
+      setTimeout(function(){if(_map)_map.invalidateSize();},200);
+      setTimeout(function(){if(_map)_map.invalidateSize();},800);
     }
     var obs=new MutationObserver(function(){
       var el=document.getElementById('impact-map');
