@@ -1159,29 +1159,37 @@ class Component extends DCLogic {
   var btn=document.getElementById('ham-btn');
   if(btn) btn.addEventListener('click',function(e){e.stopPropagation();_toggleNav();});
 
-  // 地圖初始化
-  function initMap(){
+  // 地圖初始化 — 重試直到 L 和 div 都就緒
+  (function initMap(){
+    if(typeof L==='undefined'||!document.getElementById('impact-map')){
+      setTimeout(initMap,150); return;
+    }
     var el=document.getElementById('impact-map');
-    if(!el||typeof L==='undefined')return;
+    if(el._mapInit)return; el._mapInit=true;
     var cases=[
       {lat:24.9937,lng:121.3010,label:"第一個案例",area:"桃園市"},
       {lat:25.0128,lng:121.5147,label:"第二個案例",area:"新北市永和區"},
       {lat:24.7021,lng:121.7378,label:"第三個案例",area:"宜蘭縣"}
     ];
-    var map=L.map('impact-map',{center:[23.9,121.0],zoom:7,zoomControl:true,scrollWheelZoom:false,attributionControl:false});
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd'}).addTo(map);
-    cases.forEach(function(c){
-      var html='<div style="position:relative;width:24px;height:24px;"><div style="position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;"></div></div>';
-      L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
-       .addTo(map)
-       .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',{className:'custom-popup'});
+    var map=L.map('impact-map',{
+      center:[23.75,120.95],zoom:7,
+      zoomControl:true,scrollWheelZoom:false,attributionControl:false,
+      maxBounds:[[21.5,119.0],[26.5,123.0]],maxBoundsViscosity:0.8
     });
-  }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',initMap);
-  } else {
-    setTimeout(initMap,100);
-  }
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:6,subdomains:'abcd'}).addTo(map);
+    var allMarkers=[];
+    cases.forEach(function(c){
+      var html='<div style="position:relative;width:24px;height:24px;"><div style="position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;top:0;left:0;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;"></div></div>';
+      var mk=L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
+        .addTo(map)
+        .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',{className:'custom-popup'});
+      allMarkers.push(mk);
+    });
+    var group=L.featureGroup(allMarkers);
+    map.fitBounds(group.getBounds(),{padding:[80,100],maxZoom:9});
+    map.on('focus',function(){map.scrollWheelZoom.enable();});
+    map.on('blur',function(){map.scrollWheelZoom.disable();});
+  })();
 })();
 </script>
 </body>
