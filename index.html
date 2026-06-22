@@ -252,12 +252,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
           <iframe id="case-video-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
         </div>
         <div style="padding:18px 20px;flex:1;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <span id="case-video-ep" style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;"></span>
-            <span style="font-size:10px;color:#555;letter-spacing:1px;">OLD CAR × NEW LIFE</span>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span id="case-video-ep" style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;"></span>
+            <span id="case-video-loc" style="font-size:11px;color:#e8a020;font-weight:700;"></span>
+            <span style="font-size:10px;color:#555;letter-spacing:1px;margin-left:auto;">OLD CAR × NEW LIFE</span>
           </div>
-          <div id="case-video-title" style="font-size:16px;font-weight:900;margin-bottom:6px;"></div>
-          <div id="case-video-desc" style="font-size:12px;color:#aaa;line-height:1.8;"></div>
+          <div id="case-video-title" style="font-size:15px;font-weight:900;margin-bottom:4px;line-height:1.5;"></div>
+          <div id="case-video-sub" style="font-size:11px;color:#e8a020;opacity:.7;margin-bottom:10px;"></div>
+          <div id="case-video-desc" style="font-size:12px;color:#aaa;line-height:1.9;"></div>
         </div>
       </div>
     </div>
@@ -1137,23 +1139,22 @@ class Component extends DCLogic {
   // Leaflet 地圖 + 右側影片互動
   (function(){
     var CASES=[
-      {lat:24.9937,lng:121.3010,ep:'EP 01',title:'第一個案例｜桃園',desc:'第一個真實案例——用一台車改變一個家庭的生活。',vid:'XT_F3p2LyaU?si=Huy5Br0R-wklOhNR'},
-      {lat:25.0128,lng:121.5147,ep:'EP 02',title:'第二個案例｜永和',desc:'第二個真實案例——持續用行動改變更多人的生活。',vid:'-d5XNS0wxlo?si=HOSsibGvmLUgxRvU'},
-      {lat:24.7021,lng:121.7378,ep:'EP 03',title:'第三個案例｜宜蘭',desc:'第三個真實案例——讓愛心透過車輪繼續滾動。',vid:'UdIXadkrXTs?si=XOGKMQ_IdtrIMDju'}
+      {lat:24.9937,lng:121.3010,ep:'EP 01',loc:'桃園',title:'一家人因病而苦 希望回憶勇留存',sub:'1996年 LANCER 老車翻新',desc:'一個因病陷入困境的家庭，珍藏著一台承載無數回憶的 1996 年三菱 Lancer。人車故事公益聯盟透過老車翻新，讓這台車重新上路，也讓這家人的希望得以延續。',vid:'XT_F3p2LyaU?si=Huy5Br0R-wklOhNR'},
+      {lat:25.0128,lng:121.5147,ep:'EP 02',loc:'永和',title:'第二個案例｜永和',sub:'',desc:'第二個真實案例——持續用行動改變更多人的生活。',vid:'-d5XNS0wxlo?si=HOSsibGvmLUgxRvU'},
+      {lat:24.7021,lng:121.7378,ep:'EP 03',loc:'宜蘭',title:'第三個案例｜宜蘭',sub:'',desc:'第三個真實案例——讓愛心透過車輪繼續滾動。',vid:'UdIXadkrXTs?si=XOGKMQ_IdtrIMDju'}
     ];
     function showVideo(i){
       var c=CASES[i];
       var ph=document.getElementById('case-video-placeholder');
       var wr=document.getElementById('case-video-wrap');
       var fr=document.getElementById('case-video-iframe');
-      var ep=document.getElementById('case-video-ep');
-      var ti=document.getElementById('case-video-title');
-      var de=document.getElementById('case-video-desc');
       if(!ph||!wr||!fr)return;
       fr.src='https://www.youtube.com/embed/'+c.vid;
-      ep.textContent=c.ep;
-      ti.textContent=c.title;
-      de.textContent=c.desc;
+      document.getElementById('case-video-ep').textContent=c.ep;
+      document.getElementById('case-video-loc').textContent=c.loc;
+      document.getElementById('case-video-title').textContent=c.title;
+      document.getElementById('case-video-sub').textContent=c.sub;
+      document.getElementById('case-video-desc').textContent=c.desc;
       ph.style.display='none';
       wr.style.display='flex';
     }
