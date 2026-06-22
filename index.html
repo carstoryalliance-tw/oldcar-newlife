@@ -1162,12 +1162,12 @@ class Component extends DCLogic {
       if(el._mapInit)return; el._mapInit=true;
       if(typeof L==='undefined'){el._mapInit=false;return;}
       _map=L.map(el,{
-        center:[23.6,121.0],zoom:7.5,
         zoomControl:false,scrollWheelZoom:false,attributionControl:false,
         dragging:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,
-        maxBounds:[[21.5,119.5],[26.0,122.5]],maxBoundsViscosity:1.0
+        zoomSnap:0.1
       });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:6,subdomains:'abcd'}).addTo(_map);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:5,subdomains:'abcd'}).addTo(_map);
+      _map.fitBounds([[21.8,119.8],[25.4,122.2]],{padding:[28,28]});
       CASES.forEach(function(c,i){
         var html='<div style="position:relative;width:28px;height:28px;cursor:pointer;"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:14px;height:14px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:7px;left:7px;"></div></div>';
         L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[28,28],iconAnchor:[14,14]})})
