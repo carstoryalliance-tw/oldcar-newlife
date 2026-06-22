@@ -4,20 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<style>
-#impact-map{height:620px;border-radius:14px;overflow:hidden;border:1px solid rgba(232,160,32,.25);box-shadow:0 0 40px rgba(232,160,32,.06);}
-.leaflet-container{background:#0a0b0f;}
-@keyframes pulse-orange{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
-.custom-popup .leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0;}
-.custom-popup .leaflet-popup-content{margin:0;}
-.custom-popup .leaflet-popup-tip{background:#e8a020;}
-#impact-videos-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
-@media(max-width:780px){#impact-videos-grid{grid-template-columns:1fr;}}
-.vid-card{border-radius:12px;overflow:hidden;border:1px solid rgba(232,160,32,.3);box-shadow:0 0 20px rgba(232,160,32,.05);}
-.vid-card+.vid-card{margin-top:16px;}
-</style>
 </head>
 <body>
 <x-dc>
@@ -239,7 +225,53 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
       <span style="font-size:13px;color:#aaa;line-height:1.5;">已累積幫助<br><strong style="color:#fff;">個案 · 桃園 · 永和 · 宜蘭</strong></span>
     </div>
   </div>
-  <div id="impact-map"></div>
+
+  <!-- 純 SVG 台灣地圖 — 不依賴外部 JS -->
+  <div style="display:flex;justify-content:center;">
+    <svg viewBox="0 0 400 680" width="320" height="544"
+         style="background:#0d0f17;border-radius:16px;border:1px solid rgba(232,160,32,.2);box-shadow:0 0 40px rgba(232,160,32,.06);display:block;"
+         xmlns="http://www.w3.org/2000/svg">
+      <!-- 台灣本島輪廓 -->
+      <polygon
+        fill="#1c2030" stroke="#2e3348" stroke-width="1.5"
+        points="327,39 394,84 372,179 336,304 281,429 191,555 163,644 82,519 55,411 73,304 100,215 163,125 254,72"
+      />
+      <!-- 離島（澎湖群島，簡化） -->
+      <circle cx="62" cy="430" r="5" fill="#1c2030" stroke="#2e3348" stroke-width="1.5"/>
+      <circle cx="52" cy="444" r="4" fill="#1c2030" stroke="#2e3348" stroke-width="1.5"/>
+      <circle cx="72" cy="448" r="3" fill="#1c2030" stroke="#2e3348" stroke-width="1.5"/>
+
+      <!-- 格線（緯度，淡） -->
+      <line x1="0" y1="179" x2="400" y2="179" stroke="#252830" stroke-width="0.5" stroke-dasharray="4,6"/>
+      <line x1="0" y1="304" x2="400" y2="304" stroke="#252830" stroke-width="0.5" stroke-dasharray="4,6"/>
+      <line x1="0" y1="429" x2="400" y2="429" stroke="#252830" stroke-width="0.5" stroke-dasharray="4,6"/>
+
+      <!-- ── 個案標點 ── -->
+      <!-- 桃園 (24.99°N, 121.30°E) → x=273, y=91 -->
+      <circle cx="273" cy="91" r="14" fill="rgba(232,160,32,.12)" stroke="none">
+        <animate attributeName="r" values="10;18;10" dur="2.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="273" cy="91" r="6" fill="#e8a020" style="filter:drop-shadow(0 0 6px #e8a020)"/>
+      <text x="273" y="112" text-anchor="middle" fill="#e8a020" font-size="10" font-weight="700" font-family="'Noto Sans TC',sans-serif" style="filter:drop-shadow(0 1px 3px #000)">桃園</text>
+
+      <!-- 永和 (25.01°N, 121.51°E) → x=312, y=88 -->
+      <circle cx="312" cy="88" r="14" fill="rgba(232,160,32,.12)" stroke="none">
+        <animate attributeName="r" values="10;18;10" dur="2.6s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="312" cy="88" r="6" fill="#e8a020" style="filter:drop-shadow(0 0 6px #e8a020)"/>
+      <text x="312" y="109" text-anchor="middle" fill="#e8a020" font-size="10" font-weight="700" font-family="'Noto Sans TC',sans-serif" style="filter:drop-shadow(0 1px 3px #000)">永和</text>
+
+      <!-- 宜蘭 (24.70°N, 121.74°E) → x=352, y=143 -->
+      <circle cx="352" cy="143" r="14" fill="rgba(232,160,32,.12)" stroke="none">
+        <animate attributeName="r" values="10;18;10" dur="3.0s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="3.0s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="352" cy="143" r="6" fill="#e8a020" style="filter:drop-shadow(0 0 6px #e8a020)"/>
+      <text x="352" y="164" text-anchor="middle" fill="#e8a020" font-size="10" font-weight="700" font-family="'Noto Sans TC',sans-serif" style="filter:drop-shadow(0 1px 3px #000)">宜蘭</text>
+    </svg>
+  </div>
 </section>
 
 <div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
@@ -1112,40 +1144,6 @@ class Component extends DCLogic {
   var btn=document.getElementById('ham-btn');
   if(btn) btn.addEventListener('click',function(e){e.stopPropagation();_toggleNav();});
 
-  // 地圖初始化 — MutationObserver 等 React 渲染完 #impact-map 才執行
-  (function(){
-    function buildMap(el){
-      if(el._mapInit)return; el._mapInit=true;
-      var cases=[
-        {lat:24.9937,lng:121.3010,label:"第一個案例",area:"桃園市"},
-        {lat:25.0128,lng:121.5147,label:"第二個案例",area:"新北市永和區"},
-        {lat:24.7021,lng:121.7378,label:"第三個案例",area:"宜蘭縣"}
-      ];
-      var map=L.map(el,{
-        center:[23.6,121.0],zoom:7.5,
-        zoomControl:false,scrollWheelZoom:false,attributionControl:false,
-        dragging:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,
-        maxBounds:[[21.5,119.5],[26.0,122.5]],maxBoundsViscosity:1.0
-      });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:6,subdomains:'abcd'}).addTo(map);
-      cases.forEach(function(c){
-        var html='<div style="position:relative;width:24px;height:24px;"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;"></div></div>';
-        L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
-          .addTo(map)
-          .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',{className:'custom-popup'});
-      });
-    }
-    function tryInit(){
-      var el=document.getElementById('impact-map');
-      if(el&&typeof L!=='undefined'){buildMap(el);return;}
-    }
-    tryInit();
-    var obs=new MutationObserver(function(){
-      var el=document.getElementById('impact-map');
-      if(el&&typeof L!=='undefined'&&!el._mapInit){buildMap(el);}
-    });
-    obs.observe(document.body,{childList:true,subtree:true});
-  })();
 })();
 </script>
 </body>
