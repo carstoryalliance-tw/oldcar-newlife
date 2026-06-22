@@ -228,71 +228,58 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
 
-<!-- 公益足跡 + 影片 -->
-<section id="videos" style="max-width:1200px;margin:0 auto;padding:80px 24px;">
-  <!-- 標題 -->
-  <div style="text-align:center;margin-bottom:52px;">
-    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">IMPACT &amp; VIDEOS</div>
+<!-- 公益地圖 -->
+<section style="max-width:960px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:40px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">IMPACT MAP</div>
     <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">足跡持續延伸</h2>
-    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一個標點，每一支影片，都是我們用行動訴說的故事</p>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一個標點，都是一個真實改變的故事</p>
+    <div style="margin-top:20px;display:inline-flex;align-items:center;gap:10px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);border-radius:30px;padding:10px 24px;">
+      <span style="font-size:28px;font-weight:900;color:#e8a020;">3</span>
+      <span style="font-size:13px;color:#aaa;line-height:1.5;">已累積幫助<br><strong style="color:#fff;">個案 · 桃園 · 永和 · 宜蘭</strong></span>
+    </div>
+  </div>
+  <div id="impact-map"></div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 公益影片 -->
+<section id="videos" style="max-width:960px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:48px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">VIDEOS</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">公益影片</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一支影片，都是我們用行動訴說的故事</p>
   </div>
 
-  <div id="impact-videos-grid">
-
-    <!-- 左：地圖 -->
-    <div>
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-        <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);border-radius:30px;padding:8px 20px;">
-          <span style="font-size:24px;font-weight:900;color:#e8a020;">3</span>
-          <span style="font-size:12px;color:#aaa;line-height:1.5;">已累積幫助<br><strong style="color:#fff;">個案</strong></span>
-        </div>
-        <div style="font-size:11px;color:#555;letter-spacing:1px;">桃園 · 永和 · 宜蘭</div>
-      </div>
-      <div id="impact-map"></div>
+  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
+    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+      <iframe src="https://www.youtube.com/embed/XT_F3p2LyaU?si=Huy5Br0R-wklOhNR" title="第一個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
     </div>
-
-    <!-- 右：影片卡片 -->
-    <div>
-      <div class="vid-card">
-        <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
-          <iframe src="https://www.youtube.com/embed/XT_F3p2LyaU?si=Huy5Br0R-wklOhNR" title="第一個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
-        </div>
-        <div style="background:#13151f;padding:14px 18px;display:flex;align-items:center;gap:12px;">
-          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 01</div>
-          <div>
-            <div style="font-size:14px;font-weight:900;margin-bottom:2px;">第一個案例｜桃園</div>
-            <div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="vid-card">
-        <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
-          <iframe src="https://www.youtube.com/embed/-d5XNS0wxlo?si=HOSsibGvmLUgxRvU" title="第二個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
-        </div>
-        <div style="background:#13151f;padding:14px 18px;display:flex;align-items:center;gap:12px;">
-          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 02</div>
-          <div>
-            <div style="font-size:14px;font-weight:900;margin-bottom:2px;">第二個案例｜永和</div>
-            <div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="vid-card">
-        <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
-          <iframe src="https://www.youtube.com/embed/UdIXadkrXTs?si=XOGKMQ_IdtrIMDju" title="第三個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
-        </div>
-        <div style="background:#13151f;padding:14px 18px;display:flex;align-items:center;gap:12px;">
-          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 03</div>
-          <div>
-            <div style="font-size:14px;font-weight:900;margin-bottom:2px;">第三個案例｜宜蘭</div>
-            <div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div>
-          </div>
-        </div>
-      </div>
+    <div style="background:#13151f;padding:16px 22px;display:flex;align-items:center;gap:12px;">
+      <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 01</div>
+      <div><div style="font-size:16px;font-weight:900;margin-bottom:2px;">第一個案例｜桃園</div><div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div></div>
     </div>
+  </div>
 
+  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
+    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+      <iframe src="https://www.youtube.com/embed/-d5XNS0wxlo?si=HOSsibGvmLUgxRvU" title="第二個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+    </div>
+    <div style="background:#13151f;padding:16px 22px;display:flex;align-items:center;gap:12px;">
+      <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 02</div>
+      <div><div style="font-size:16px;font-weight:900;margin-bottom:2px;">第二個案例｜永和</div><div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div></div>
+    </div>
+  </div>
+
+  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
+    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+      <iframe src="https://www.youtube.com/embed/UdIXadkrXTs?si=XOGKMQ_IdtrIMDju" title="第三個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+    </div>
+    <div style="background:#13151f;padding:16px 22px;display:flex;align-items:center;gap:12px;">
+      <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 03</div>
+      <div><div style="font-size:16px;font-weight:900;margin-bottom:2px;">第三個案例｜宜蘭</div><div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div></div>
+    </div>
   </div>
 </section>
 
@@ -1125,31 +1112,39 @@ class Component extends DCLogic {
   var btn=document.getElementById('ham-btn');
   if(btn) btn.addEventListener('click',function(e){e.stopPropagation();_toggleNav();});
 
-  // 地圖初始化 — 重試直到 L 和 div 都就緒
-  (function initMap(){
-    if(typeof L==='undefined'||!document.getElementById('impact-map')){
-      setTimeout(initMap,150); return;
+  // 地圖初始化 — MutationObserver 等 React 渲染完 #impact-map 才執行
+  (function(){
+    function buildMap(el){
+      if(el._mapInit)return; el._mapInit=true;
+      var cases=[
+        {lat:24.9937,lng:121.3010,label:"第一個案例",area:"桃園市"},
+        {lat:25.0128,lng:121.5147,label:"第二個案例",area:"新北市永和區"},
+        {lat:24.7021,lng:121.7378,label:"第三個案例",area:"宜蘭縣"}
+      ];
+      var map=L.map(el,{
+        center:[23.6,121.0],zoom:7.5,
+        zoomControl:false,scrollWheelZoom:false,attributionControl:false,
+        dragging:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,
+        maxBounds:[[21.5,119.5],[26.0,122.5]],maxBoundsViscosity:1.0
+      });
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:6,subdomains:'abcd'}).addTo(map);
+      cases.forEach(function(c){
+        var html='<div style="position:relative;width:24px;height:24px;"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;"></div></div>';
+        L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
+          .addTo(map)
+          .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',{className:'custom-popup'});
+      });
     }
-    var el=document.getElementById('impact-map');
-    if(el._mapInit)return; el._mapInit=true;
-    var cases=[
-      {lat:24.9937,lng:121.3010,label:"第一個案例",area:"桃園市"},
-      {lat:25.0128,lng:121.5147,label:"第二個案例",area:"新北市永和區"},
-      {lat:24.7021,lng:121.7378,label:"第三個案例",area:"宜蘭縣"}
-    ];
-    var map=L.map('impact-map',{
-      center:[23.6,121.0],zoom:7.5,
-      zoomControl:false,scrollWheelZoom:false,attributionControl:false,
-      dragging:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,
-      maxBounds:[[21.8,119.8],[25.4,122.2]],maxBoundsViscosity:1.0
+    function tryInit(){
+      var el=document.getElementById('impact-map');
+      if(el&&typeof L!=='undefined'){buildMap(el);return;}
+    }
+    tryInit();
+    var obs=new MutationObserver(function(){
+      var el=document.getElementById('impact-map');
+      if(el&&typeof L!=='undefined'&&!el._mapInit){buildMap(el);}
     });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:6,subdomains:'abcd'}).addTo(map);
-    cases.forEach(function(c){
-      var html='<div style="position:relative;width:24px;height:24px;"><div style="position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;top:0;left:0;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;"></div></div>';
-      L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
-        .addTo(map)
-        .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',{className:'custom-popup'});
-    });
+    obs.observe(document.body,{childList:true,subtree:true});
   })();
 })();
 </script>
