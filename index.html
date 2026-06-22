@@ -216,117 +216,84 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
 
-<!-- 公益地圖 -->
-<section style="max-width:960px;margin:0 auto;padding:80px 24px;">
-  <div style="text-align:center;margin-bottom:48px;">
-    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">IMPACT MAP</div>
-    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">足跡遍布台灣</h2>
-    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一個標點，都是一個真實改變的故事</p>
-    <div style="margin-top:20px;display:inline-flex;align-items:center;gap:10px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);border-radius:30px;padding:10px 24px;">
-      <span style="font-size:28px;font-weight:900;color:#e8a020;">3</span>
-      <span style="font-size:13px;color:#aaa;line-height:1.5;">已累積幫助<br><strong style="color:#fff;">個案</strong></span>
-    </div>
-  </div>
+<!-- 公益足跡 + 影片 -->
+<section id="videos" style="max-width:1200px;margin:0 auto;padding:80px 24px;">
   <style>
-    #impact-map{height:480px;border-radius:16px;overflow:hidden;border:1px solid rgba(232,160,32,.25);box-shadow:0 0 40px rgba(232,160,32,.06);}
+    #impact-map{height:100%;min-height:420px;border-radius:14px;overflow:hidden;border:1px solid rgba(232,160,32,.25);box-shadow:0 0 40px rgba(232,160,32,.06);}
     .leaflet-container{background:#0a0b0f;}
     @keyframes pulse-orange{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
-    .pulse-ring{position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;}
-    .dot-core{width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;}
-    .pulse-wrap{position:relative;width:24px;height:24px;}
     .custom-popup .leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0;}
     .custom-popup .leaflet-popup-content{margin:0;}
     .custom-popup .leaflet-popup-tip{background:#e8a020;}
+    #impact-videos-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+    @media(max-width:780px){#impact-videos-grid{grid-template-columns:1fr;}}
+    .vid-card{border-radius:12px;overflow:hidden;border:1px solid rgba(232,160,32,.3);box-shadow:0 0 20px rgba(232,160,32,.05);}
+    .vid-card+.vid-card{margin-top:16px;}
   </style>
-  <div id="impact-map"></div>
-</section>
 
-<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
-
-<!-- 公益影片 -->
-<section id="videos" style="max-width:960px;margin:0 auto;padding:80px 24px;">
-  <div style="text-align:center;margin-bottom:48px;">
-    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">VIDEOS</div>
-    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">公益影片</h2>
-    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一支影片，都是我們用行動訴說的故事</p>
+  <!-- 標題 -->
+  <div style="text-align:center;margin-bottom:52px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">IMPACT &amp; VIDEOS</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">足跡持續延伸</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一個標點，每一支影片，都是我們用行動訴說的故事</p>
   </div>
-  <!-- 第一個案例 滿版 -->
-  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
-    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
-      <iframe src="https://www.youtube.com/embed/XT_F3p2LyaU?si=Huy5Br0R-wklOhNR" title="第一個案例｜台灣人車公益協會" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
-    </div>
-    <div style="background:#13151f;padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;">公益影片</div>
-          <div style="font-size:10px;color:#555;letter-spacing:1px;">EPISODE 01</div>
+
+  <div id="impact-videos-grid">
+
+    <!-- 左：地圖 -->
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);border-radius:30px;padding:8px 20px;">
+          <span style="font-size:24px;font-weight:900;color:#e8a020;">3</span>
+          <span style="font-size:12px;color:#aaa;line-height:1.5;">已累積幫助<br><strong style="color:#fff;">個案</strong></span>
         </div>
-        <div style="font-size:18px;font-weight:900;margin-bottom:6px;">第一個案例</div>
-        <div style="font-size:13px;color:#aaa;line-height:1.8;">台灣人車公益協會公益紀錄片——第一個真實案例的故事，<br>記錄我們如何用一台車改變一個家庭的生活。</div>
+        <div style="font-size:11px;color:#555;letter-spacing:1px;">桃園 · 永和 · 宜蘭</div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
-        <div style="font-size:10px;color:#555;">社團法人台灣人車公益協會</div>
-        <div style="font-size:10px;color:#e8a020;">OLD CAR × NEW LIFE</div>
-      </div>
+      <div id="impact-map"></div>
     </div>
-  </div>
 
-  <!-- 第二個案例 滿版（永和） -->
-  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
-    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
-      <iframe src="https://www.youtube.com/embed/-d5XNS0wxlo?si=HOSsibGvmLUgxRvU" title="第二個案例｜台灣人車公益協會" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
-    </div>
-    <div style="background:#13151f;padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;">公益影片</div>
-          <div style="font-size:10px;color:#555;letter-spacing:1px;">EPISODE 02</div>
+    <!-- 右：影片卡片 -->
+    <div>
+      <div class="vid-card">
+        <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+          <iframe src="https://www.youtube.com/embed/XT_F3p2LyaU?si=Huy5Br0R-wklOhNR" title="第一個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
         </div>
-        <div style="font-size:18px;font-weight:900;margin-bottom:6px;">第二個案例｜永和</div>
-        <div style="font-size:13px;color:#aaa;line-height:1.8;">台灣人車公益協會幫助的第二個真實案例，<br>記錄我們如何持續用行動改變更多人的生活。</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
-        <div style="font-size:10px;color:#555;">社團法人台灣人車公益協會</div>
-        <div style="font-size:10px;color:#e8a020;">OLD CAR × NEW LIFE</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 第三個案例 滿版（宜蘭） -->
-  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
-    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
-      <iframe src="https://www.youtube.com/embed/UdIXadkrXTs?si=XOGKMQ_IdtrIMDju" title="第三個案例｜台灣人車公益協會" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
-    </div>
-    <div style="background:#13151f;padding:20px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;">公益影片</div>
-          <div style="font-size:10px;color:#555;letter-spacing:1px;">EPISODE 03</div>
+        <div style="background:#13151f;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 01</div>
+          <div>
+            <div style="font-size:14px;font-weight:900;margin-bottom:2px;">第一個案例｜桃園</div>
+            <div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div>
+          </div>
         </div>
-        <div style="font-size:18px;font-weight:900;margin-bottom:6px;">第三個案例｜宜蘭</div>
-        <div style="font-size:13px;color:#aaa;line-height:1.8;">台灣人車公益協會幫助的第三個真實案例，<br>記錄我們如何持續用行動改變更多人的生活。</div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
-        <div style="font-size:10px;color:#555;">社團法人台灣人車公益協會</div>
-        <div style="font-size:10px;color:#e8a020;">OLD CAR × NEW LIFE</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- 其他影片（佔位） -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
-    <div style="display:none;"></div>
-    <div style="background:#13151f;border:1px solid #252830;border-radius:14px;overflow:hidden;">
-      <div style="aspect-ratio:16/9;background:linear-gradient(135deg,#181b26,#252830);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;">
-        <div style="font-size:44px;">🎬</div>
-        <div style="font-size:12px;color:#555;letter-spacing:2px;">影片即將上線</div>
-        <div style="position:absolute;bottom:10px;right:12px;background:rgba(200,160,240,.15);border:1px solid rgba(200,160,240,.3);border-radius:20px;padding:3px 10px;font-size:10px;color:#c8a0f0;font-weight:700;">年度回顧</div>
+      <div class="vid-card">
+        <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+          <iframe src="https://www.youtube.com/embed/-d5XNS0wxlo?si=HOSsibGvmLUgxRvU" title="第二個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+        </div>
+        <div style="background:#13151f;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 02</div>
+          <div>
+            <div style="font-size:14px;font-weight:900;margin-bottom:2px;">第二個案例｜永和</div>
+            <div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div>
+          </div>
+        </div>
       </div>
-      <div style="padding:18px;">
-        <div style="font-size:14px;font-weight:800;margin-bottom:6px;">協會年度成果回顧</div>
-        <div style="font-size:12px;color:#aaa;line-height:1.7;">2026 年度公益足跡、活動成果與感謝故事</div>
+
+      <div class="vid-card">
+        <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+          <iframe src="https://www.youtube.com/embed/UdIXadkrXTs?si=XOGKMQ_IdtrIMDju" title="第三個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+        </div>
+        <div style="background:#13151f;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+          <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 03</div>
+          <div>
+            <div style="font-size:14px;font-weight:900;margin-bottom:2px;">第三個案例｜宜蘭</div>
+            <div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div>
+          </div>
+        </div>
       </div>
     </div>
+
   </div>
 </section>
 
