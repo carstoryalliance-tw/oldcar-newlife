@@ -20,6 +20,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .nav-links a{font-size:12px;color:#aaa;text-decoration:none;padding:6px 12px;border-radius:6px;transition:all .2s;}
 .nav-links a:hover{color:#fff;background:rgba(255,255,255,.06);}
 .nav-btn{background:linear-gradient(135deg,#e8a020,#d4821a)!important;color:#000!important;font-weight:700!important;border-radius:7px!important;}
+.nav-donate{background:rgba(109,204,138,.15)!important;border:1px solid rgba(109,204,138,.5)!important;color:#6dcc8a!important;font-weight:700!important;border-radius:7px!important;}
 /* HAMBURGER */
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;}
 .hamburger span{display:block;width:22px;height:2px;background:#aaa;border-radius:2px;transition:all .3s;}
@@ -27,6 +28,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .mobile-menu a,.mobile-menu button{display:block;padding:10px 0;font-size:14px;color:#aaa;text-decoration:none;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;}
 .mobile-menu a:hover,.mobile-menu button:hover{color:#e8a020;}
 .mobile-menu .m-btn{margin-top:8px;padding:11px 16px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#000;border-radius:8px;font-weight:700;text-align:center;}
+.mobile-menu .m-donate{margin-top:8px;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;text-align:center;display:block;}
 @media(max-width:640px){
   .nav-links{display:none;}
   .hamburger{display:flex;}
@@ -100,7 +102,7 @@ footer a{color:#666;text-decoration:none;}
   <div class="nav-links">
     <a href="../">首頁</a>
     <a href="../join/" class="nav-btn">入會申請</a>
-    <a href="../donate-notice/">捐款支持</a>
+    <a href="../donate-notice/" class="nav-donate">🌱 捐款支持</a>
   </div>
   <button class="hamburger" onclick="toggleMenu()" aria-label="選單">
     <span></span><span></span><span></span>
@@ -111,7 +113,7 @@ footer a{color:#666;text-decoration:none;}
 <div class="mobile-menu" id="mobileMenu">
   <a href="../">首頁</a>
   <a href="../join/" class="m-btn">入會申請</a>
-  <a href="../donate-notice/">捐款支持</a>
+  <a href="../donate-notice/" class="m-donate">🌱 捐款支持</a>
 </div>
 
 <!-- PAGE HERO -->
