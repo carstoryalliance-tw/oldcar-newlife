@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 <x-dc>
@@ -210,6 +212,33 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
       </div>
     </div>
   </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
+
+<!-- 公益地圖 -->
+<section style="max-width:960px;margin:0 auto;padding:80px 24px;">
+  <div style="text-align:center;margin-bottom:48px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">IMPACT MAP</div>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">足跡遍布台灣</h2>
+    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一個標點，都是一個真實改變的故事</p>
+    <div style="margin-top:20px;display:inline-flex;align-items:center;gap:10px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);border-radius:30px;padding:10px 24px;">
+      <span style="font-size:28px;font-weight:900;color:#e8a020;">3</span>
+      <span style="font-size:13px;color:#aaa;line-height:1.5;">已累積幫助<br><strong style="color:#fff;">個案</strong></span>
+    </div>
+  </div>
+  <style>
+    #impact-map{height:480px;border-radius:16px;overflow:hidden;border:1px solid rgba(232,160,32,.25);box-shadow:0 0 40px rgba(232,160,32,.06);}
+    .leaflet-container{background:#0a0b0f;}
+    @keyframes pulse-orange{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
+    .pulse-ring{position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;}
+    .dot-core{width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;}
+    .pulse-wrap{position:relative;width:24px;height:24px;}
+    .custom-popup .leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0;}
+    .custom-popup .leaflet-popup-content{margin:0;}
+    .custom-popup .leaflet-popup-tip{background:#e8a020;}
+  </style>
+  <div id="impact-map"></div>
 </section>
 
 <div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
@@ -543,65 +572,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
       </div>
     </div>
   </div>
-</section>
-
-<div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
-
-<!-- 公益地圖 -->
-<section style="max-width:960px;margin:0 auto;padding:80px 24px;">
-  <div style="text-align:center;margin-bottom:48px;">
-    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">IMPACT MAP</div>
-    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">足跡遍布台灣</h2>
-    <p style="font-size:14px;color:#aaa;line-height:1.9;margin-top:12px;">每一個標點，都是一個真實改變的故事</p>
-    <div style="margin-top:20px;display:inline-flex;align-items:center;gap:10px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);border-radius:30px;padding:10px 24px;">
-      <span style="font-size:28px;font-weight:900;color:#e8a020;">3</span>
-      <span style="font-size:13px;color:#aaa;line-height:1.5;">已累積幫助<br><strong style="color:#fff;">個案</strong></span>
-    </div>
-  </div>
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <style>
-    #impact-map{height:480px;border-radius:16px;overflow:hidden;border:1px solid rgba(232,160,32,.25);box-shadow:0 0 40px rgba(232,160,32,.06);}
-    .leaflet-container{background:#0a0b0f;}
-    @keyframes pulse-orange{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
-    .pulse-ring{position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;}
-    .dot-core{width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;}
-    .pulse-wrap{position:relative;width:24px;height:24px;}
-  </style>
-
-  <div id="impact-map"></div>
-
-  <script>
-  (function(){
-    var cases = [
-      { lat:24.9937, lng:121.3010, label:"第一個案例", area:"桃園市" },
-      { lat:25.0128, lng:121.5147, label:"第二個案例", area:"新北市永和區" },
-      { lat:24.7021, lng:121.7378, label:"第三個案例", area:"宜蘭縣" }
-    ];
-    var map = L.map('impact-map',{
-      center:[23.9,121.0],zoom:7,
-      zoomControl:true,scrollWheelZoom:false,
-      attributionControl:false
-    });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-      maxZoom:19,subdomains:'abcd'
-    }).addTo(map);
-    cases.forEach(function(c){
-      var el = document.createElement('div');
-      el.className='pulse-wrap';
-      el.innerHTML='<div class="pulse-ring"></div><div class="dot-core"></div>';
-      L.marker([c.lat,c.lng],{
-        icon:L.divIcon({className:'',html:el.outerHTML,iconSize:[24,24],iconAnchor:[12,12]})
-      }).addTo(map)
-        .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',
-          {className:'custom-popup'});
-    });
-    var style=document.createElement('style');
-    style.textContent='.custom-popup .leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0;}.custom-popup .leaflet-popup-content{margin:0;}.custom-popup .leaflet-popup-tip{background:#e8a020;}';
-    document.head.appendChild(style);
-  })();
-  </script>
 </section>
 
 <div style="height:1px;background:linear-gradient(90deg,transparent,#252830,transparent);margin:0 24px;"></div>
@@ -1186,9 +1156,32 @@ class Component extends DCLogic {
     m.style.display=m.style.display==='flex'?'none':'flex';
   }
   window.toggleNav=_toggleNav;
-  // 腳本已在 </body> 前，DOM 已就緒，直接綁定
   var btn=document.getElementById('ham-btn');
   if(btn) btn.addEventListener('click',function(e){e.stopPropagation();_toggleNav();});
+
+  // 地圖初始化
+  function initMap(){
+    var el=document.getElementById('impact-map');
+    if(!el||typeof L==='undefined')return;
+    var cases=[
+      {lat:24.9937,lng:121.3010,label:"第一個案例",area:"桃園市"},
+      {lat:25.0128,lng:121.5147,label:"第二個案例",area:"新北市永和區"},
+      {lat:24.7021,lng:121.7378,label:"第三個案例",area:"宜蘭縣"}
+    ];
+    var map=L.map('impact-map',{center:[23.9,121.0],zoom:7,zoomControl:true,scrollWheelZoom:false,attributionControl:false});
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd'}).addTo(map);
+    cases.forEach(function(c){
+      var html='<div style="position:relative;width:24px;height:24px;"><div style="position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;"></div></div>';
+      L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
+       .addTo(map)
+       .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',{className:'custom-popup'});
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initMap);
+  } else {
+    setTimeout(initMap,100);
+  }
 })();
 </script>
 </body>
