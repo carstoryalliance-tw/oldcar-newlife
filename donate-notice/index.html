@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>捐款注意事項 — 社團法人台灣人車公益協會</title>
+<title>捐款支持 — 社團法人台灣人車公益協會</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -12,31 +12,56 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a0b0f;color:#fff;min-hei
 
 .header{background:linear-gradient(135deg,#0f1117 0%,#0d1a0f 100%);border-bottom:3px solid #6dcc8a;padding:24px 20px;text-align:center;position:relative;}
 .header-back{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:#6dcc8a;text-decoration:none;font-size:14px;font-weight:600;}
-.header-logo{font-size:13px;color:#aaa;letter-spacing:2px;margin-bottom:8px;}
-.header h1{font-size:22px;font-weight:900;}
+.header-logo{font-size:12px;color:#aaa;letter-spacing:2px;margin-bottom:8px;}
+.header h1{font-size:24px;font-weight:900;}
 .header h1 span{color:#6dcc8a;}
+.header-badges{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:16px;}
+.header-badge{display:flex;align-items:center;gap:8px;background:rgba(109,204,138,.08);border:1px solid rgba(109,204,138,.3);border-radius:8px;padding:7px 14px;}
+.header-badge .badge-sub{font-size:10px;color:#aaa;letter-spacing:1px;margin-bottom:2px;}
+.header-badge .badge-val{font-size:12px;font-weight:700;color:#6dcc8a;letter-spacing:.5px;}
 
-.wrap{max-width:680px;margin:0 auto;padding:28px 20px;}
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 60px;}
 
-.intro-box{background:rgba(109,204,138,.07);border:1px solid rgba(109,204,138,.3);border-radius:12px;padding:18px 20px;margin-bottom:28px;}
-.intro-box p{font-size:13px;color:#6dcc8a;line-height:1.8;}
+.section-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.section-tag{font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;flex-shrink:0;}
+.section-tag.green{background:#6dcc8a;color:#0a0b0f;}
+.section-tag.gray{background:#252830;color:#aaa;}
+.section-title{font-size:16px;font-weight:900;}
+.section-line{flex:1;height:1px;}
+.section-line.green{background:linear-gradient(90deg,rgba(109,204,138,.3),transparent);}
+.section-line.gray{background:linear-gradient(90deg,#252830,transparent);}
 
-.notice-block{margin-bottom:20px;background:#111318;border:1px solid #1e2029;border-radius:12px;overflow:hidden;}
-.notice-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #1e2029;}
-.notice-num{background:#6dcc8a;color:#0a0b0f;font-size:11px;font-weight:900;padding:3px 10px;border-radius:3px;letter-spacing:1px;flex-shrink:0;}
-.notice-title{font-size:15px;font-weight:700;}
-.notice-body{padding:16px 18px;}
-.notice-body p,.notice-body li{font-size:13px;color:#bbb;line-height:1.9;}
-.notice-body ul{padding-left:16px;}
-.notice-body li{margin-bottom:4px;}
-.notice-body strong{color:#fff;font-weight:700;}
+/* 回饋卡片 */
+.benefit-list{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+.benefit-card{background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;}
+.benefit-card .icon{font-size:24px;flex-shrink:0;}
+.benefit-card h3{font-size:14px;font-weight:800;color:#6dcc8a;margin-bottom:6px;}
+.benefit-card p{font-size:13px;color:#aaa;line-height:1.8;}
 
-.confirm-box{background:#111318;border:2px solid rgba(109,204,138,.4);border-radius:14px;padding:22px 20px;margin-top:10px;}
+/* 捐款方式 */
+.donate-method{background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:20px 22px;margin-bottom:12px;}
+.method-badges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.method-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(109,204,138,.07);border:1px solid rgba(109,204,138,.25);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;color:#6dcc8a;}
+.method-points{display:flex;flex-direction:column;gap:10px;}
+.method-point{display:flex;gap:10px;}
+.method-point .bullet{color:#6dcc8a;font-weight:900;flex-shrink:0;}
+.method-point p{font-size:13px;color:#aaa;line-height:1.7;}
+.method-point p strong{color:#fff;}
+.remind-box{background:rgba(109,204,138,.06);border:1px solid rgba(109,204,138,.25);border-radius:10px;padding:16px 20px;margin-bottom:28px;}
+.remind-box p{font-size:13px;color:#6dcc8a;line-height:1.9;}
+
+/* 注意事項 */
+.notice-card{background:#13151f;border:1px solid #252830;border-radius:12px;padding:20px 22px;margin-bottom:28px;}
+.notice-items{display:flex;flex-direction:column;gap:10px;}
+.notice-item{display:flex;gap:10px;}
+.notice-item .n{color:#555;flex-shrink:0;font-size:13px;min-width:18px;}
+.notice-item span{font-size:13px;color:#aaa;line-height:1.7;}
+
+/* 確認 */
+.confirm-box{background:rgba(109,204,138,.05);border:1px solid rgba(109,204,138,.35);border-radius:12px;padding:20px 20px 22px;}
 .confirm-label{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-bottom:20px;}
-.confirm-label input[type="checkbox"]{width:20px;height:20px;accent-color:#6dcc8a;flex-shrink:0;margin-top:2px;cursor:pointer;}
-.confirm-text{font-size:14px;font-weight:700;line-height:1.6;color:#fff;}
-.confirm-text span{color:#6dcc8a;}
-
+.confirm-label input{width:18px;height:18px;min-width:18px;accent-color:#6dcc8a;margin-top:3px;flex-shrink:0;cursor:pointer;}
+.confirm-label span{font-size:13px;color:#aaa;line-height:1.8;}
 .btn-proceed{
   display:block;width:100%;padding:16px;
   background:linear-gradient(135deg,#6dcc8a,#4aab6a);
@@ -47,9 +72,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a0b0f;color:#fff;min-hei
   text-decoration:none;text-align:center;
   font-family:'Noto Sans TC',sans-serif;
 }
-.btn-proceed:disabled{opacity:.3;cursor:not-allowed;pointer-events:none;}
-.btn-proceed:not(:disabled):hover{opacity:.9;}
-.btn-proceed:not(:disabled):active{transform:scale(.99);}
+.btn-proceed[disabled]{opacity:.3;cursor:not-allowed;pointer-events:none;}
+.btn-proceed:not([disabled]):hover{opacity:.9;}
+.btn-proceed:not([disabled]):active{transform:scale(.99);}
 </style>
 </head>
 <body>
@@ -57,104 +82,125 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a0b0f;color:#fff;min-hei
 <div class="header">
   <a href="../" class="header-back">← 返回</a>
   <div class="header-logo">OLD CAR × NEW LIFE</div>
-  <h1>捐款<span>注意事項</span></h1>
+  <h1>捐款<span>支持</span></h1>
+  <div class="header-badges">
+    <div class="header-badge">
+      <span style="font-size:14px;">🏛️</span>
+      <div>
+        <div class="badge-sub">內政部核准立案</div>
+        <div class="badge-val">台內團字第 1140047990 號</div>
+      </div>
+    </div>
+    <div class="header-badge">
+      <span style="font-size:14px;">📋</span>
+      <div>
+        <div class="badge-sub">社團法人登記證書</div>
+        <div class="badge-val">115 證社字第 7 號</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="wrap">
 
-  <div class="intro-box">
-    <p>感謝您願意支持社團法人台灣人車公益協會！<br>
-    請於捐款前詳細閱讀以下注意事項，確認了解後再進行捐款。</p>
-  </div>
-
-  <div class="notice-block">
-    <div class="notice-head">
-      <span class="notice-num">01</span>
-      <span class="notice-title">捐款用途說明</span>
+  <!-- 一、回饋與權益 -->
+  <div style="margin-bottom:28px;">
+    <div class="section-head">
+      <span class="section-tag green">一</span>
+      <span class="section-title">守護同行：捐款回饋與權益</span>
+      <div class="section-line green"></div>
     </div>
-    <div class="notice-body">
-      <ul>
-        <li>捐款將依協會章程及理事會決議，統籌用於公益洗車活動、老車翻新專案、行政運作及其他公益計畫。</li>
-        <li>協會不接受任何指定私人受益人之捐款。</li>
-        <li>年度收支報告將依法公開，接受捐款人監督。</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="notice-block">
-    <div class="notice-head">
-      <span class="notice-num">02</span>
-      <span class="notice-title">稅務抵免</span>
-    </div>
-    <div class="notice-body">
-      <ul>
-        <li>依《所得稅法》第 17 條規定，對公益社團之捐款得申報列舉扣除。</li>
-        <li>捐款收據由協會統一開立，最遲於匯款確認後 <strong>30 個工作天</strong>內寄出或提供電子版。</li>
-        <li>如需開立收據，請於捐款表單中填寫真實姓名及身分證字號或公司統一編號。</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="notice-block">
-    <div class="notice-head">
-      <span class="notice-num">03</span>
-      <span class="notice-title">匯款確認流程</span>
-    </div>
-    <div class="notice-body">
-      <ul>
-        <li>請於匯款完成後，在表單中填入<strong>匯款帳號後五碼</strong>，以利協會核對。</li>
-        <li>匯款確認時間約為 <strong>3–5 個工作天</strong>。</li>
-        <li>如超過 7 個工作天仍未收到確認通知，請聯繫協會信箱：<strong>carstory.alliance@gmail.com</strong></li>
-      </ul>
+    <div class="benefit-list">
+      <div class="benefit-card">
+        <span class="icon">🏆</span>
+        <div>
+          <h3>榮譽感謝狀</h3>
+          <p>頒發【年度公益感謝狀】，這不僅是您投入社會公益、保存車輛文化的榮譽紀錄，更是愛心付出的最佳見證。</p>
+        </div>
+      </div>
+      <div class="benefit-card">
+        <span class="icon">🚗</span>
+        <div>
+          <h3>特約廠商尊榮禮遇</h3>
+          <p>憑協會感謝狀/認證，可享有全台合作特約廠商之專屬優惠（涵蓋汽車美容、板金烤漆、維修零件、包膜服務等），讓您養車輕鬆、公益有保障。</p>
+        </div>
+      </div>
+      <div class="benefit-card">
+        <span class="icon">🔧</span>
+        <div>
+          <h3>文化與技術參與</h3>
+          <p>優先受邀參與協會舉辦之「老車修復工藝」工作坊，並可優先申請將您的人車故事納入協會數位資料庫保存。</p>
+        </div>
+      </div>
+      <div class="benefit-card">
+        <span class="icon">❤️</span>
+        <div>
+          <h3>公益第一線見證</h3>
+          <p>優先受邀參與翻新車輛的受贈儀式、偏鄉物資支援行動，親眼見證您的善款轉化為實質的移動力量。</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="notice-block">
-    <div class="notice-head">
-      <span class="notice-num">04</span>
-      <span class="notice-title">退款說明</span>
+  <!-- 二、捐款方式與財務透明 -->
+  <div style="margin-bottom:28px;">
+    <div class="section-head">
+      <span class="section-tag green">二</span>
+      <span class="section-title">捐款方式與財務透明</span>
+      <div class="section-line green"></div>
     </div>
-    <div class="notice-body">
-      <ul>
-        <li>捐款一經匯出並確認收訖，<strong>恕不退款</strong>。</li>
-        <li>如因誤匯或特殊情況需申請退款，請於匯款後 <strong>3 日內</strong>聯繫協會，逾期視為自願捐款。</li>
-      </ul>
+    <div class="donate-method">
+      <div class="method-badges">
+        <span class="method-badge">🏛️ 台內團字第 1140047990 號</span>
+        <span class="method-badge">📋 115 證社字第 7 號</span>
+      </div>
+      <p style="font-size:13px;color:#aaa;line-height:2;margin-bottom:16px;">本會為依法設立之公益團體，所有善款均依法公開透明運用。您所捐助的每一筆款項，均會正式開立可抵稅之「捐款收據」，可用於個人或公司之年度稅務抵免。</p>
+      <div class="method-points">
+        <div class="method-point"><span class="bullet">◆</span><p><strong>單次隨喜捐款：</strong>金額不限，由您自由填寫，點亮老車翻新與公益救助的希望。</p></div>
+        <div class="method-point"><span class="bullet">◆</span><p><strong>定期定額支持：</strong>可選擇按月或按年定期定額，成為協會長期推動社會溫暖的堅實後盾。</p></div>
+        <div class="method-point"><span class="bullet">◆</span><p><strong>專案榮譽贊助：</strong>凡有意針對特定「老車翻新專案」進行大額指定捐款者，歡迎與本會秘書處聯繫，理事會將致贈榮譽證書並於大會公開致謝。</p></div>
+      </div>
+    </div>
+    <div class="remind-box">
+      <p>📋 完成填單與匯款後，協會將於 <strong>7–14 個工作天</strong>內開立並寄送正式捐款抵稅收據。<br>
+      ✅ 請務必填寫「匯款帳號末五碼」與「捐款金額」，以便秘書處核對帳款並開立收據。</p>
     </div>
   </div>
 
-  <div class="notice-block">
-    <div class="notice-head">
-      <span class="notice-num">05</span>
-      <span class="notice-title">個人資料保護</span>
+  <!-- 注意事項 -->
+  <div style="margin-bottom:28px;">
+    <div class="section-head">
+      <span class="section-tag gray">注意事項</span>
+      <div class="section-line gray"></div>
     </div>
-    <div class="notice-body">
-      <ul>
-        <li>您填寫的個人資料將依《個人資料保護法》規定，僅用於捐款確認、收據開立及協會聯繫。</li>
-        <li>協會不會將您的個人資料提供予第三方商業用途。</li>
-      </ul>
+    <div class="notice-card">
+      <div class="notice-items">
+        <div class="notice-item"><span class="n">1.</span><span>捐款一旦完成匯款，恕不退款，請確認捐款金額正確後再進行匯款。</span></div>
+        <div class="notice-item"><span class="n">2.</span><span>請確認收款帳戶資訊正確，因填寫錯誤導致之款項損失，協會恕不負責。</span></div>
+        <div class="notice-item"><span class="n">3.</span><span>捐款收據將於核帳確認後 7–14 個工作天內開立，以 <strong style="color:#fff;">Email 電子收據</strong>方式寄出；如需紙本，請於備註填寫申請及通訊地址。</span></div>
+        <div class="notice-item"><span class="n">4.</span><span>本會財務報告每年定期公開於會員大會及官方網站，確保每筆善款透明合法運用。</span></div>
+        <div class="notice-item"><span class="n">5.</span><span>您所填寫之個人資料，依個人資料保護法規定，僅供協會開立收據及業務聯絡使用，不對外提供或出售。</span></div>
+        <div class="notice-item"><span class="n">6.</span><span>本會保留對捐款使用方式之最終解釋權，並依章程規定運用於各項公益業務。</span></div>
+        <div class="notice-item"><span class="n">7.</span><span>如有任何疑問，請透過 Facebook、Instagram 或官方網站與本會秘書處聯繫。</span></div>
+      </div>
     </div>
   </div>
 
+  <!-- 確認勾選 -->
   <div class="confirm-box">
     <label class="confirm-label" for="agreeCheck">
       <input type="checkbox" id="agreeCheck" onchange="onAgree(this.checked)">
-      <span class="confirm-text">
-        我已詳細閱讀並充分了解以上<span>捐款注意事項</span>，同意依上述規定進行捐款。
-      </span>
+      <span>我已閱讀並充分了解上述捐款說明、回饋權益與注意事項，同意依據以上條件進行捐款。</span>
     </label>
-    <a id="proceedBtn" href="../donate/" class="btn-proceed" disabled>前往捐款頁面 →</a>
+    <a id="proceedBtn" href="../donate/" class="btn-proceed" disabled>我已閱讀，前往填寫捐款資料 →</a>
   </div>
 
 </div>
 
 <script>
 function onAgree(checked) {
-  const btn = document.getElementById('proceedBtn');
-  if (checked) {
-    btn.removeAttribute('disabled');
-  } else {
-    btn.setAttribute('disabled', '');
-  }
+  var btn = document.getElementById('proceedBtn');
+  checked ? btn.removeAttribute('disabled') : btn.setAttribute('disabled', '');
 }
 </script>
 </body>
