@@ -6,6 +6,18 @@
 <script src="./support.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+#impact-map{height:620px;border-radius:14px;overflow:hidden;border:1px solid rgba(232,160,32,.25);box-shadow:0 0 40px rgba(232,160,32,.06);}
+.leaflet-container{background:#0a0b0f;}
+@keyframes pulse-orange{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
+.custom-popup .leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0;}
+.custom-popup .leaflet-popup-content{margin:0;}
+.custom-popup .leaflet-popup-tip{background:#e8a020;}
+#impact-videos-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+@media(max-width:780px){#impact-videos-grid{grid-template-columns:1fr;}}
+.vid-card{border-radius:12px;overflow:hidden;border:1px solid rgba(232,160,32,.3);box-shadow:0 0 20px rgba(232,160,32,.05);}
+.vid-card+.vid-card{margin-top:16px;}
+</style>
 </head>
 <body>
 <x-dc>
@@ -218,19 +230,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <!-- 公益足跡 + 影片 -->
 <section id="videos" style="max-width:1200px;margin:0 auto;padding:80px 24px;">
-  <style>
-    #impact-map{height:100%;min-height:420px;border-radius:14px;overflow:hidden;border:1px solid rgba(232,160,32,.25);box-shadow:0 0 40px rgba(232,160,32,.06);}
-    .leaflet-container{background:#0a0b0f;}
-    @keyframes pulse-orange{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
-    .custom-popup .leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0;}
-    .custom-popup .leaflet-popup-content{margin:0;}
-    .custom-popup .leaflet-popup-tip{background:#e8a020;}
-    #impact-videos-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
-    @media(max-width:780px){#impact-videos-grid{grid-template-columns:1fr;}}
-    .vid-card{border-radius:12px;overflow:hidden;border:1px solid rgba(232,160,32,.3);box-shadow:0 0 20px rgba(232,160,32,.05);}
-    .vid-card+.vid-card{margin-top:16px;}
-  </style>
-
   <!-- 標題 -->
   <div style="text-align:center;margin-bottom:52px;">
     <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">IMPACT &amp; VIDEOS</div>
@@ -1139,23 +1138,18 @@ class Component extends DCLogic {
       {lat:24.7021,lng:121.7378,label:"第三個案例",area:"宜蘭縣"}
     ];
     var map=L.map('impact-map',{
-      center:[23.75,120.95],zoom:7,
-      zoomControl:true,scrollWheelZoom:false,attributionControl:false,
-      maxBounds:[[21.5,119.0],[26.5,123.0]],maxBoundsViscosity:0.8
+      center:[23.6,121.0],zoom:7.5,
+      zoomControl:false,scrollWheelZoom:false,attributionControl:false,
+      dragging:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,
+      maxBounds:[[21.8,119.8],[25.4,122.2]],maxBoundsViscosity:1.0
     });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:14,minZoom:6,subdomains:'abcd'}).addTo(map);
-    var allMarkers=[];
     cases.forEach(function(c){
       var html='<div style="position:relative;width:24px;height:24px;"><div style="position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid #e8a020;animation:pulse-orange 2s ease-out infinite;top:0;left:0;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e8a020;box-shadow:0 0 10px #e8a020,0 0 24px rgba(232,160,32,.5);position:absolute;top:6px;left:6px;"></div></div>';
-      var mk=L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
+      L.marker([c.lat,c.lng],{icon:L.divIcon({className:'',html:html,iconSize:[24,24],iconAnchor:[12,12]})})
         .addTo(map)
         .bindPopup('<div style="background:#13151f;color:#fff;border:1px solid rgba(232,160,32,.4);border-radius:8px;padding:10px 14px;font-family:\'Noto Sans TC\',sans-serif;min-width:130px;"><div style="font-size:11px;color:#e8a020;font-weight:900;margin-bottom:4px;">'+c.label+'</div><div style="font-size:13px;font-weight:700;">'+c.area+'</div></div>',{className:'custom-popup'});
-      allMarkers.push(mk);
     });
-    var group=L.featureGroup(allMarkers);
-    map.fitBounds(group.getBounds(),{padding:[80,100],maxZoom:9});
-    map.on('focus',function(){map.scrollWheelZoom.enable();});
-    map.on('blur',function(){map.scrollWheelZoom.disable();});
   })();
 })();
 </script>
