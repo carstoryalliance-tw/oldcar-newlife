@@ -100,10 +100,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
     <img src="./assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
     OLD CAR × NEW LIFE
   </button>
-  <button id="nav-about" onClick="{{ gotoAbout }}" style="padding:14px 9px;font-size:12px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">協會介紹</button>
+  <a id="nav-about" href="./about/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">認識我們</a>
   <button id="nav-videos" onClick="{{ gotoVideos }}" style="padding:14px 9px;font-size:12px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">公益影片</button>
   <button id="nav-news" onClick="{{ gotoNews }}" style="padding:14px 9px;font-size:12px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">媒體報導</button>
-  <button id="nav-members" onClick="{{ gotoMembers }}" style="padding:14px 9px;font-size:12px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">成員介紹</button>
+  <a id="nav-members" href="./members/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">成員介紹</a>
   <div id="nav-spacer" style="flex:1;"></div>
   <button id="nav-join" onClick="{{ gotoJoin }}" style="padding:7px 13px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;flex-shrink:0;">入會申請</button>
   <button id="nav-donate" onClick="{{ gotoDonate }}" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;margin-left:8px;flex-shrink:0;">捐款支持</button>
@@ -125,10 +125,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 </nav>
 <!-- 手機下拉選單 -->
 <div id="mobile-nav" style="display:none;flex-direction:column;background:#f5f6f8;border-bottom:1px solid #e0e2e8;padding:12px 20px 16px;position:sticky;top:52px;z-index:99;">
-  <button onClick="{{ navGotoAbout }}" style="display:block;padding:10px 0;font-size:14px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">協會介紹</button>
+  <a href="./about/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;text-decoration:none;">認識我們</a>
   <button onClick="{{ navGotoVideos }}" style="display:block;padding:10px 0;font-size:14px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">公益影片</button>
   <button onClick="{{ navGotoNews }}" style="display:block;padding:10px 0;font-size:14px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">媒體報導</button>
-  <button onClick="{{ navGotoMembers }}" style="display:block;padding:10px 0;font-size:14px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">成員介紹</button>
+  <a href="./members/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;text-decoration:none;">成員介紹</a>
   <button onClick="{{ navGotoJoin }}" style="margin-top:8px;padding:11px 16px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">入會申請</button>
   <button onClick="{{ navGotoDonate }}" style="margin-top:8px;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">捐款支持</button>
   <a href="sponsors/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">✦ 贊助夥伴</a>
@@ -194,36 +194,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <div style="height:1px;background:linear-gradient(90deg,transparent,#e0e2e8,transparent);margin:0 24px;"></div>
 
-<!-- 創立初衷 -->
-<section style="max-width:900px;margin:0 auto;padding:80px 24px;">
-  <div style="text-align:center;margin-bottom:52px;">
-    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">ORIGIN</div>
-    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">創立初衷</h2>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:center;">
+<!-- 創立初衷（簡短卡片） -->
+<section style="max-width:860px;margin:0 auto;padding:64px 24px;">
+  <div style="background:linear-gradient(135deg,rgba(232,160,32,.06),rgba(232,160,32,.02));border:1px solid rgba(232,160,32,.25);border-radius:20px;padding:40px 36px;display:flex;flex-direction:column;gap:20px;">
+    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;align-self:flex-start;">ORIGIN</div>
+    <h2 style="font-size:clamp(20px,3.5vw,30px);font-weight:900;line-height:1.4;">源自對人與車的熱愛</h2>
+    <p style="font-size:14px;color:#555;line-height:2.1;">我們相信每一輛車都有它的故事，每一個人都值得被看見。台灣人車公益協會從一群熱愛汽車的人開始，以車為橋、以人為本，讓公益的力量透過車輪滾動，帶著希望前行。</p>
     <div>
-      <div style="border-radius:16px;overflow:hidden;margin-bottom:0;line-height:0;">
-        <img src="./uploads/DSC08324.jpg" alt="創立初衷" style="width:100%;height:440px;object-fit:cover;object-position:center top;">
-      </div>
-    </div>
-    <div>
-      <h3 style="font-size:22px;font-weight:900;color:#e8a020;margin-bottom:18px;line-height:1.4;">源自對人與車的熱愛</h3>
-      <p style="font-size:14px;color:#555;line-height:2.1;margin-bottom:16px;">我們相信每一輛車都有它的故事，每一個人都值得被看見。台灣人車公益協會從一群熱愛汽車的人開始，用專業和熱情，透過資源媒合與關懷行動，改善更多人的生活。</p>
-      <p style="font-size:14px;color:#555;line-height:2.1;margin-bottom:28px;">協助弱勢族群解決交通與生活上的困難，讓愛心與善念透過車輪滾動，成為改變的力量。</p>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="background:#fff8ee;border:1px solid rgba(232,160,32,.25);border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:center;">
-          <span style="font-size:20px;">🚗</span>
-          <div><div style="font-size:13px;font-weight:800;margin-bottom:2px;">以車為橋</div><div style="font-size:12px;color:#6b7280;">將汽車文化轉化為連結人與人的橋梁</div></div>
-        </div>
-        <div style="background:#f0faf5;border:1px solid rgba(109,204,138,.25);border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:center;">
-          <span style="font-size:20px;">❤️</span>
-          <div><div style="font-size:13px;font-weight:800;margin-bottom:2px;">以人為本</div><div style="font-size:12px;color:#6b7280;">結合各方資源，真正改善弱勢族群的生活</div></div>
-        </div>
-        <div style="background:#ffffff;border:1px solid rgba(200,160,240,.25);border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:center;">
-          <span style="font-size:20px;">🌟</span>
-          <div><div style="font-size:13px;font-weight:800;margin-bottom:2px;">讓希望前行</div><div style="font-size:12px;color:#6b7280;">每一次公益行動，都讓希望繼續前行</div></div>
-        </div>
-      </div>
+      <a href="./about/" style="display:inline-flex;align-items:center;gap:6px;padding:11px 24px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#0a0b0f;border-radius:8px;font-size:14px;font-weight:900;text-decoration:none;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.5px;">了解更多 →</a>
     </div>
   </div>
 </section>
@@ -440,119 +418,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
       <img src="./uploads/DSC08234.jpg" alt="立案證書" style="width:100%;height:180px;object-fit:cover;object-position:center top;">
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);"></div>
       <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;"><div style="font-size:12px;font-weight:700;">協會立案證書頒發</div></div>
-    </div>
-  </div>
-</section>
-
-<div style="height:1px;background:linear-gradient(90deg,transparent,#e0e2e8,transparent);margin:0 24px;"></div>
-
-<!-- 成員介紹 -->
-<section id="members" style="max-width:960px;margin:0 auto;padding:80px 24px;">
-  <div style="text-align:center;margin-bottom:48px;">
-    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">MEMBERS</div>
-    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">成員介紹</h2>
-    <p style="font-size:14px;color:#666;line-height:1.8;margin-top:12px;">熱血專業、願意付出的夥伴，讓公益的力量持續擴散</p>
-  </div>
-  <!-- 理事長的話 -->
-  <div style="background:linear-gradient(135deg,rgba(232,160,32,.06),rgba(232,160,32,.02));border:1px solid rgba(232,160,32,.25);border-radius:16px;padding:28px 32px;margin-bottom:32px;position:relative;">
-    <div style="font-size:11px;color:#e8a020;letter-spacing:2px;margin-bottom:12px;">理事長的話</div>
-    <p style="font-size:14px;color:#555;line-height:2.1;font-weight:300;">在人與車的故事裡，我們看見的不只是交通工具，更是回憶、情感與生活的延續。OLD CAR NEW LIFE 以專業與熱情，讓每一台老車重獲新生，也讓每一段珍貴故事被好好保存。我們相信，老車不只是經典，更是一種精神；透過修復、交流與分享，讓愛車文化持續傳承，凝聚更多志同道合的夥伴，一起創造屬於人與車的新價值。</p>
-    <div style="margin-top:16px;font-size:13px;font-weight:800;color:#e8a020;">— 理事長 曾聖凱</div>
-  </div>
-  <!-- 成員卡片 -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start;">
-    <!-- 照片 -->
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div style="border-radius:16px;overflow:hidden;line-height:0;position:relative;">
-        <img src="./uploads/DSC08324.jpg" alt="理監事成員" style="width:100%;height:260px;object-fit:cover;object-position:center top;">
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.85) 0%,transparent 55%);"></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:18px;line-height:1.5;">
-          <div style="font-size:11px;color:#e8a020;letter-spacing:1px;margin-bottom:4px;">協會組織 · 理監事成員</div>
-          <div style="font-size:15px;font-weight:900;">核心理事與監事團隊</div>
-        </div>
-      </div>
-      <div style="border-radius:16px;overflow:hidden;line-height:0;position:relative;">
-        <img src="./uploads/DSC08234.jpg" alt="理事長曾聖凱" style="width:100%;height:220px;object-fit:cover;object-position:center top;">
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.85) 0%,transparent 55%);"></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
-          <div style="font-size:11px;color:#e8a020;margin-bottom:3px;">理事長</div>
-          <div style="font-size:14px;font-weight:900;">曾聖凱</div>
-        </div>
-      </div>
-    </div>
-    <!-- 成員資料 -->
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <!-- 理事長 -->
-      <div style="background:#ffffff;border:1px solid #e8a020;border-radius:14px;padding:20px 18px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">理事長</div>
-          <div style="font-size:16px;font-weight:900;">曾聖凱</div>
-        </div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">K-WAX凱閎國際 執行長暨創辦人<br>美國德州大學商學院管理碩士<br>台北科技大學 高階管理碩士</div>
-      </div>
-      <!-- 常務理事 馬成傑 -->
-      <div style="background:#ffffff;border:1px solid #e0e2e8;border-radius:14px;padding:20px 18px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="background:#e8eaef;color:#444;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務理事</div>
-          <div style="font-size:16px;font-weight:900;">馬成傑</div>
-        </div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">卓越汽車凹痕修復中心 創辦人</div>
-      </div>
-      <!-- 常務理事 吳建勳 -->
-      <div style="background:#ffffff;border:1px solid #e0e2e8;border-radius:14px;padding:20px 18px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="background:#e8eaef;color:#444;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務理事</div>
-          <div style="font-size:16px;font-weight:900;">吳建勳</div>
-        </div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">派威汽車醫美 創辦人<br>人車故事公益聯盟 發起人</div>
-      </div>
-      <!-- 常務監事 劉育誠 -->
-      <div style="background:#ffffff;border:1px solid #3a5a8a;border-radius:14px;padding:20px 18px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="background:rgba(29,106,191,.12);color:#1d6abf;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務監事</div>
-          <div style="font-size:16px;font-weight:900;">劉育誠</div>
-        </div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">中華民國包膜檢定協會 理事長<br>中華包膜股份有限公司 董事長<br>桃園市包膜職業工會 執行長</div>
-      </div>
-      <!-- 加入 -->
-      <div style="background:linear-gradient(135deg,rgba(109,204,138,.07),rgba(109,204,138,.02));border:1px solid rgba(109,204,138,.3);border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px;">
-        <div style="font-size:28px;flex-shrink:0;">🤝</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:800;">歡迎加入核心理事</div><div style="font-size:11px;color:#6b7280;margin-top:3px;">席位尚有空缺，歡迎車圈業者共同推動公益</div></div>
-        <button onClick="{{ gotoJoin }}" style="padding:8px 14px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);border-radius:8px;color:#6dcc8a;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;flex-shrink:0;">立即申請</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div style="height:1px;background:linear-gradient(90deg,transparent,#e0e2e8,transparent);margin:0 24px;"></div>
-
-<!-- 協會目的 數字 -->
-<section style="background:linear-gradient(135deg,#f0f2f5,#e8eaef);padding:60px 24px;text-align:center;">
-  <div style="max-width:800px;margin:0 auto;">
-    <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:18px;">MISSION</div>
-    <h2 style="font-size:clamp(20px,4vw,30px);font-weight:900;margin-bottom:14px;">協會目的</h2>
-    <p style="font-size:14px;color:#555;line-height:2;max-width:560px;margin:0 auto 40px;">透過關懷、資源整合與行動支持，幫助更多需要的人，建立更有愛的社會。讓公益的力量透過車輪滾動，帶著希望前行。</p>
-    <div id="mission-stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;">
-      <div style="padding:20px;border-right:1px solid #e0e2e8;">
-        <div style="font-size:32px;margin-bottom:8px;">🏎️</div>
-        <div style="font-size:28px;font-weight:900;color:#e8a020;">100+</div>
-        <div style="font-size:12px;color:#6b7280;margin-top:4px;">車圈業者夥伴</div>
-      </div>
-      <div style="padding:20px;border-right:1px solid #e0e2e8;">
-        <div style="font-size:32px;margin-bottom:8px;">🌿</div>
-        <div style="font-size:28px;font-weight:900;color:#6dcc8a;">6</div>
-        <div style="font-size:12px;color:#6b7280;margin-top:4px;">年度例會場次</div>
-      </div>
-      <div style="padding:20px;border-right:1px solid #e0e2e8;">
-        <div style="font-size:32px;margin-bottom:8px;">❤️</div>
-        <div style="font-size:28px;font-weight:900;color:#c8a0f0;">∞</div>
-        <div style="font-size:12px;color:#6b7280;margin-top:4px;">公益愛心行動</div>
-      </div>
-      <div style="padding:20px;">
-        <div style="font-size:32px;margin-bottom:8px;">🤲</div>
-        <div style="font-size:28px;font-weight:900;color:#1d6abf;">持續</div>
-        <div style="font-size:12px;color:#6b7280;margin-top:4px;">受助個案增加中</div>
-      </div>
     </div>
   </div>
 </section>
