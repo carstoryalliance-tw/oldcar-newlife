@@ -36,7 +36,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 /* ── Mobile RWD ── */
 @media(max-width:640px){
   /* Nav：隱藏所有按鈕，只留 Logo + 漢堡 */
-  #nav-about,#nav-videos,#nav-news,#nav-members,#nav-yt,#nav-ig,#nav-join,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
+  #nav-home,#nav-about,#nav-members,#nav-yt,#nav-ig,#nav-join,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
   #ham-btn{display:flex !important;}
   .pc-br{display:none !important;}
 
@@ -100,9 +100,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
     <img src="./assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
     OLD CAR × NEW LIFE
   </button>
+  <a id="nav-home" href="./" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">首頁</a>
   <a id="nav-about" href="./about/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">認識我們</a>
-  <button id="nav-videos" onClick="{{ gotoVideos }}" style="padding:14px 9px;font-size:12px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">公益影片</button>
-  <button id="nav-news" onClick="{{ gotoNews }}" style="padding:14px 9px;font-size:12px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">媒體報導</button>
   <a id="nav-members" href="./members/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">成員介紹</a>
   <div id="nav-spacer" style="flex:1;"></div>
   <button id="nav-join" onClick="{{ gotoJoin }}" style="padding:7px 13px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;flex-shrink:0;">入會申請</button>
@@ -125,9 +124,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 </nav>
 <!-- 手機下拉選單 -->
 <div id="mobile-nav" style="display:none;flex-direction:column;background:#f5f6f8;border-bottom:1px solid #e0e2e8;padding:12px 20px 16px;position:sticky;top:52px;z-index:99;">
+  <a href="./" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;text-decoration:none;">首頁</a>
   <a href="./about/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;text-decoration:none;">認識我們</a>
-  <button onClick="{{ navGotoVideos }}" style="display:block;padding:10px 0;font-size:14px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">公益影片</button>
-  <button onClick="{{ navGotoNews }}" style="display:block;padding:10px 0;font-size:14px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">媒體報導</button>
   <a href="./members/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;text-decoration:none;">成員介紹</a>
   <button onClick="{{ navGotoJoin }}" style="margin-top:8px;padding:11px 16px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">入會申請</button>
   <button onClick="{{ navGotoDonate }}" style="margin-top:8px;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">捐款支持</button>
