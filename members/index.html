@@ -12,24 +12,25 @@ a{text-decoration:none}
 @media(max-width:640px){
   #nav-home,#nav-about,#nav-members,#nav-yt,#nav-ig,#nav-join,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
   #ham-btn{display:flex !important;}
+  #chair-card{grid-template-columns:1fr !important;}
+  #chair-photo{min-height:300px !important;}
 }
 </style>
 </head>
 <body>
 
-<!-- 導覽列 -->
 <nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(14px);border-bottom:1px solid #e0e2e8;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
   <a href="../" style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900;color:#e8a020;padding:10px 12px 10px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;text-decoration:none;">
     <img src="../assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
     OLD CAR × NEW LIFE
   </a>
-  <a id="nav-home" href="../" style="padding:14px 9px;font-size:12px;color:#555;font-weight:600;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;text-decoration:none;">首頁</a>
-  <a id="nav-about" href="../about/" style="padding:14px 9px;font-size:12px;color:#555;font-weight:600;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;text-decoration:none;">認識我們</a>
-  <a id="nav-members" href="../members/" style="padding:14px 9px;font-size:12px;color:#e8a020;font-weight:700;border-bottom:2px solid #e8a020;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;text-decoration:none;">成員介紹</a>
+  <a id="nav-home" href="../" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">首頁</a>
+  <a id="nav-about" href="../about/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;">認識我們</a>
+  <a id="nav-members" href="../members/" style="padding:14px 9px;font-size:12px;color:#e8a020;font-weight:700;border-bottom:2px solid #e8a020;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;">成員介紹</a>
   <div id="nav-spacer" style="flex:1;"></div>
-  <a id="nav-join" href="../join/" style="padding:7px 13px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;white-space:nowrap;flex-shrink:0;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">入會申請</a>
-  <a id="nav-donate" href="../donate-notice/" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;white-space:nowrap;margin-left:8px;flex-shrink:0;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
-  <a id="nav-sponsors" href="../sponsors/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#555;font-weight:600;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">✦ 贊助夥伴</a>
+  <a id="nav-join" href="../" style="padding:7px 13px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;white-space:nowrap;flex-shrink:0;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">入會申請</a>
+  <a id="nav-donate" href="../" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;white-space:nowrap;margin-left:8px;flex-shrink:0;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
+  <a id="nav-sponsors" href="../sponsors/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:600;color:#555;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">✦ 贊助夥伴</a>
   <a id="nav-yt" href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="padding:7px 12px;background:rgba(255,0,0,.1);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ff6b6b;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
     YouTube
@@ -44,13 +45,12 @@ a{text-decoration:none}
     <span style="display:block;width:22px;height:2px;background:#888;border-radius:2px;"></span>
   </button>
 </nav>
-<!-- 手機下拉選單 -->
 <div id="mobile-nav" style="display:none;flex-direction:column;background:#f5f6f8;border-bottom:1px solid #e0e2e8;padding:12px 20px 16px;position:sticky;top:52px;z-index:99;">
-  <a href="../" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;text-decoration:none;">首頁</a>
-  <a href="../about/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;text-decoration:none;">認識我們</a>
-  <a href="../members/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;text-decoration:none;">成員介紹</a>
-  <a href="../join/" style="margin-top:8px;display:block;padding:11px 16px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#000;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;font-family:'Noto Sans TC',sans-serif;">入會申請</a>
-  <a href="../donate-notice/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
+  <a href="../" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;">首頁</a>
+  <a href="../about/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;">認識我們</a>
+  <a href="../members/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;">成員介紹</a>
+  <a href="../" style="margin-top:8px;display:block;padding:11px 16px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#000;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;font-family:'Noto Sans TC',sans-serif;">入會申請</a>
+  <a href="../" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
   <a href="../sponsors/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">✦ 贊助夥伴</a>
   <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(255,0,0,.08);border:1px solid rgba(255,80,80,.3);color:#ff6b6b;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">▶ YouTube</a>
   <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(200,120,240,.08);border:1px solid rgba(200,120,240,.3);color:#c878f0;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">📷 Instagram</a>
@@ -67,105 +67,107 @@ a{text-decoration:none}
 
 <!-- 成員介紹 -->
 <section style="max-width:960px;margin:0 auto;padding:80px 24px;">
-  <div style="text-align:center;margin-bottom:48px;">
+  <div style="text-align:center;margin-bottom:56px;">
     <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">MEMBERS</div>
-    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">成員介紹</h2>
+    <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">核心成員介紹</h2>
     <p style="font-size:14px;color:#666;line-height:1.8;margin-top:12px;">熱血專業、願意付出的夥伴，讓公益的力量持續擴散</p>
   </div>
 
-  <!-- 理事長的話 -->
-  <div style="background:linear-gradient(135deg,rgba(232,160,32,.06),rgba(232,160,32,.02));border:1px solid rgba(232,160,32,.25);border-radius:16px;padding:28px 32px;margin-bottom:32px;position:relative;">
-    <div style="font-size:11px;color:#e8a020;letter-spacing:2px;margin-bottom:12px;">理事長的話</div>
-    <p style="font-size:14px;color:#555;line-height:2.1;font-weight:300;">在人與車的故事裡，我們看見的不只是交通工具，更是回憶、情感與生活的延續。OLD CAR NEW LIFE 以專業與熱情，讓每一台老車重獲新生，也讓每一段珍貴故事被好好保存。我們相信，老車不只是經典，更是一種精神；透過修復、交流與分享，讓愛車文化持續傳承，凝聚更多志同道合的夥伴，一起創造屬於人與車的新價值。</p>
-    <div style="margin-top:16px;font-size:13px;font-weight:800;color:#e8a020;">— 理事長 曾聖凱</div>
+  <!-- 理事長 -->
+  <div id="chair-card" style="background:#ffffff;border:1px solid rgba(232,160,32,.3);border-radius:20px;overflow:hidden;margin-bottom:32px;display:grid;grid-template-columns:320px 1fr;min-height:420px;">
+    <div id="chair-photo" style="position:relative;overflow:hidden;">
+      <img src="../uploads/S__84639747.jpg" alt="理事長曾聖凱" style="width:100%;height:100%;object-fit:cover;object-position:center top;min-height:420px;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,rgba(255,255,255,.15));"></div>
+    </div>
+    <div style="padding:40px 36px;display:flex;flex-direction:column;justify-content:center;gap:16px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;">
+        <div style="background:#e8a020;color:#0a0b0f;font-size:11px;font-weight:900;padding:4px 14px;border-radius:20px;letter-spacing:1px;">理事長</div>
+      </div>
+      <h3 style="font-size:32px;font-weight:900;letter-spacing:2px;">曾聖凱</h3>
+      <div style="width:40px;height:3px;background:#e8a020;border-radius:2px;"></div>
+      <div style="font-size:13px;color:#555;line-height:2;">
+        K-WAX 凱閎國際 執行長暨創辦人<br>
+        美國德州大學商學院 管理碩士<br>
+        台北科技大學 高階管理碩士
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(232,160,32,.06),rgba(232,160,32,.02));border:1px solid rgba(232,160,32,.2);border-radius:12px;padding:18px 20px;margin-top:4px;">
+        <div style="font-size:11px;color:#e8a020;letter-spacing:2px;margin-bottom:10px;">理事長的話</div>
+        <p style="font-size:13px;color:#555;line-height:2;font-weight:300;">在人與車的故事裡，我們看見的不只是交通工具，更是回憶、情感與生活的延續。透過修復、交流與分享，讓愛車文化持續傳承，凝聚更多志同道合的夥伴，一起創造屬於人與車的新價值。</p>
+      </div>
+    </div>
   </div>
 
-  <!-- 成員卡片 -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start;">
-    <!-- 照片 -->
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div style="border-radius:16px;overflow:hidden;line-height:0;position:relative;">
-        <img src="../uploads/DSC08324.jpg" alt="理監事成員" style="width:100%;height:260px;object-fit:cover;object-position:center top;">
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.85) 0%,transparent 55%);"></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:18px;line-height:1.5;">
-          <div style="font-size:11px;color:#e8a020;letter-spacing:1px;margin-bottom:4px;">協會組織 · 理監事成員</div>
-          <div style="font-size:15px;font-weight:900;">核心理事與監事團隊</div>
-        </div>
+  <!-- 其他核心成員 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+
+    <!-- 馬成傑 -->
+    <div style="background:#ffffff;border:1px solid #e0e2e8;border-radius:16px;overflow:hidden;">
+      <div style="height:240px;overflow:hidden;">
+        <img src="../uploads/pasted-1782352199135-0.png" alt="馬成傑" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
       </div>
-      <div style="border-radius:16px;overflow:hidden;line-height:0;position:relative;">
-        <img src="../uploads/DSC08234.jpg" alt="理事長曾聖凱" style="width:100%;height:220px;object-fit:cover;object-position:center top;">
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.85) 0%,transparent 55%);"></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
-          <div style="font-size:11px;color:#e8a020;margin-bottom:3px;">理事長</div>
-          <div style="font-size:14px;font-weight:900;">曾聖凱</div>
+      <div style="padding:22px 20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div style="background:#252830;color:#aaa;font-size:10px;font-weight:900;padding:3px 12px;border-radius:20px;white-space:nowrap;">常務理事</div>
         </div>
+        <div style="font-size:20px;font-weight:900;margin-bottom:10px;">馬成傑</div>
+        <div style="width:28px;height:2px;background:#e8a020;border-radius:2px;margin-bottom:12px;"></div>
+        <div style="font-size:12px;color:#666;line-height:1.9;">卓越汽車凹痕修復中心 創辦人</div>
       </div>
     </div>
-    <!-- 成員資料 -->
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <!-- 理事長 -->
-      <div style="background:#ffffff;border:1px solid #e8a020;border-radius:14px;padding:20px 18px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">理事長</div>
-          <div style="font-size:16px;font-weight:900;">曾聖凱</div>
-        </div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">K-WAX凱閎國際 執行長暨創辦人<br>美國德州大學商學院管理碩士<br>台北科技大學 高階管理碩士</div>
+
+    <!-- 吳建勳 -->
+    <div style="background:#ffffff;border:1px solid #e0e2e8;border-radius:16px;overflow:hidden;">
+      <div style="height:240px;overflow:hidden;">
+        <img src="../uploads/Gemini_Generated_Image_ldc2xdldc2xdldc2.png" alt="吳建勳" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
       </div>
-      <!-- 常務理事 馬成傑 -->
-      <div style="background:#ffffff;border:1px solid #e0e2e8;border-radius:14px;padding:20px 18px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="background:#e8eaef;color:#444;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務理事</div>
-          <div style="font-size:16px;font-weight:900;">馬成傑</div>
+      <div style="padding:22px 20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div style="background:#252830;color:#aaa;font-size:10px;font-weight:900;padding:3px 12px;border-radius:20px;white-space:nowrap;">常務理事</div>
         </div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">卓越汽車凹痕修復中心 創辦人</div>
-      </div>
-      <!-- 常務理事 吳建勳 -->
-      <div style="background:#ffffff;border:1px solid #e0e2e8;border-radius:14px;padding:20px 18px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="background:#e8eaef;color:#444;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務理事</div>
-          <div style="font-size:16px;font-weight:900;">吳建勳</div>
-        </div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">派威汽車醫美 創辦人<br>人車故事公益聯盟 發起人</div>
-      </div>
-      <!-- 常務監事 劉育誠 -->
-      <div style="background:#ffffff;border:1px solid #3a5a8a;border-radius:14px;padding:20px 18px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="background:rgba(29,106,191,.12);color:#1d6abf;font-size:10px;font-weight:900;padding:3px 10px;border-radius:10px;white-space:nowrap;">常務監事</div>
-          <div style="font-size:16px;font-weight:900;">劉育誠</div>
-        </div>
-        <div style="font-size:12px;color:#666;line-height:1.8;">中華民國包膜檢定協會 理事長<br>中華包膜股份有限公司 董事長<br>桃園市包膜職業工會 執行長</div>
-      </div>
-      <!-- 加入 -->
-      <div style="background:linear-gradient(135deg,rgba(109,204,138,.07),rgba(109,204,138,.02));border:1px solid rgba(109,204,138,.3);border-radius:14px;padding:18px;display:flex;align-items:center;gap:14px;">
-        <div style="font-size:28px;flex-shrink:0;">🤝</div>
-        <div style="flex:1;"><div style="font-size:13px;font-weight:800;">歡迎加入核心理事</div><div style="font-size:11px;color:#6b7280;margin-top:3px;">席位尚有空缺，歡迎車圈業者共同推動公益</div></div>
-        <a href="../join/" style="padding:8px 14px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);border-radius:8px;color:#6dcc8a;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;font-family:'Noto Sans TC',sans-serif;">立即申請</a>
+        <div style="font-size:20px;font-weight:900;margin-bottom:10px;">吳建勳</div>
+        <div style="width:28px;height:2px;background:#e8a020;border-radius:2px;margin-bottom:12px;"></div>
+        <div style="font-size:12px;color:#666;line-height:1.9;">派威汽車醫美 創辦人<br>人車故事公益聯盟 發起人</div>
       </div>
     </div>
+
+    <!-- 劉育誠 -->
+    <div style="background:#ffffff;border:1px solid #e0e2e8;border-radius:16px;overflow:hidden;">
+      <div style="height:240px;overflow:hidden;">
+        <img src="../uploads/137040061_4283917468290902_7565072668112796343_n.jpg" alt="劉育誠" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+      </div>
+      <div style="padding:22px 20px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div style="background:rgba(74,158,255,.15);color:#4a9eff;font-size:10px;font-weight:900;padding:3px 12px;border-radius:20px;white-space:nowrap;">常務監事</div>
+        </div>
+        <div style="font-size:20px;font-weight:900;margin-bottom:10px;">劉育誠</div>
+        <div style="width:28px;height:2px;background:#e8a020;border-radius:2px;margin-bottom:12px;"></div>
+        <div style="font-size:12px;color:#666;line-height:1.9;">中華民國包膜檢定協會 理事長<br>中華包膜股份有限公司 董事長<br>桃園市包膜職業工會 執行長</div>
+      </div>
+    </div>
+
+    <!-- 加入 -->
+    <div style="background:linear-gradient(135deg,rgba(109,204,138,.07),rgba(109,204,138,.02));border:2px dashed rgba(109,204,138,.4);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px 24px;text-align:center;min-height:360px;">
+      <div style="font-size:36px;color:rgba(109,204,138,.5);">＋</div>
+      <div style="font-size:15px;font-weight:800;color:#555;">歡迎加入核心理事</div>
+      <div style="font-size:12px;color:#6b7280;line-height:1.8;">席位尚有空缺<br>歡迎車圈業者共同推動公益</div>
+      <a href="../" style="padding:10px 24px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.5);border-radius:8px;color:#6dcc8a;font-size:13px;font-weight:700;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">立即申請</a>
+    </div>
+
   </div>
 </section>
 
 <div style="height:1px;background:linear-gradient(90deg,transparent,#e0e2e8,transparent);margin:0 24px;"></div>
 
-<!-- 返回首頁 -->
 <section style="text-align:center;padding:60px 24px;">
   <a href="../" style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:#ffffff;border:1px solid #e0e2e8;border-radius:10px;font-size:14px;font-weight:700;color:#555;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">← 返回首頁</a>
 </section>
 
-<!-- Footer -->
 <footer style="padding:40px 24px;text-align:center;border-top:1px solid #e0e2e8;background:#f8f9fa;">
-  <img src="../assets/logo-full2.png" alt="人車故事公益聯盟"
-       style="height:38px;object-fit:contain;margin-bottom:20px;opacity:.45;display:block;margin-left:auto;margin-right:auto;">
-  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
-    <a href="../join/" style="color:#777;font-size:13px;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">入會申請</a>
-    <a href="../donate/" style="color:#777;font-size:13px;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
+  <img src="../assets/logo.png" alt="人車故事公益聯盟" style="height:38px;object-fit:contain;margin-bottom:20px;opacity:.45;display:block;margin-left:auto;margin-right:auto;">
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;">
     <a href="https://www.facebook.com/profile.php?id=61575342963645" target="_blank" style="color:#777;font-size:13px;text-decoration:none;">Facebook</a>
     <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="color:#c878f0;font-size:13px;text-decoration:none;">📷 @oldcar.newlife</a>
     <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="color:#ff6b6b;font-size:13px;text-decoration:none;">▶ YouTube @OLDCARNEWLIFE</a>
-  </div>
-  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:14px;">
-    <div style="font-size:11px;color:#555;">🏛️ 內政部核准立案 · 台內團字第 1140047990 號</div>
-    <div style="font-size:11px;color:#555;">📋 社團法人登記證 · 115 證社字第 7 號</div>
   </div>
   <div style="font-size:11px;color:#444;letter-spacing:1px;">社團法人台灣人車公益協會 · OLD CAR × NEW LIFE · 2026</div>
 </footer>
