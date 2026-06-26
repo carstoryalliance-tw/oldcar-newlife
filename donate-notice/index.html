@@ -8,60 +8,60 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Sans TC',sans-serif;background:#0a0b0f;color:#fff;min-height:100vh;padding-bottom:60px;}
+body{font-family:'Noto Sans TC',sans-serif;background:#f8f9fa;color:#1a1a2e;min-height:100vh;padding-bottom:60px;}
 
-.header{background:linear-gradient(135deg,#0f1117 0%,#0d1a0f 100%);border-bottom:3px solid #6dcc8a;padding:24px 20px;text-align:center;position:relative;}
-.header-back{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:#6dcc8a;text-decoration:none;font-size:14px;font-weight:600;}
-.header-logo{font-size:12px;color:#aaa;letter-spacing:2px;margin-bottom:8px;}
-.header h1{font-size:24px;font-weight:900;}
-.header h1 span{color:#6dcc8a;}
+.header{background:#ffffff;border-bottom:3px solid #4aab6a;padding:24px 20px;text-align:center;position:relative;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.header-back{position:absolute;left:20px;top:50%;transform:translateY(-50%);color:#4aab6a;text-decoration:none;font-size:14px;font-weight:600;}
+.header-logo{font-size:12px;color:#888;letter-spacing:2px;margin-bottom:8px;}
+.header h1{font-size:24px;font-weight:900;color:#1a1a2e;}
+.header h1 span{color:#4aab6a;}
 .header-badges{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:16px;}
-.header-badge{display:flex;align-items:center;gap:8px;background:rgba(109,204,138,.08);border:1px solid rgba(109,204,138,.3);border-radius:8px;padding:7px 14px;}
-.header-badge .badge-sub{font-size:10px;color:#aaa;letter-spacing:1px;margin-bottom:2px;}
-.header-badge .badge-val{font-size:12px;font-weight:700;color:#6dcc8a;letter-spacing:.5px;}
+.header-badge{display:flex;align-items:center;gap:8px;background:rgba(74,171,106,.06);border:1px solid rgba(74,171,106,.3);border-radius:8px;padding:7px 14px;}
+.header-badge .badge-sub{font-size:10px;color:#888;letter-spacing:1px;margin-bottom:2px;}
+.header-badge .badge-val{font-size:12px;font-weight:700;color:#4aab6a;letter-spacing:.5px;}
 
 .wrap{max-width:720px;margin:0 auto;padding:28px 20px 60px;}
 
 .section-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
 .section-tag{font-size:10px;font-weight:900;padding:4px 12px;border-radius:3px;letter-spacing:1px;flex-shrink:0;}
-.section-tag.green{background:#6dcc8a;color:#0a0b0f;}
-.section-tag.gray{background:#252830;color:#aaa;}
+.section-tag.green{background:#4aab6a;color:#ffffff;}
+.section-tag.gray{background:#e0e2e8;color:#555;}
 .section-title{font-size:16px;font-weight:900;}
 .section-line{flex:1;height:1px;}
-.section-line.green{background:linear-gradient(90deg,rgba(109,204,138,.3),transparent);}
-.section-line.gray{background:linear-gradient(90deg,#252830,transparent);}
+.section-line.green{background:linear-gradient(90deg,rgba(74,171,106,.3),transparent);}
+.section-line.gray{background:linear-gradient(90deg,#e0e2e8,transparent);}
 
 /* 回饋卡片 */
 .benefit-list{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
-.benefit-card{background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;}
+.benefit-card{background:#ffffff;border:1px solid rgba(74,171,106,.2);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;}
 .benefit-card .icon{font-size:24px;flex-shrink:0;}
-.benefit-card h3{font-size:14px;font-weight:800;color:#6dcc8a;margin-bottom:6px;}
-.benefit-card p{font-size:13px;color:#aaa;line-height:1.8;}
+.benefit-card h3{font-size:14px;font-weight:800;color:#4aab6a;margin-bottom:6px;}
+.benefit-card p{font-size:13px;color:#666;line-height:1.8;}
 
 /* 捐款方式 */
-.donate-method{background:#13151f;border:1px solid rgba(109,204,138,.2);border-radius:12px;padding:20px 22px;margin-bottom:12px;}
+.donate-method{background:#ffffff;border:1px solid rgba(74,171,106,.2);border-radius:12px;padding:20px 22px;margin-bottom:12px;}
 .method-badges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
-.method-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(109,204,138,.07);border:1px solid rgba(109,204,138,.25);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;color:#6dcc8a;}
+.method-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(74,171,106,.07);border:1px solid rgba(74,171,106,.25);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;color:#4aab6a;}
 .method-points{display:flex;flex-direction:column;gap:10px;}
 .method-point{display:flex;gap:10px;}
-.method-point .bullet{color:#6dcc8a;font-weight:900;flex-shrink:0;}
-.method-point p{font-size:13px;color:#aaa;line-height:1.7;}
-.method-point p strong{color:#fff;}
-.remind-box{background:rgba(109,204,138,.06);border:1px solid rgba(109,204,138,.25);border-radius:10px;padding:16px 20px;margin-bottom:28px;}
-.remind-box p{font-size:13px;color:#6dcc8a;line-height:1.9;}
+.method-point .bullet{color:#4aab6a;font-weight:900;flex-shrink:0;}
+.method-point p{font-size:13px;color:#666;line-height:1.7;}
+.method-point p strong{color:#1a1a2e;}
+.remind-box{background:rgba(74,171,106,.06);border:1px solid rgba(74,171,106,.25);border-radius:10px;padding:16px 20px;margin-bottom:28px;}
+.remind-box p{font-size:13px;color:#4aab6a;line-height:1.9;}
 
 /* 注意事項 */
-.notice-card{background:#13151f;border:1px solid #252830;border-radius:12px;padding:20px 22px;margin-bottom:28px;}
+.notice-card{background:#ffffff;border:1px solid #e0e2e8;border-radius:12px;padding:20px 22px;margin-bottom:28px;}
 .notice-items{display:flex;flex-direction:column;gap:10px;}
 .notice-item{display:flex;gap:10px;}
-.notice-item .n{color:#555;flex-shrink:0;font-size:13px;min-width:18px;}
-.notice-item span{font-size:13px;color:#aaa;line-height:1.7;}
+.notice-item .n{color:#999;flex-shrink:0;font-size:13px;min-width:18px;}
+.notice-item span{font-size:13px;color:#555;line-height:1.7;}
 
 /* 確認 */
-.confirm-box{background:rgba(109,204,138,.05);border:1px solid rgba(109,204,138,.35);border-radius:12px;padding:20px 20px 22px;}
+.confirm-box{background:rgba(74,171,106,.05);border:1px solid rgba(74,171,106,.35);border-radius:12px;padding:20px 20px 22px;}
 .confirm-label{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-bottom:20px;}
-.confirm-label input{width:18px;height:18px;min-width:18px;accent-color:#6dcc8a;margin-top:3px;flex-shrink:0;cursor:pointer;}
-.confirm-label span{font-size:13px;color:#aaa;line-height:1.8;}
+.confirm-label input{width:18px;height:18px;min-width:18px;accent-color:#4aab6a;margin-top:3px;flex-shrink:0;cursor:pointer;}
+.confirm-label span{font-size:13px;color:#555;line-height:1.8;}
 .btn-proceed{
   display:block;width:100%;padding:16px;
   background:linear-gradient(135deg,#6dcc8a,#4aab6a);
@@ -177,7 +177,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:#0a0b0f;color:#fff;min-hei
       <div class="notice-items">
         <div class="notice-item"><span class="n">1.</span><span>捐款一旦完成匯款，恕不退款，請確認捐款金額正確後再進行匯款。</span></div>
         <div class="notice-item"><span class="n">2.</span><span>請確認收款帳戶資訊正確，因填寫錯誤導致之款項損失，協會恕不負責。</span></div>
-        <div class="notice-item"><span class="n">3.</span><span>捐款收據將於核帳確認後 7–14 個工作天內開立，以 <strong style="color:#fff;">Email 電子收據</strong>方式寄出；如需紙本，請於備註填寫申請及通訊地址。</span></div>
+        <div class="notice-item"><span class="n">3.</span><span>捐款收據將於核帳確認後 7–14 個工作天內開立，以 <strong style="color:#1a1a2e;">Email 電子收據</strong>方式寄出；如需紙本，請於備註填寫申請及通訊地址。</span></div>
         <div class="notice-item"><span class="n">4.</span><span>本會財務報告每年定期公開於會員大會及官方網站，確保每筆善款透明合法運用。</span></div>
         <div class="notice-item"><span class="n">5.</span><span>您所填寫之個人資料，依個人資料保護法規定，僅供協會開立收據及業務聯絡使用，不對外提供或出售。</span></div>
         <div class="notice-item"><span class="n">6.</span><span>本會保留對捐款使用方式之最終解釋權，並依章程規定運用於各項公益業務。</span></div>
