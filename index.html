@@ -170,7 +170,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 @keyframes fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:640px){
-  #nav-home,#nav-about,#nav-members,#nav-yt,#nav-ig,#nav-join,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
+  #nav-home,#nav-about,#nav-members,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
   #ham-btn{display:flex !important;}
   .pc-br{display:none !important;}
   #hero-section{min-height:0 !important;padding:20px 20px 28px !important;overflow:hidden !important;}
@@ -223,7 +223,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
   <a id="nav-about" href="./about/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">認識我們</a>
   <a id="nav-members" href="./members/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">成員介紹</a>
   <div id="nav-spacer" style="flex:1;"></div>
-  <button id="nav-join" onClick="{{ gotoJoin }}" style="padding:7px 13px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;flex-shrink:0;">入會申請</button>
   <button id="nav-donate" onClick="{{ gotoDonate }}" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;margin-left:8px;flex-shrink:0;">捐款支持</button>
   <a id="nav-sponsors" href="sponsors/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">✦ 贊助夥伴</a>
   <a id="nav-yt" href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="padding:7px 12px;background:rgba(255,0,0,.1);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ff6b6b;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
@@ -246,7 +245,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
   <button onClick="{{ navGotoHome }}" style="display:block;padding:10px 0;font-size:14px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">首頁</button>
   <a href="./about/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">認識我們</a>
   <a href="./members/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">成員介紹</a>
-  <button onClick="{{ navGotoJoin }}" style="margin-top:8px;padding:11px 16px;background:linear-gradient(135deg,#e8a020,#d4821a);color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">入會申請</button>
   <button onClick="{{ navGotoDonate }}" style="margin-top:8px;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">捐款支持</button>
   <a href="sponsors/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">✦ 贊助夥伴</a>
   <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(255,0,0,.08);border:1px solid rgba(255,80,80,.3);color:#ff6b6b;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">▶ YouTube</a>
