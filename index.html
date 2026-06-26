@@ -356,7 +356,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <!-- 全版影片 -->
 <section style="width:100%;overflow:hidden;position:relative;line-height:0;background:#000;">
-  <video id="mid-video" muted="" loop="" playsinline="" preload="none" data-src="uploads/公益洗車壓縮.mp4" style="width:100%;display:block;max-height:65vh;object-fit:cover;opacity:.8;">
+  <video id="mid-video" muted="" loop="" playsinline="" preload="metadata" data-src="uploads/公益洗車壓縮.mp4" style="width:100%;display:block;max-height:65vh;object-fit:cover;opacity:.8;">
     <source src="uploads/公益洗車壓縮.mp4" type="video/mp4">
   </video>
   <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);pointer-events:none;"></div>
@@ -943,8 +943,10 @@ class Component extends DCLogic {
       v.addEventListener('canplay', () => { v.muted = true; const p = v.play(); if (p) p.catch(() => {}); });
       const obs = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) { v.preload = 'auto'; v.load(); obs.disconnect(); }
-      }, { rootMargin: '200px' });
+      }, { rootMargin: '1200px' });
       obs.observe(v);
+      // fallback: start loading after 1.5s regardless of scroll position
+      setTimeout(() => { if (v.readyState === 0) { v.preload = 'auto'; v.load(); } }, 1500);
     })();
 
 
