@@ -216,7 +216,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 <!-- ── 導覽列 ── -->
 <nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(14px);border-bottom:1px solid #e0e2e8;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
   <button onClick="{{ gotoHome }}" style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900;color:#e8a020;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;padding:10px 12px 10px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;">
-    <img src="./assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
+    <img loading="lazy" decoding="async" src="./assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
     OLD CAR × NEW LIFE
   </button>
   <a id="nav-home" href="./index.html" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">首頁</a>
@@ -257,9 +257,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 <!-- Hero -->
 <section id="hero-section" style="position:relative;min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px 40px;text-align:center;overflow:hidden;">
   <div id="hero-vid-container" style="position:absolute;inset:0;overflow:hidden;background:#000;">
-    <video id="hero-bg-video" muted="" loop="" playsinline="" preload="auto" style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;opacity:.55;pointer-events:none;">
-      <source src="./uploads/第一個案例-02cfa197.mp4" type="video/mp4">
-      <source src="./uploads/第一個案例.mp4" type="video/mp4">
+    <video id="hero-bg-video" muted="" loop="" playsinline="" preload="auto" poster="./uploads/hero-poster.jpg" style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;opacity:.55;pointer-events:none;">
+      <source src="./uploads/hero.mp4" type="video/mp4">
     </video>
   </div>
   <div id="hero-overlay" style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.65) 0%,rgba(0,0,0,.45) 40%,rgba(248,249,250,.88) 80%,#f8f9fa 100%);"></div>
@@ -356,8 +355,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <!-- 全版影片 -->
 <section style="width:100%;overflow:hidden;position:relative;line-height:0;background:#000;">
-  <video id="mid-video" muted="" loop="" playsinline="" preload="metadata" data-src="uploads/公益洗車壓縮.mp4" style="width:100%;display:block;max-height:65vh;object-fit:cover;opacity:.8;">
-    <source src="uploads/公益洗車壓縮.mp4" type="video/mp4">
+  <video id="mid-video" muted="" loop="" playsinline="" preload="none" poster="uploads/carwash-poster.jpg" data-src="uploads/carwash.mp4" style="width:100%;display:block;max-height:65vh;object-fit:cover;opacity:.8;">
+    <source src="uploads/carwash.mp4" type="video/mp4">
   </video>
   <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);pointer-events:none;"></div>
   <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);text-align:center;width:100%;padding:0 24px;">
@@ -376,7 +375,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
     <p style="font-size:14px;color:#666;line-height:1.8;margin-top:12px;">每一場活動都是愛的累積與希望的延續</p>
   </div>
   <div style="border-radius:16px;overflow:hidden;margin-bottom:28px;position:relative;line-height:0;">
-    <img src="uploads/DJI_20260421172026_0023_D_1776775104392.jpg" alt="2026全台最大公益洗車活動" style="width:100%;height:400px;object-fit:cover;object-position:center;">
+    <img loading="lazy" decoding="async" src="uploads/DJI_20260421172026_0023_D_1776775104392.jpg" alt="2026全台最大公益洗車活動" style="width:100%;height:400px;object-fit:cover;object-position:center;">
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.92) 0%,rgba(10,11,15,.3) 55%,transparent 100%);"></div>
     <div style="position:absolute;top:20px;left:20px;background:rgba(232,160,32,.9);color:#0a0b0f;font-size:11px;font-weight:900;padding:5px 14px;border-radius:20px;letter-spacing:1px;">2026.04.29</div>
     <div style="position:absolute;bottom:0;left:0;right:0;padding:28px;">
@@ -459,17 +458,17 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px;">
     <div style="border-radius:12px;overflow:hidden;position:relative;line-height:0;">
-      <img src="uploads/DSC08180.jpg" alt="活動合照" style="width:100%;height:180px;object-fit:cover;object-position:center;">
+      <img loading="lazy" decoding="async" src="uploads/DSC08180.jpg" alt="活動合照" style="width:100%;height:180px;object-fit:cover;object-position:center;">
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);"></div>
       <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;"><div style="font-size:12px;font-weight:700;color:#fff;">理事與成員活動合影</div></div>
     </div>
     <div style="border-radius:12px;overflow:hidden;position:relative;line-height:0;">
-      <img src="uploads/DSC08251.jpg" alt="大合照" style="width:100%;height:180px;object-fit:cover;object-position:center top;">
+      <img loading="lazy" decoding="async" src="uploads/DSC08251.jpg" alt="大合照" style="width:100%;height:180px;object-fit:cover;object-position:center top;">
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);"></div>
       <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;"><div style="font-size:12px;font-weight:700;color:#fff;">全體夥伴大合照</div></div>
     </div>
     <div style="border-radius:12px;overflow:hidden;position:relative;line-height:0;">
-      <img src="uploads/DSC08234.jpg" alt="立案證書" style="width:100%;height:180px;object-fit:cover;object-position:center top;">
+      <img loading="lazy" decoding="async" src="uploads/DSC08234.jpg" alt="立案證書" style="width:100%;height:180px;object-fit:cover;object-position:center top;">
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);"></div>
       <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;"><div style="font-size:12px;font-weight:700;color:#fff;">協會立案證書頒發</div></div>
     </div>
@@ -516,7 +515,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <!-- Banner -->
 <div style="width:100%;overflow:hidden;line-height:0;">
-  <img src="./assets/banner.png" alt="台灣人車公益協會 CAR STORY ALLIANCE" style="width:100%;display:block;object-fit:cover;">
+  <img loading="lazy" decoding="async" src="./assets/banner.jpg" alt="台灣人車公益協會 CAR STORY ALLIANCE" style="width:100%;display:block;object-fit:cover;">
 </div>
 
 <!-- Footer -->
