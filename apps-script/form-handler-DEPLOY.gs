@@ -42,7 +42,7 @@ function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify({status:'ok',message:'人車故事公益協會 Form API'})).setMimeType(ContentService.MimeType.JSON);
 }
 
-// 一次性：在 Apps Script 編輯器選此函式按「執行」，即可立即建立「淨灘活動報名」分頁與表頭
+// 一次性：在 Apps Script 編輯器選此函式按「執行」，即可立即建立「淨灘活動報名」分頁、表頭與即時統計面板
 function setupBeachSheet() {
   const ss = SpreadsheetApp.openById(SHEET_ID);
   const sheet = ss.getSheetByName(BEACH_SHEET) || ss.insertSheet(BEACH_SHEET);
@@ -50,5 +50,34 @@ function setupBeachSheet() {
     sheet.appendRow(['時間戳記','單位','姓名','聯絡電話','E-mail','T恤尺寸','匯款金額','匯款末五碼','狀態']);
     sheet.getRange(1,1,1,9).setFontWeight('bold').setBackground('#1a1a2e').setFontColor('#ffffff');
     sheet.setFrozenRows(1);
+    sheet.setColumnWidth(1,150);
+    sheet.setColumnWidths(3,3,110);
   }
+  buildBeachStats_(sheet);
+}
+
+// 在報名分頁右側（K、L 欄）建立即時統計面板，公式會隨新報名自動更新
+function buildBeachStats_(sheet) {
+  const stats = [
+    ['📊 報名統計', ''],
+    ['總報名人數', '=COUNTA(C2:C)'],
+    ['已填匯款末五碼', '=COUNTIF(H2:H,"?*")'],
+    ['應收金額合計', '=SUM(G2:G)'],
+    ['', ''],
+    ['尺寸統計', ''],
+    ['S',   '=COUNTIF(F2:F,"S")'],
+    ['M',   '=COUNTIF(F2:F,"M")'],
+    ['L',   '=COUNTIF(F2:F,"L")'],
+    ['XL',  '=COUNTIF(F2:F,"XL")'],
+    ['2XL', '=COUNTIF(F2:F,"2XL")'],
+    ['3XL', '=COUNTIF(F2:F,"3XL")'],
+  ];
+  sheet.getRange(1, 11, stats.length, 2).setValues(stats);
+  sheet.getRange(1, 11, 1, 2).merge().setFontWeight('bold').setFontSize(12)
+       .setBackground('#e8a020').setFontColor('#ffffff').setHorizontalAlignment('center');
+  sheet.getRange(6, 11, 1, 2).merge().setFontWeight('bold')
+       .setBackground('#f2f2f2').setHorizontalAlignment('center');
+  sheet.getRange(1, 11, stats.length, 1).setFontWeight('bold');
+  sheet.setColumnWidth(11, 130);
+  sheet.setColumnWidth(12, 90);
 }
