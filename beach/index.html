@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公益淨灘報名 | 社團法人台灣人車公益協會</title>
+<meta name="description" content="社團法人台灣人車公益協會第二次公益活動｜公益淨灘・守護海洋。2026/07/21 竹圍海水浴場，車圈集體公益，共同守護海洋環境。立即報名參與。">
+<meta name="keywords" content="人車公益協會淨灘,公益淨灘,竹圍海水浴場淨灘,車圈公益,守護海洋,淨灘報名,OLD CAR NEW LIFE">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://oldcarnewlife.org.tw/beach/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="社團法人台灣人車公益協會">
+<meta property="og:title" content="公益淨灘報名 | 社團法人台灣人車公益協會">
+<meta property="og:description" content="第二次公益活動｜公益淨灘・守護海洋。2026/07/21 竹圍海水浴場，車圈集體公益，共同守護海洋環境。">
+<meta property="og:url" content="https://oldcarnewlife.org.tw/beach/">
+<meta property="og:image" content="https://oldcarnewlife.org.tw/beach/banner.jpg">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="公益淨灘報名 | 社團法人台灣人車公益協會">
+<meta name="twitter:description" content="第二次公益活動｜公益淨灘・守護海洋。2026/07/21 竹圍海水浴場。">
+<meta name="twitter:image" content="https://oldcarnewlife.org.tw/beach/banner.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold: #e8a020;
+  --gold-light: #f5c842;
+  --bg: #f8f9fa;
+  --card: #ffffff;
+  --border: #e0e2e8;
+  --text: #1a1a2e;
+  --muted: #666;
+  --dim: #999;
+}
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* ── Hero Banner ── */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 420px;
+  background: #0a0e14;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.hero img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 32%;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(10,14,20,.15) 0%, rgba(10,14,20,.30) 45%, rgba(10,14,20,.88) 100%);
+}
+.hero-inner {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 900px; margin: 0 auto;
+  padding: 40px 24px 34px;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold); color: #1a1a2e;
+  font-size: 12px; font-weight: 900; letter-spacing: 2px;
+  padding: 6px 14px; border-radius: 4px; margin-bottom: 16px;
+}
+.hero h1 {
+  font-size: 40px; font-weight: 900; color: #fff;
+  line-height: 1.15; letter-spacing: 1px;
+  text-shadow: 0 2px 20px rgba(0,0,0,.5);
+}
+.hero h1 span { color: var(--gold-light); }
+.hero .sub {
+  margin-top: 12px; font-size: 17px; font-weight: 500;
+  color: #e6edf3; text-shadow: 0 2px 12px rgba(0,0,0,.6);
+}
+.hero-meta {
+  margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px 20px;
+}
+.hero-meta .m {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600; color: #fff;
+}
+.hero-meta .m b { color: var(--gold-light); font-weight: 900; }
+.hero-back {
+  position: absolute; left: 20px; top: 20px; z-index: 3;
+  color: #fff; text-decoration: none;
+  font-size: 14px; font-weight: 700;
+  background: rgba(0,0,0,.35); backdrop-filter: blur(4px);
+  padding: 8px 14px; border-radius: 20px;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+@media (max-width: 600px) {
+  .hero { min-height: 340px; }
+  .hero h1 { font-size: 28px; }
+  .hero .sub { font-size: 15px; }
+}
+
+/* ── 活動資訊卡 ── */
+.info-grid {
+  max-width: 900px; margin: 28px auto 0; padding: 0 20px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+@media (max-width: 700px) { .info-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 460px) { .info-grid { grid-template-columns: 1fr; } }
+.info-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
+  border-left: 4px solid var(--gold);
+}
+.info-card .k { font-size: 11px; color: var(--gold); font-weight: 900; letter-spacing: 2px; margin-bottom: 6px; }
+.info-card .v { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.5; }
+.info-card .v small { display: block; font-size: 12px; color: var(--dim); font-weight: 400; margin-top: 3px; }
+
+/* ── 通用區塊 ── */
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin: 40px 0 20px;
+}
+.section-tag {
+  background: var(--gold); color: var(--bg);
+  font-size: 10px; font-weight: 900;
+  padding: 4px 12px; border-radius: 3px; letter-spacing: 1px;
+}
+.section-name { font-size: 17px; font-weight: 800; color: var(--text); }
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(232,160,32,0.3), transparent); }
+
+/* ── 注意事項 ── */
+.notes {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px 24px;
+}
+.notes ol { margin: 0; padding-left: 20px; }
+.notes li { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 12px; }
+.notes li:last-child { margin-bottom: 0; }
+.notes li b { color: var(--text); }
+.notes .warn {
+  margin-top: 16px; padding: 14px 16px;
+  background: rgba(255,107,107,.07); border: 1px solid rgba(255,107,107,.35);
+  border-radius: 10px; font-size: 13px; color: #c0392b; line-height: 1.7;
+}
+.notes .warn b { color: #a02b1e; }
+
+/* ── 地點資訊 ── */
+.place-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px 24px; margin-top: 16px;
+}
+.place-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--border); }
+.place-row:last-child { border-bottom: none; }
+.place-row .ico { font-size: 18px; flex-shrink: 0; }
+.place-row .txt { font-size: 14px; color: var(--text); line-height: 1.6; }
+.place-row .txt b { color: var(--gold); }
+.place-row .txt small { color: var(--dim); }
+.map-btn {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  padding: 10px 18px; background: var(--gold); color: #fff;
+  border-radius: 8px; font-size: 13px; font-weight: 800; text-decoration: none;
+}
+
+/* ── Form ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid.full { grid-template-columns: 1fr; }
+@media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.field label .req { color: var(--gold); margin-left: 2px; }
+.field input, .field select {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: 14px; color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: border-color 0.2s; -webkit-appearance: none;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--gold); }
+.field input::placeholder { color: var(--dim); }
+.field select { cursor: pointer; }
+.hint { font-size: 11px; color: var(--dim); margin-top: 4px; }
+.req-note { font-size: 12px; color: var(--dim); margin: 14px 0 0; }
+.req-note .req { color: var(--gold); }
+
+/* T恤說明 */
+.shirt-tip {
+  margin-top: 16px; padding: 14px 16px;
+  background: rgba(232,160,32,0.06); border: 1px solid rgba(232,160,32,0.3);
+  border-radius: 10px; font-size: 13px; color: var(--muted); line-height: 1.7;
+}
+.shirt-tip b { color: var(--gold); }
+
+/* 匯款帳戶 */
+.account-box {
+  margin-top: 20px; padding: 20px;
+  background: rgba(232,160,32,0.06); border: 1px solid rgba(232,160,32,0.3);
+  border-radius: 10px;
+}
+.account-box h4 { font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+.account-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.account-row:last-child { margin-bottom: 0; }
+.account-key { font-size: 12px; color: var(--dim); }
+.account-val { font-size: 13px; color: var(--text); font-weight: 700; letter-spacing: 1px; }
+
+.checkbox-item {
+  display: flex; align-items: flex-start; gap: 10px; margin-top: 24px;
+  background: rgba(232,160,32,0.05); border: 1px solid rgba(232,160,32,0.3);
+  border-radius: 8px; padding: 14px; cursor: pointer;
+}
+.checkbox-item input[type="checkbox"] { accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; }
+.checkbox-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.submit-wrap { margin-top: 28px; }
+.btn-submit {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, #e8a020, #d4821a);
+  border: none; border-radius: 10px;
+  font-size: 16px; font-weight: 900; color: var(--bg);
+  cursor: pointer; letter-spacing: 1px;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn-submit:hover { opacity: 0.9; }
+.btn-submit:active { transform: scale(0.99); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: #fff; border: 1px solid var(--gold);
+  color: var(--text); font-size: 14px; font-weight: 600;
+  padding: 14px 28px; border-radius: 50px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  z-index: 999; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+.toast.error { border-color: #ff6b6b; color: #ff6b6b; }
+
+/* 成功畫面 */
+.success-screen { display: none; text-align: center; padding: 60px 20px; max-width: 480px; margin: 0 auto; }
+.success-icon { font-size: 64px; margin-bottom: 20px; }
+.success-screen h2 { font-size: 24px; font-weight: 900; color: var(--gold); margin-bottom: 12px; }
+.success-screen p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.success-screen .back-home {
+  display: inline-block; margin-top: 28px; padding: 12px 32px;
+  background: var(--gold); color: var(--bg); border-radius: 8px;
+  font-weight: 700; text-decoration: none; font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <a href="../" class="hero-back">← 返回</a>
+  <img src="banner.jpg" alt="人車公益協會 公益淨灘">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">第二次公益活動 · NEXT EVENT</span>
+    <h1>公益淨灘<span>・守護海洋</span></h1>
+    <div class="sub">車圈集體公益，共同守護海洋環境</div>
+    <div class="hero-meta">
+      <span class="m">📅 <b>2026/07/21</b>（二）14:00–17:00</span>
+      <span class="m">📍 <b>竹圍海水浴場</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- 活動資訊卡 -->
+<section class="info-grid">
+  <div class="info-card">
+    <div class="k">預定日期</div>
+    <div class="v">2026/07/21（二）<small>14:00–17:00（暑假・大小朋友一起來）</small></div>
+  </div>
+  <div class="info-card">
+    <div class="k">活動地點</div>
+    <div class="v">竹圍海水浴場<small>集合：竹圍漁港天幕廣場</small></div>
+  </div>
+  <div class="info-card">
+    <div class="k">活動主旨</div>
+    <div class="v">守護海洋環境<small>車圈集體公益</small></div>
+  </div>
+  <div class="info-card">
+    <div class="k">著裝規定</div>
+    <div class="v">協會 T 恤<small>購買 500 元／件・長褲・包鞋</small></div>
+  </div>
+  <div class="info-card">
+    <div class="k">自媒體</div>
+    <div class="v">活動全程可自由拍攝記錄<small>歡迎分享公益能量</small></div>
+  </div>
+  <div class="info-card">
+    <div class="k">參與資格</div>
+    <div class="v">協會會員優先<small>視報名狀況開放來賓</small></div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <!-- 地點與停車 -->
+  <div class="section-header">
+    <span class="section-tag">INFO</span>
+    <span class="section-name">地點・集合・停車資訊</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="place-box">
+    <div class="place-row">
+      <span class="ico">📍</span>
+      <span class="txt"><b>活動地點</b>｜竹圍海水浴場</span>
+    </div>
+    <div class="place-row">
+      <span class="ico">🚩</span>
+      <span class="txt"><b>集合地點</b>｜天幕廣場（竹圍漁港）</span>
+    </div>
+    <div class="place-row">
+      <span class="ico">🅿️</span>
+      <span class="txt"><b>停車資訊</b>｜竹圍漁港停車場（天幕廣場旁）<br>
+        <small>337 桃園市大園區沙崙里漁港路 353 巷 176 號</small><br>
+        <small>如無空位可改停「西側停車場－竹圍漁港」</small></span>
+    </div>
+    <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=竹圍漁港天幕廣場" target="_blank" rel="noopener">🗺️ 開啟 Google 地圖導航</a>
+  </div>
+
+  <!-- 注意事項 -->
+  <div class="section-header">
+    <span class="section-tag">NOTICE</span>
+    <span class="section-name">參加注意事項</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="notes">
+    <ol>
+      <li>請著<b>協會 T 恤、長褲及包鞋</b>，切勿穿著拖鞋或涼鞋，以防沙灘內藏有尖銳物受傷。</li>
+      <li>活動於夏季舉行、海邊遮蔽物少，請務必<b>自備防曬用具</b>（遮陽帽、太陽眼鏡、防曬外套）。現場提供 K-POWER 能量飲料及瓶裝水，請定時補充水分、嚴防中暑。</li>
+      <li>淨灘期間請<b>遠離海浪</b>，隨時注意潮水變化；切勿獨自接近深水區或礁石區，並聽從現場工作人員指揮。</li>
+      <li>撿拾過程請協助將<b>「一般垃圾」與「資源回收物」分開</b>，結束後將垃圾袋確實綑綁，集中移置到協會指定的岸上集結點。</li>
+      <li>現場發放活動用具（布手套、夾子及垃圾袋），使用完畢請<b>統一集中收回</b>歸還相關單位。</li>
+    </ol>
+    <div class="warn">
+      <b>★ 危險物品請勿撿拾</b>：瓦斯桶、冷媒鋼瓶、不明液體之鐵桶等廢棄物危害風險高，請勿觸碰，應拍照定位座標，由專業清除人員處理，避免危險。
+    </div>
+  </div>
+
+  <!-- 報名表單 -->
+  <div class="section-header">
+    <span class="section-tag">SIGN UP</span>
+    <span class="section-name">淨灘活動報名</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="shirt-tip">
+    👕 本活動統一穿著<b>協會 T 恤</b>（黑色・胸前橘色協會 LOGO），<b>每件 500 元</b>，款項全數挹注協會公益。報名後請匯款並填入下方尺寸與匯款末五碼，現場領取。
+  </div>
+
+  <form id="beachForm" style="margin-top:20px;">
+    <div class="form-grid">
+      <div class="field">
+        <label>單位 / 公司</label>
+        <input type="text" name="unit" placeholder="所屬公司或品牌（可留白）">
+      </div>
+      <div class="field">
+        <label>姓名<span class="req">*</span></label>
+        <input type="text" name="name" placeholder="請填入真實姓名" required>
+      </div>
+      <div class="field">
+        <label>聯絡電話<span class="req">*</span></label>
+        <input type="tel" name="phone" placeholder="0912-345-678" required>
+      </div>
+      <div class="field">
+        <label>E-mail<span class="req">*</span></label>
+        <input type="email" name="email" placeholder="your@email.com" required>
+      </div>
+      <div class="field">
+        <label>T 恤尺寸<span class="req">*</span></label>
+        <select name="size" required>
+          <option value="" disabled selected>請選擇尺寸</option>
+          <option>S</option><option>M</option><option>L</option>
+          <option>XL</option><option>2XL</option><option>3XL</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>匯款金額<span class="req">*</span></label>
+        <input type="text" name="amount" placeholder="例：500（一件 T 恤）" required>
+        <div class="hint">T 恤 500 元／件</div>
+      </div>
+      <div class="field full" style="grid-column:1/-1;">
+        <label>匯款末五碼<span class="req">*</span></label>
+        <input type="text" name="transferCode" placeholder="請填入匯款帳號後五碼" maxlength="5" required>
+        <div class="hint">方便協會對帳確認，感謝配合</div>
+      </div>
+    </div>
+
+    <!-- 匯款帳戶 -->
+    <div class="account-box">
+      <h4>💳 活動費用匯款帳戶</h4>
+      <div class="account-row">
+        <span class="account-key">銀行</span>
+        <span class="account-val">國泰銀行 新泰分行</span>
+      </div>
+      <div class="account-row">
+        <span class="account-key">帳號</span>
+        <span class="account-val">214 · 03-50107-18</span>
+      </div>
+      <div class="account-row">
+        <span class="account-key">戶名</span>
+        <span class="account-val">社團法人台灣人車公益協會</span>
+      </div>
+    </div>
+
+    <label class="checkbox-item">
+      <input type="checkbox" id="agree" required>
+      <span class="checkbox-text">
+        我已詳閱活動注意事項，並同意配合現場工作人員指揮；報名資料僅供協會活動聯繫與對帳使用。
+      </span>
+    </label>
+
+    <p class="req-note"><span class="req">*</span> 為必填項目，未填寫將無法送出。</p>
+
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit" id="submitBtn">送出報名</button>
+    </div>
+  </form>
+
+  <!-- 成功畫面 -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🌊</div>
+    <h2>報名成功！</h2>
+    <p>
+      感謝您報名參加「公益淨灘・守護海洋」！<br><br>
+      我們會於活動前以 Email 或電話與您聯繫，提供集合與領取 T 恤的細節。<br><br>
+      <strong style="color: var(--gold);">一起守護海洋，讓車圈力量改變社會 🌊</strong>
+    </p>
+    <a href="../" class="back-home">返回首頁</a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxGxEtzGo7y8n-2rgDuRLJKox7Qo8cy1AQkdr8Chg6_bjXy4v9drbt7oL07tQGnqY1o/exec';
+
+const form = document.getElementById('beachForm');
+const submitBtn = document.getElementById('submitBtn');
+const toast = document.getElementById('toast');
+
+function showToast(msg, type = '') {
+  toast.textContent = msg;
+  toast.className = 'toast show ' + type;
+  setTimeout(() => { toast.className = 'toast'; }, 3500);
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  submitBtn.disabled = true;
+  submitBtn.textContent = '送出中…';
+
+  const fd = new FormData(form);
+  const data = { type: 'beach' };
+  fd.forEach((v, k) => { data[k] = v; });
+
+  try {
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+    const json = await res.json();
+    if (json.status === 'success') {
+      form.style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showToast('送出失敗，請稍後再試', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送出報名';
+    }
+  } catch {
+    showToast('網路錯誤，請稍後再試', 'error');
+    submitBtn.disabled = false;
+    submitBtn.textContent = '送出報名';
+  }
+});
+</script>
+</body>
+</html>

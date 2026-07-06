@@ -5,6 +5,7 @@
 const SHEET_ID = ''; // 填入你的 Google Sheets ID (URL 中的那串)
 const JOIN_SHEET = '入會申請';
 const DONATE_SHEET = '捐款記錄';
+const BEACH_SHEET = '淨灘活動報名';
 
 function doPost(e) {
   try {
@@ -48,6 +49,20 @@ function doPost(e) {
         data.paymentMethod, data.purpose, data.receipt,
         data.receiptName || '', data.receiptTaxId || '', data.anonymous, data.transferCode,
         data.note || '', '待確認'
+      ]);
+
+    } else if (data.type === 'beach') {
+      const sheet = ss.getSheetByName(BEACH_SHEET) || ss.insertSheet(BEACH_SHEET);
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow([
+          '時間戳記', '單位', '姓名', '聯絡電話', 'E-mail',
+          'T恤尺寸', '匯款金額', '匯款末五碼', '狀態'
+        ]);
+      }
+      sheet.appendRow([
+        timestamp,
+        data.unit || '', data.name, data.phone, data.email,
+        data.size, data.amount || '', data.transferCode || '', '待確認'
       ]);
     }
 
