@@ -367,14 +367,17 @@ nav #nav-ig:hover{background:rgba(200,120,240,.14) !important;box-shadow:0 0 20p
 <div style="height:1px;background:linear-gradient(90deg,transparent,#e0e2e8,transparent);margin:0 24px;"></div>
 
 <!-- 全版影片 -->
-<section style="width:100%;overflow:hidden;position:relative;line-height:0;background:#000;">
-  <video id="mid-video" muted="" loop="" playsinline="" preload="none" poster="uploads/carwash-poster.jpg" data-src="uploads/carwash.mp4" style="width:100%;display:block;max-height:65vh;object-fit:cover;opacity:.8;">
+<section style="width:100%;overflow:hidden;position:relative;line-height:0;background:#f8f9fa;">
+  <video id="mid-video" muted="" loop="" playsinline="" preload="none" poster="uploads/carwash-poster.jpg" data-src="uploads/carwash.mp4" style="width:100%;display:block;max-height:65vh;object-fit:cover;">
     <source src="uploads/carwash.mp4" type="video/mp4">
   </video>
-  <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,15,.75) 0%,transparent 55%);pointer-events:none;"></div>
-  <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);text-align:center;width:100%;padding:0 24px;">
-    <div style="display:inline-block;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.4);color:#e8a020;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;letter-spacing:2px;margin-bottom:14px;">公益行動紀錄</div>
-    <div style="font-size:clamp(18px,3vw,28px);font-weight:900;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.6);">用雙手改變生活，讓希望持續前行</div>
+  <!-- 上緣淡出白（銜接上方板塊） -->
+  <div style="position:absolute;top:0;left:0;right:0;height:150px;background:linear-gradient(to bottom,#f8f9fa 0%,rgba(248,249,250,0) 100%);pointer-events:none;"></div>
+  <!-- 下緣淡出白（銜接下方板塊） -->
+  <div style="position:absolute;bottom:0;left:0;right:0;height:240px;background:linear-gradient(to top,#f8f9fa 0%,#f8f9fa 18%,rgba(248,249,250,.85) 40%,rgba(248,249,250,0) 100%);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:48px;left:50%;transform:translateX(-50%);text-align:center;width:100%;padding:0 24px;line-height:1.5;">
+    <div style="display:inline-block;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.5);color:#c8851a;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;letter-spacing:2px;margin-bottom:14px;">公益行動紀錄</div>
+    <div style="font-size:clamp(18px,3vw,28px);font-weight:900;color:#1a1a2e;">用雙手改變生活，讓希望持續前行</div>
   </div>
 </section>
 
