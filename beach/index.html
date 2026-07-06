@@ -246,6 +246,87 @@ body {
   background: var(--gold); color: var(--bg); border-radius: 8px;
   font-weight: 700; text-decoration: none; font-size: 14px;
 }
+
+/* ── 主旨介紹 ── */
+.intro {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 24px 26px; margin-top: 16px;
+}
+.intro p { font-size: 14px; color: var(--muted); line-height: 1.9; margin-bottom: 12px; }
+.intro p:last-child { margin-bottom: 0; }
+.intro .host {
+  margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border);
+  font-size: 13px; color: var(--text); font-weight: 700;
+}
+.intro .host span { color: var(--gold); }
+
+/* ── 活動流程 ── */
+.timeline { position: relative; margin-left: 6px; padding-left: 24px; }
+.timeline::before {
+  content: ''; position: absolute; left: 6px; top: 6px; bottom: 6px;
+  width: 2px; background: linear-gradient(180deg, var(--gold), rgba(232,160,32,.25));
+}
+.tl-item { position: relative; padding: 8px 0; }
+.tl-item::before {
+  content: ''; position: absolute; left: -24px; top: 14px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--gold); border: 2px solid #fff; box-shadow: 0 0 0 2px var(--gold);
+}
+.tl-time { font-size: 13px; font-weight: 900; color: var(--gold); letter-spacing: .5px; }
+.tl-name { font-size: 14px; color: var(--text); font-weight: 600; margin-top: 2px; }
+
+/* ── T恤尺寸數量計數器 ── */
+.shirt-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px 20px; margin-top: 16px;
+}
+.shirt-box .sb-head { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; }
+.shirt-box .sb-head b { color: var(--gold); }
+.size-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 4px; border-bottom: 1px solid #f0f1f4;
+}
+.size-row:last-child { border-bottom: none; }
+.size-row.on { background: rgba(232,160,32,.05); border-radius: 8px; }
+.size-name { font-size: 15px; font-weight: 800; color: var(--text); }
+.size-name small { font-size: 11px; color: var(--dim); font-weight: 400; margin-left: 6px; }
+.stepper { display: flex; align-items: center; gap: 0; }
+.stepper button {
+  width: 38px; height: 38px; border: 1px solid var(--border);
+  background: #fff; color: var(--gold); font-size: 22px; font-weight: 700;
+  cursor: pointer; line-height: 1; display: flex; align-items: center; justify-content: center;
+  -webkit-user-select: none; user-select: none; transition: background .15s;
+}
+.stepper button:active { background: rgba(232,160,32,.12); }
+.stepper button.minus { border-radius: 9px 0 0 9px; }
+.stepper button.plus { border-radius: 0 9px 9px 0; }
+.stepper .qv {
+  width: 46px; height: 38px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800; color: var(--text); background: #fff;
+}
+.shirt-total {
+  margin-top: 14px; padding: 12px 16px; border-radius: 10px;
+  background: rgba(232,160,32,.08); border: 1px solid rgba(232,160,32,.3);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 14px; font-weight: 700; color: var(--text);
+}
+.shirt-total .amt { font-size: 18px; font-weight: 900; color: var(--gold); }
+
+/* ── 個人／團體切換 ── */
+.mode-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mode-btn {
+  padding: 14px; border: 1.5px solid var(--border); background: #fff;
+  border-radius: 10px; font-size: 15px; font-weight: 800; color: var(--muted);
+  cursor: pointer; font-family: 'Noto Sans TC', sans-serif; transition: all .15s;
+}
+.mode-btn.on { border-color: var(--gold); background: rgba(232,160,32,.08); color: var(--gold); }
+
+/* ── 圖片 ── */
+.fig { margin-top: 14px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background:#0f1117; }
+.fig img { width: 100%; display: block; }
+.fig figcaption { font-size: 12px; color: var(--muted); padding: 10px 14px; background: var(--card); }
+.fig figcaption b { color: var(--gold); }
 </style>
 </head>
 <body>
@@ -294,6 +375,34 @@ body {
 
 <div class="wrap">
 
+  <!-- 活動主旨 -->
+  <div class="section-header">
+    <span class="section-tag">ABOUT</span>
+    <span class="section-name">活動主旨</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="intro">
+    <p>誠摯歡迎您報名參與本次公益淨灘活動！為了共同守護海洋環境與維護海岸整潔，社團法人台灣人車公益協會將舉辦公益淨灘活動，邀請大家一起以實際行動守護我們的海洋與沙灘。</p>
+    <p>本次活動於<b style="color:var(--text)">竹圍海水浴場</b>進行，透過淨灘行動、垃圾分類及環境整理，提升大眾對海洋廢棄物與環境保護議題的重視，也希望凝聚更多關心公益與環境的夥伴，一同為台灣的海岸環境盡一份心力。現場將由協會提供淨灘工具及飲用水，歡迎大家一起參與，用行動讓海洋更乾淨、環境更美好。</p>
+    <div class="host">主辦單位｜社團法人台灣人車公益協會　·　理事長｜<span>曾聖凱</span> 暨全體理監事 敬邀</div>
+  </div>
+
+  <!-- 活動流程 -->
+  <div class="section-header">
+    <span class="section-tag">SCHEDULE</span>
+    <span class="section-name">活動流程</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-time">13:30 – 14:00</div><div class="tl-name">集合</div></div>
+    <div class="tl-item"><div class="tl-time">14:00 – 14:20</div><div class="tl-name">參與人員報到及物資發放</div></div>
+    <div class="tl-item"><div class="tl-time">14:20 – 14:30</div><div class="tl-name">活動開場及安全宣導</div></div>
+    <div class="tl-item"><div class="tl-time">14:30 – 16:00</div><div class="tl-name">淨灘活動進行</div></div>
+    <div class="tl-item"><div class="tl-time">16:00 – 16:20</div><div class="tl-name">垃圾分類、集中與清點</div></div>
+    <div class="tl-item"><div class="tl-time">16:20 – 16:40</div><div class="tl-name">成果拍照及環境整理</div></div>
+    <div class="tl-item"><div class="tl-time">16:40 – 17:00</div><div class="tl-name">活動分享、致謝及賦歸</div></div>
+  </div>
+
   <!-- 地點與停車 -->
   <div class="section-header">
     <span class="section-tag">INFO</span>
@@ -316,7 +425,26 @@ body {
         <small>如無空位可改停「西側停車場－竹圍漁港」</small></span>
     </div>
     <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=竹圍漁港天幕廣場" target="_blank" rel="noopener">🗺️ 開啟 Google 地圖導航</a>
+    <figure class="fig">
+      <img src="assembly.jpg" alt="集合地點：竹圍漁港天幕廣場" loading="lazy">
+      <figcaption>📍 集合地點｜<b>竹圍漁港天幕廣場</b>（弧形白色天幕即為集合處）</figcaption>
+    </figure>
   </div>
+
+  <!-- 淨灘範圍與垃圾放置 -->
+  <div class="section-header">
+    <span class="section-tag">MAP</span>
+    <span class="section-name">淨灘範圍與垃圾放置區</span>
+    <div class="section-line"></div>
+  </div>
+  <figure class="fig">
+    <img src="zone-map.jpg" alt="淨灘活動範圍與垃圾廢棄物放置區地圖" loading="lazy">
+    <figcaption>
+      黃色區域為<b>淨灘活動範圍</b>（竹圍海水浴場），★ 為<b>垃圾暫置處</b>。
+      因部分路段施工，可依黃線替代路線前往。<br>
+      垃圾放置座標 <b>25.113299, 121.238165</b>，請依告示牌放置於藍色鐵皮旁空地處。
+    </figcaption>
+  </figure>
 
   <!-- 注意事項 -->
   <div class="section-header">
@@ -344,43 +472,88 @@ body {
     <div class="section-line"></div>
   </div>
 
-  <div class="shirt-tip">
-    👕 本活動統一穿著<b>協會 T 恤</b>（黑色・胸前橘色協會 LOGO），<b>每件 500 元</b>，款項全數挹注協會公益。報名後請匯款並填入下方尺寸與匯款末五碼，現場領取。
-  </div>
-
   <form id="beachForm" style="margin-top:20px;">
-    <div class="form-grid">
-      <div class="field">
-        <label>單位 / 公司</label>
-        <input type="text" name="unit" placeholder="所屬公司或品牌（可留白）">
+
+    <!-- 報名方式：個人 / 團體 -->
+    <div class="field" style="margin-bottom:18px;">
+      <label>報名方式<span class="req">*</span></label>
+      <div class="mode-toggle">
+        <button type="button" class="mode-btn on" data-mode="個人">👤 個人報名</button>
+        <button type="button" class="mode-btn" data-mode="團體">👥 團體報名</button>
       </div>
-      <div class="field">
-        <label>姓名<span class="req">*</span></label>
+      <input type="hidden" name="regType" id="regType" value="個人">
+    </div>
+
+    <div class="form-grid">
+      <div class="field" id="fld-name">
+        <label id="lbl-name">姓名<span class="req">*</span></label>
         <input type="text" name="name" placeholder="請填入真實姓名" required>
       </div>
       <div class="field">
-        <label>聯絡電話<span class="req">*</span></label>
-        <input type="tel" name="phone" placeholder="0912-345-678" required>
+        <label>職稱<span class="req">*</span></label>
+        <input type="text" name="title" placeholder="例：店長 / 技師 / 車主" required>
       </div>
       <div class="field">
+        <label id="lbl-unit">服務單位 / 公司名稱<span class="req">*</span></label>
+        <input type="text" name="unit" placeholder="服務單位或公司名稱" required>
+      </div>
+      <div class="field">
+        <label>行動電話<span class="req">*</span></label>
+        <input type="tel" name="phone" placeholder="0912-345-678" required>
+      </div>
+      <div class="field" style="grid-column:1/-1;">
         <label>E-mail<span class="req">*</span></label>
         <input type="email" name="email" placeholder="your@email.com" required>
       </div>
-      <div class="field">
-        <label>T 恤尺寸<span class="req">*</span></label>
-        <select name="size" required>
-          <option value="" disabled selected>請選擇尺寸</option>
-          <option>S</option><option>M</option><option>L</option>
-          <option>XL</option><option>2XL</option><option>3XL</option>
-        </select>
+      <div class="field" id="fld-groupcount" style="grid-column:1/-1; display:none;">
+        <label>團體報名 共幾位？<span class="req">*</span></label>
+        <input type="number" name="groupCount" min="1" max="200" placeholder="請填入報名總人數（含聯絡人）">
+        <div class="hint">團體報名請填實際參加人數</div>
       </div>
+    </div>
+
+    <!-- T恤尺寸數量 -->
+    <div class="section-header" style="margin-top:28px;">
+      <span class="section-tag">T-SHIRT</span>
+      <span class="section-name">協會黑色短 T　尺寸／數量</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="shirt-box">
+      <figure class="fig" style="margin-top:0;margin-bottom:14px;">
+        <img src="dresscode.jpg" alt="服裝規定：協會黑色短T" loading="lazy">
+        <figcaption>👕 服裝規定｜當天請著<b>協會黑色短 T</b>、長褲及包鞋（圖為協會夥伴實著款式）</figcaption>
+      </figure>
+      <div class="sb-head">
+        👕 協會<b>黑色短 T</b>（胸前橘色協會 LOGO）<b>每件 500 元</b>，款項全數挹注協會公益。<br>
+        點選各尺寸右側 <b>＋／－</b> 選擇件數；<b>僅購買者需填寫</b>，不需要可全部保持 0。
+      </div>
+      <div id="sizeList">
+        <div class="size-row" data-size="S"><span class="size-name">尺寸 S</span><div class="stepper"><button type="button" class="minus" aria-label="減">−</button><span class="qv">0</span><button type="button" class="plus" aria-label="加">＋</button></div></div>
+        <div class="size-row" data-size="M"><span class="size-name">尺寸 M</span><div class="stepper"><button type="button" class="minus">−</button><span class="qv">0</span><button type="button" class="plus">＋</button></div></div>
+        <div class="size-row" data-size="L"><span class="size-name">尺寸 L</span><div class="stepper"><button type="button" class="minus">−</button><span class="qv">0</span><button type="button" class="plus">＋</button></div></div>
+        <div class="size-row" data-size="XL"><span class="size-name">尺寸 XL</span><div class="stepper"><button type="button" class="minus">−</button><span class="qv">0</span><button type="button" class="plus">＋</button></div></div>
+        <div class="size-row" data-size="2XL"><span class="size-name">尺寸 2XL</span><div class="stepper"><button type="button" class="minus">−</button><span class="qv">0</span><button type="button" class="plus">＋</button></div></div>
+        <div class="size-row" data-size="3XL"><span class="size-name">尺寸 3XL</span><div class="stepper"><button type="button" class="minus">−</button><span class="qv">0</span><button type="button" class="plus">＋</button></div></div>
+      </div>
+      <div class="shirt-total">
+        <span>共 <b id="totalQty">0</b> 件　·　應繳金額</span>
+        <span class="amt">NT$ <span id="totalAmt">0</span></span>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top:28px;">
+      <span class="section-tag">PAYMENT</span>
+      <span class="section-name">匯款資訊</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="form-grid">
       <div class="field">
         <label>匯款金額<span class="req">*</span></label>
-        <input type="text" name="amount" placeholder="例：500（一件 T 恤）" required>
-        <div class="hint">T 恤 500 元／件</div>
+        <input type="text" name="amount" id="amount" placeholder="請填入實際匯款金額" required>
+        <div class="hint">系統已依件數自動帶入，可自行修改</div>
       </div>
-      <div class="field full" style="grid-column:1/-1;">
-        <label>匯款末五碼<span class="req">*</span></label>
+      <div class="field">
+        <label>匯款帳戶末五碼<span class="req">*</span></label>
         <input type="text" name="transferCode" placeholder="請填入匯款帳號後五碼" maxlength="5" required>
         <div class="hint">方便協會對帳確認，感謝配合</div>
       </div>
@@ -439,12 +612,57 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Fx1--3AnuZKBQ33Om
 const form = document.getElementById('beachForm');
 const submitBtn = document.getElementById('submitBtn');
 const toast = document.getElementById('toast');
+const PRICE = 500;
 
 function showToast(msg, type = '') {
   toast.textContent = msg;
   toast.className = 'toast show ' + type;
   setTimeout(() => { toast.className = 'toast'; }, 3500);
 }
+
+/* 個人 / 團體 切換 */
+const regTypeInput = document.getElementById('regType');
+const grpField = document.getElementById('fld-groupcount');
+const grpInput = grpField.querySelector('input');
+const lblName = document.getElementById('lbl-name');
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const mode = btn.dataset.mode;
+    regTypeInput.value = mode;
+    if (mode === '團體') {
+      grpField.style.display = '';
+      grpInput.required = true;
+      lblName.innerHTML = '聯絡人姓名<span class="req">*</span>';
+    } else {
+      grpField.style.display = 'none';
+      grpInput.required = false;
+      grpInput.value = '';
+      lblName.innerHTML = '姓名<span class="req">*</span>';
+    }
+  });
+});
+
+/* T恤尺寸數量計數器 */
+const qty = { S:0, M:0, L:0, XL:0, '2XL':0, '3XL':0 };
+function refreshTotals() {
+  let total = 0;
+  Object.values(qty).forEach(n => total += n);
+  document.getElementById('totalQty').textContent = total;
+  document.getElementById('totalAmt').textContent = (total * PRICE).toLocaleString();
+  document.getElementById('amount').value = total * PRICE;
+}
+document.querySelectorAll('#sizeList .size-row').forEach(row => {
+  const size = row.dataset.size;
+  const qv = row.querySelector('.qv');
+  row.querySelector('.plus').addEventListener('click', () => {
+    if (qty[size] < 15) { qty[size]++; qv.textContent = qty[size]; row.classList.toggle('on', qty[size] > 0); refreshTotals(); }
+  });
+  row.querySelector('.minus').addEventListener('click', () => {
+    if (qty[size] > 0) { qty[size]--; qv.textContent = qty[size]; row.classList.toggle('on', qty[size] > 0); refreshTotals(); }
+  });
+});
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -454,6 +672,11 @@ form.addEventListener('submit', async (e) => {
   const fd = new FormData(form);
   const data = { type: 'beach' };
   fd.forEach((v, k) => { data[k] = v; });
+  // 尺寸數量
+  data.sizeS = qty.S; data.sizeM = qty.M; data.sizeL = qty.L;
+  data.sizeXL = qty.XL; data['size2XL'] = qty['2XL']; data['size3XL'] = qty['3XL'];
+  data.shirtTotal = Object.values(qty).reduce((a, b) => a + b, 0);
+  if (data.regType !== '團體') data.groupCount = 1;
 
   try {
     const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });

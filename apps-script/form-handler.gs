@@ -55,14 +55,15 @@ function doPost(e) {
       const sheet = ss.getSheetByName(BEACH_SHEET) || ss.insertSheet(BEACH_SHEET);
       if (sheet.getLastRow() === 0) {
         sheet.appendRow([
-          '時間戳記', '單位', '姓名', '聯絡電話', 'E-mail',
-          'T恤尺寸', '匯款金額', '匯款末五碼', '狀態'
+          '時間戳記','報名方式','服務單位','姓名','職稱','行動電話','E-mail','參加人數',
+          'S','M','L','XL','2XL','3XL','件數合計','匯款金額','匯款末五碼','狀態'
         ]);
       }
       sheet.appendRow([
-        timestamp,
-        data.unit || '', data.name, data.phone, data.email,
-        data.size, data.amount || '', data.transferCode || '', '待確認'
+        timestamp, data.regType || '個人', data.unit || '', data.name, data.title || '',
+        data.phone, data.email, data.groupCount || 1,
+        data.sizeS || 0, data.sizeM || 0, data.sizeL || 0, data.sizeXL || 0, data['size2XL'] || 0, data['size3XL'] || 0,
+        data.shirtTotal || 0, data.amount || '', data.transferCode || '', '待確認'
       ]);
     }
 
