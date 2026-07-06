@@ -338,6 +338,19 @@ body {
 
 <style>@media(max-width:640px){#nav-home,#nav-about,#nav-members,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none!important}#ham-btn{display:flex!important}}</style>
 <!-- 導覽列（與首頁一致） -->
+<style id="nav-glow-style">/* 無框線導覽 + hover 背景光暈（仿 tar-tw.com） */
+nav #nav-home,nav #nav-about,nav #nav-members,nav #nav-donate,nav #nav-sponsors,nav #nav-yt,nav #nav-ig{
+  border:1px solid transparent !important;background:transparent !important;
+  padding:9px 12px !important;border-radius:10px;
+  transition:background .22s ease,box-shadow .22s ease,color .22s ease !important;
+}
+nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-sponsors:hover{
+  background:rgba(232,160,32,.12) !important;color:#e8a020 !important;box-shadow:0 0 20px rgba(232,160,32,.28);
+}
+nav #nav-donate:hover{background:rgba(109,204,138,.14) !important;box-shadow:0 0 20px rgba(109,204,138,.30);}
+nav #nav-yt:hover{background:rgba(255,80,80,.12) !important;box-shadow:0 0 20px rgba(255,80,80,.28);}
+nav #nav-ig:hover{background:rgba(200,120,240,.14) !important;box-shadow:0 0 20px rgba(200,120,240,.30);}
+</style>
 <nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(14px);border-bottom:1px solid #e0e2e8;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
   <a href="../" style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900;color:#e8a020;padding:10px 12px 10px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;text-decoration:none;">
     <img loading="lazy" decoding="async" src="../assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
