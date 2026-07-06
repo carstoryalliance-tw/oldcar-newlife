@@ -336,6 +336,44 @@ body {
 </head>
 <body>
 
+<style>@media(max-width:640px){#nav-home,#nav-about,#nav-members,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none!important}#ham-btn{display:flex!important}}</style>
+<!-- 導覽列（與首頁一致） -->
+<nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(14px);border-bottom:1px solid #e0e2e8;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
+  <a href="../" style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900;color:#e8a020;padding:10px 12px 10px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;text-decoration:none;">
+    <img loading="lazy" decoding="async" src="../assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
+    OLD CAR × NEW LIFE
+  </a>
+  <a id="nav-home" href="../" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">首頁</a>
+  <a id="nav-about" href="../about/" style="padding:14px 9px;font-size:12px;color:#555;font-weight:600;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;text-decoration:none;">認識我們</a>
+  <a id="nav-members" href="../members/" style="padding:14px 9px;font-size:12px;color:#555;font-weight:600;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;text-decoration:none;">成員介紹</a>
+  <div id="nav-spacer" style="flex:1;"></div>
+  <a id="nav-donate" href="../donate-notice/" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;white-space:nowrap;margin-left:8px;flex-shrink:0;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
+  <a id="nav-sponsors" href="../sponsors/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:600;color:#555;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">✦ 贊助夥伴</a>
+  <a id="nav-yt" href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="padding:7px 12px;background:rgba(255,0,0,.1);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ff6b6b;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    YouTube
+  </a>
+  <a id="nav-ig" href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="padding:7px 12px;background:rgba(200,120,240,.1);border:1px solid rgba(200,120,240,.35);border-radius:8px;font-size:12px;font-weight:700;color:#c878f0;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    IG
+  </a>
+  <button id="ham-btn" style="display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;margin-left:8px;" aria-label="選單">
+    <span style="display:block;width:22px;height:2px;background:#888;border-radius:2px;"></span>
+    <span style="display:block;width:22px;height:2px;background:#888;border-radius:2px;"></span>
+    <span style="display:block;width:22px;height:2px;background:#888;border-radius:2px;"></span>
+  </button>
+</nav>
+<div id="mobile-nav" style="display:none;flex-direction:column;background:#f5f6f8;border-bottom:1px solid #e0e2e8;padding:12px 20px 16px;position:sticky;top:52px;z-index:99;">
+  <a href="../" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">首頁</a>
+  <a href="../about/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">認識我們</a>
+  <a href="../members/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">成員介紹</a>
+  <a href="../donate-notice/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
+  <a href="../sponsors/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">✦ 贊助夥伴</a>
+  <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(255,0,0,.08);border:1px solid rgba(255,80,80,.3);color:#ff6b6b;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">▶ YouTube</a>
+  <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(200,120,240,.08);border:1px solid rgba(200,120,240,.3);color:#c878f0;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">📷 Instagram</a>
+</div>
+
+
 <!-- Hero -->
 <header class="hero">
   <a href="../" class="hero-back">← 返回</a>
@@ -702,6 +740,9 @@ form.addEventListener('submit', async (e) => {
     submitBtn.textContent = '送出報名';
   }
 });
+</script>
+<script>
+(function(){var h=document.getElementById('ham-btn');if(!h)return;h.addEventListener('click',function(e){e.stopPropagation();var m=document.getElementById('mobile-nav');if(m)m.style.display=m.style.display==='flex'?'none':'flex';});})();
 </script>
 </body>
 </html>
