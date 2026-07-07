@@ -293,6 +293,11 @@ body {
 }
 .size-row:last-child { border-bottom: none; }
 .size-row.on { background: rgba(232,160,32,.05); border-radius: 8px; }
+.size-stock { font-size: 11px; font-weight: 600; color: var(--dim); margin-left: 8px; }
+.size-stock.low { color: #d9822b; }
+.size-stock.out { color: #c0392b; }
+.size-row.soldout .size-name { color: var(--dim); }
+.size-row.soldout .plus { opacity: .35; cursor: not-allowed; }
 .size-name { font-size: 15px; font-weight: 800; color: var(--text); }
 .size-name small { font-size: 11px; color: var(--dim); font-weight: 400; margin-left: 6px; }
 .stepper { display: flex; align-items: center; gap: 0; }
@@ -701,7 +706,9 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
   });
 });
 
-/* T恤尺寸數量計數器 */
+/* T恤尺寸數量計數器（含庫存上限） */
+const CAP = { S:1, M:8, L:17, XL:43, '2XL':29, '3XL':15 };   // 各尺寸總量（fallback）
+let stock = Object.assign({}, CAP);                          // 即時剩餘（以伺服器為準）
 const qty = { S:0, M:0, L:0, XL:0, '2XL':0, '3XL':0 };
 function refreshTotals() {
   let total = 0;
@@ -710,16 +717,51 @@ function refreshTotals() {
   document.getElementById('totalAmt').textContent = (total * PRICE).toLocaleString();
   document.getElementById('amount').value = total * PRICE;
 }
+function renderStock() {
+  document.querySelectorAll('#sizeList .size-row').forEach(row => {
+    const size = row.dataset.size;
+    const left = Math.max(0, stock[size] == null ? CAP[size] : stock[size]);
+    const el = row.querySelector('.size-stock');
+    if (el) {
+      if (left <= 0) { el.textContent = '已售完'; el.className = 'size-stock out'; }
+      else if (left <= 3) { el.textContent = '剩 ' + left + ' 件'; el.className = 'size-stock low'; }
+      else { el.textContent = '剩 ' + left + ' 件'; el.className = 'size-stock'; }
+    }
+    row.classList.toggle('soldout', left <= 0);
+    if (qty[size] > left) {   // 別人先買走，超出的下修
+      qty[size] = left;
+      row.querySelector('.qv').textContent = qty[size];
+      row.classList.toggle('on', qty[size] > 0);
+    }
+  });
+  refreshTotals();
+}
 document.querySelectorAll('#sizeList .size-row').forEach(row => {
   const size = row.dataset.size;
   const qv = row.querySelector('.qv');
+  row.querySelector('.size-name').insertAdjacentHTML('beforeend', ' <small class="size-stock"></small>');
   row.querySelector('.plus').addEventListener('click', () => {
-    if (qty[size] < 15) { qty[size]++; qv.textContent = qty[size]; row.classList.toggle('on', qty[size] > 0); refreshTotals(); }
+    const left = stock[size] == null ? CAP[size] : stock[size];
+    if (qty[size] < left) {
+      qty[size]++; qv.textContent = qty[size]; row.classList.toggle('on', qty[size] > 0); refreshTotals();
+    } else {
+      showToast(left <= 0 ? ('尺寸 ' + size + ' 已售完') : ('尺寸 ' + size + ' 僅剩 ' + left + ' 件'), 'error');
+    }
   });
   row.querySelector('.minus').addEventListener('click', () => {
     if (qty[size] > 0) { qty[size]--; qv.textContent = qty[size]; row.classList.toggle('on', qty[size] > 0); refreshTotals(); }
   });
 });
+/* 開啟頁面即抓即時剩餘庫存 */
+async function loadStock() {
+  try {
+    const r = await fetch(SCRIPT_URL + '?action=stock');
+    const j = await r.json();
+    if (j && j.status === 'ok' && j.stock) stock = Object.assign({}, CAP, j.stock);
+  } catch (e) { /* 讀取失敗沿用上限，仍由伺服器把關 */ }
+  renderStock();
+}
+loadStock();
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -742,6 +784,13 @@ form.addEventListener('submit', async (e) => {
       form.style.display = 'none';
       document.getElementById('successScreen').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (json.code === 'stock') {
+      if (json.stock) stock = Object.assign({}, CAP, json.stock);
+      renderStock();
+      const msg = (json.shortages || []).map(s => '尺寸 ' + s.size + '（僅剩 ' + s.left + ' 件）').join('、');
+      showToast('數量不足：' + msg + '，已為您更新剩餘數，請調整後再送出', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送出報名';
     } else {
       showToast('送出失敗，請稍後再試', 'error');
       submitBtn.disabled = false;
