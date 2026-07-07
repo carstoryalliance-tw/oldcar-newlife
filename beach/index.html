@@ -707,7 +707,7 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
 });
 
 /* T恤尺寸數量計數器（含庫存上限） */
-const CAP = { S:1, M:8, L:17, XL:43, '2XL':29, '3XL':15 };   // 各尺寸總量（fallback）
+const CAP = { S:1, M:9, L:18, XL:45, '2XL':31, '3XL':15 };   // 各尺寸總量（fallback）
 let stock = Object.assign({}, CAP);                          // 即時剩餘（以伺服器為準）
 const qty = { S:0, M:0, L:0, XL:0, '2XL':0, '3XL':0 };
 function refreshTotals() {

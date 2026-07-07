@@ -6,7 +6,7 @@ const BEACH_SHEET = '淨灘活動報名';
 const BEACH_HEADERS = ['時間戳記','報名方式','服務單位','姓名','職稱','行動電話','E-mail','參加人數','S','M','L','XL','2XL','3XL','件數合計','匯款金額','匯款末五碼','狀態'];
 
 // 各尺寸 T恤庫存上限（共 113 件）
-const BEACH_STOCK = { S:1, M:8, L:17, XL:43, '2XL':29, '3XL':15 };
+const BEACH_STOCK = { S:1, M:9, L:18, XL:45, '2XL':31, '3XL':15 };
 
 // 統計目前各尺寸已售出（讀 I:N 欄，第 9~14 欄）
 function beachSold_(sheet) {
