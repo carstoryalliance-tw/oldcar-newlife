@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>社團法人台灣人車公益協會 — 第一場例會邀請函</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+  @page { margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #0a0b0f;
+    width: 1080px;
+    margin: 0 auto;
+  }
+
+  .card {
+    width: 1080px;
+    background: #0d0e14;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── 頂部金線 ── */
+  .top-bar {
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #e8a020, #f5c842, #d4821a);
+    flex-shrink: 0;
+  }
+
+  /* ── 頂部 Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 52px 24px;
+    background: #0d0e14;
+    flex-shrink: 0;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .org-logo {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: white;
+    overflow: hidden;
+    border: 2px solid #e8a020;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .org-logo img { width: 50px; height: 50px; object-fit: contain; }
+
+  .org-name {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.4;
+  }
+
+  .org-name .sub {
+    font-size: 18px;
+    color: #888;
+    letter-spacing: 2px;
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .kwax-logo {
+    height: 44px;
+    width: auto;
+    mix-blend-mode: screen;
+  }
+
+  .session-badge {
+    background: linear-gradient(135deg, #e8a020, #d4821a);
+    color: #000;
+    font-size: 22px;
+    font-weight: 900;
+    padding: 10px 26px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+
+  /* ── HERO 照片區 ── */
+  .hero-section {
+    position: relative;
+    width: 1080px;
+    height: 860px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #0f1117 0%, #1a1400 50%, #0a0b0f 100%);
+  }
+
+  /* 右側光暈 */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.08) 0%, transparent 65%);
+  }
+
+  .hero-photo {
+    position: absolute;
+    right: 0; bottom: 0;
+    height: 72%;
+    width: 380px;
+    object-fit: cover;
+    object-position: center 10%;
+  }
+
+  /* 左側漸層遮罩讓文字清晰 */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      #0d0e14 0%,
+      #0d0e14 32%,
+      rgba(13,14,20,0.85) 50%,
+      rgba(13,14,20,0.2) 70%,
+      transparent 100%
+    );
+  }
+
+  /* 底部漸層（過渡到下一區） */
+  .hero-overlay-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 120px;
+    background: linear-gradient(to top, #0d0e14, transparent);
+  }
+
+  .hero-content {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 580px;
+    padding: 50px 52px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .invite-label {
+    font-size: 22px;
+    color: #e8a020;
+    letter-spacing: 4px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .invite-label::before {
+    content: '——  ';
+  }
+
+  .speaker-label {
+    font-size: 22px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .speaker-name-big {
+    font-size: 94px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+  }
+
+  .speaker-name-big span { color: #e8a020; }
+
+  .speaker-en {
+    font-size: 22px;
+    font-weight: 300;
+    color: #aaa;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+  }
+
+  .speaker-company {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 32px;
+  }
+
+  .speaker-company .dot { display: none; }
+
+  .speaker-company span {
+    font-size: 24px;
+    color: #bbb;
+    letter-spacing: 1px;
+  }
+
+  .topic-box {
+    background: linear-gradient(135deg, #e8a020, #d4821a);
+    border-radius: 12px;
+    padding: 18px 26px;
+    display: inline-block;
+    margin-bottom: 28px;
+  }
+
+  .topic-box .topic-tag {
+    font-size: 20px;
+    color: rgba(0,0,0,0.6);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .topic-box .topic-text {
+    font-size: 42px;
+    font-weight: 900;
+    color: #000;
+    letter-spacing: 1px;
+    line-height: 1.4;
+  }
+
+  .divider-line {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #e8a020, transparent);
+    border-radius: 2px;
+  }
+
+  /* 右下角姓名 badge（照片上） */
+  .photo-name-badge {
+    position: absolute;
+    bottom: 36px;
+    right: 52px;
+    text-align: right;
+    z-index: 3;
+  }
+
+  .photo-name-badge .badge-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .photo-name-badge .badge-name {
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+  }
+
+  .photo-name-badge .badge-co {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+  }
+
+  .photo-name-badge img {
+    height: 20px;
+    width: auto;
+  }
+
+  /* ── 資訊卡區 ── */
+  .info-section {
+    padding: 0 52px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .info-card {
+    border-radius: 16px;
+    padding: 28px 30px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .info-card.date {
+    background: linear-gradient(135deg, #1a1200, #201800);
+    border: 1px solid rgba(232,160,32,0.4);
+  }
+
+  .info-card.location {
+    background: linear-gradient(135deg, #0f1a14, #0a1510);
+    border: 1px solid rgba(109,204,138,0.35);
+  }
+
+  .info-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+  }
+
+  .info-card.date::before { background: linear-gradient(to bottom, #e8a020, #d4821a); }
+  .info-card.location::before { background: linear-gradient(to bottom, #6dcc8a, #3db86a); }
+
+  .info-icon { font-size: 30px; flex-shrink: 0; }
+
+  .info-content .ic-label {
+    font-size: 20px;
+    color: #666;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .info-content .ic-value {
+    font-size: 54px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .info-card.date .ic-value { color: #e8a020; }
+  .info-card.location .ic-value { color: #fff; font-size: 36px; }
+
+  .info-content .ic-detail {
+    font-size: 23px;
+    color: #888;
+    line-height: 1.7;
+  }
+
+  /* ── 行程 ── */
+  .schedule-row {
+    background: #11131c;
+    border: 1px solid #1e2030;
+    border-radius: 16px;
+    padding: 24px 30px;
+    display: flex;
+    gap: 0;
+  }
+
+  .schedule-item {
+    flex: 1;
+    padding: 0 20px;
+    border-left: 1px solid #252830;
+    position: relative;
+  }
+
+  .schedule-item:first-child { border-left: none; padding-left: 0; }
+
+  .schedule-item .s-time {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e8a020;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+
+  .schedule-item .s-desc {
+    font-size: 17px;
+    color: #bbb;
+    line-height: 1.6;
+  }
+
+  /* ── QR / CTA ── */
+  .cta-section {
+    margin: 0 52px;
+    padding: 32px 36px;
+    background: linear-gradient(135deg, #1a1a0a, #2a2010);
+    border: 1px solid rgba(232,160,32,0.3);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .cta-left h3 {
+    font-size: 30px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .cta-left p {
+    font-size: 24px;
+    color: #aaa;
+    line-height: 1.8;
+  }
+
+  .cta-right {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+  }
+
+  .cta-link {
+    font-size: 22px;
+    color: #e8a020;
+    font-weight: 600;
+  }
+
+  /* ── 底部 ── */
+  .footer {
+    margin-top: 36px;
+    padding: 0 52px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .footer-tags {
+    display: flex;
+    gap: 8px;
+  }
+
+  .footer-tag {
+    background: rgba(232,160,32,0.1);
+    border: 1px solid rgba(232,160,32,0.25);
+    color: #e8a020;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 8px 20px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+
+  .footer-copy {
+    font-size: 19px;
+    color: #444;
+    letter-spacing: 1px;
+  }
+
+  .bottom-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #d4821a, #f5c842, #e8a020);
+    flex-shrink: 0;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="top-bar"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="org-logo">
+        <img src="../dm/人車故事公益聯盟 LOGO 頭貼.png" alt="LOGO">
+      </div>
+      <div class="org-name">
+        <div class="sub">OLD CAR × NEW LIFE</div>
+        社團法人台灣人車公益協會
+      </div>
+    </div>
+    <div class="header-right">
+      <img class="kwax-logo" src="kwax-logo2.png" alt="K-WAX">
+      <div class="session-badge">第 1 場例會 · 2026</div>
+    </div>
+  </div>
+
+  <!-- HERO 照片 -->
+  <div class="hero-section">
+    <div class="hero-bg"></div>
+    <img class="hero-photo" src="kevin.jpg" alt="Kevin">
+    <div class="hero-overlay"></div>
+    <div class="hero-overlay-bottom"></div>
+
+    <!-- 右下角小 logo -->
+    <img src="kevin-logo.png" alt="KEVIN大大"
+      style="position:absolute;bottom:32px;right:40px;height:48px;width:auto;mix-blend-mode:screen;z-index:3;">
+
+    <div class="hero-content">
+      <div class="invite-label">SPECIAL INVITATION</div>
+      <div class="speaker-label">KEYNOTE SPEAKER · 本場主講嘉賓</div>
+      <div class="speaker-name-big"><span>曾聖凱</span><br>Kevin</div>
+      <div class="speaker-company">
+        <div class="dot"></div>
+        <span>K-WAX 凱閎國際創辦人</span>
+        <div class="dot"></div>
+        <span>台灣汽美材料領航者</span>
+      </div>
+      <div class="topic-box">
+        <div class="topic-tag">分享題目</div>
+        <div class="topic-text">從 5,000 元創業<br>到 3 億營收</div>
+      </div>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- 右下姓名 badge -->
+  </div>
+
+  <!-- 時間 & 地點 -->
+  <div class="info-section">
+    <div class="info-row">
+      <div class="info-card date">
+        <div class="info-icon">📅</div>
+        <div class="info-content">
+          <div class="ic-label">DATE · 日期時間</div>
+          <div class="ic-value">6 / 30</div>
+          <div class="ic-detail">2026 年 6 月 30 日（週二）<br>13:00 – 15:00</div>
+        </div>
+      </div>
+      <div class="info-card location">
+        <div class="info-icon">📍</div>
+        <div class="info-content">
+          <div class="ic-label">VENUE · 活動地點</div>
+          <div class="ic-value">K-WAX 企業總部</div>
+          <div class="ic-detail">桃園龜山區茶專路 16 號<br>現場參訪 · 交流 · 拍片</div>
+          <div style="margin-top:12px;display:flex;align-items:center;gap:12px;">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://maps.app.goo.gl/b244oFoVSC6tPTC36&bgcolor=0f1a14&color=6dcc8a&margin=2"
+              style="width:72px;height:72px;border-radius:6px;border:2px solid rgba(109,204,138,0.4);" alt="Google Maps QR">
+            <div style="font-size:11px;color:#6dcc8a;line-height:1.7;font-weight:600;">掃描前往<br>Google Maps</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-left">
+      <h3>誠摯邀請您蒞臨本場例會</h3>
+      <p>
+        參與費用 <strong style="color:#e8a020;font-size:16px;">$500</strong>（含餐費）· 請提前告知出席人數<br>
+        現場交流 · 場地參訪 · 精彩分享一次體驗
+      </p>
+    </div>
+    <div class="cta-right">
+      <div class="cta-link">🌐 oldcarnewlif.wixsite.com/home</div>
+      <div class="cta-link">📷 IG：@oldcar.newlife</div>
+      <div class="cta-link">📘 FB：社團法人台灣人車公益協會</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-tags">
+      <span class="footer-tag">以人為本</span>
+      <span class="footer-tag">以車為橋</span>
+      <span class="footer-tag">讓愛發動</span>
+      <span class="footer-tag">讓希望前行</span>
+    </div>
+    <div class="footer-copy">© 2026 社團法人台灣人車公益協會</div>
+  </div>
+
+  <div class="bottom-bar"></div>
+</div>
+</body>
+</html>
