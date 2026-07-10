@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人車故事公益計畫 — 免費申請 | 社團法人台灣人車公益協會</title>
+<meta name="description" content="人車故事公益計畫開放一般民眾申請：車輛維修、保養、翻新，或需車維生的送車媒合。協會依車況與經費評估後篩選協助對象，先上線收件、再由協會主動聯繫。">
+<meta name="keywords" content="老車翻新申請,弱勢車輛維修,公益修車,送車媒合,人車故事,台灣人車公益協會,免費修車申請,弱勢保修">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://oldcarnewlife.org.tw/apply/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="社團法人台灣人車公益協會">
+<meta property="og:title" content="人車故事公益計畫 — 免費申請">
+<meta property="og:description" content="車輛維修、保養、翻新，或需車維生的送車媒合。協會依車況與經費評估後篩選協助對象。">
+<meta property="og:url" content="https://oldcarnewlife.org.tw/apply/">
+<meta property="og:image" content="https://oldcarnewlife.org.tw/assets/banner.jpg">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold: #e8a020;
+  --gold-light: #f5c842;
+  --green: #6dcc8a;
+  --bg: #f8f9fa;
+  --card: #ffffff;
+  --border: #e0e2e8;
+  --text: #1a1a2e;
+  --muted: #666;
+  --dim: #999;
+}
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* ── Header ── */
+.header {
+  background: #ffffff;
+  border-bottom: 3px solid var(--gold);
+  padding: 24px 20px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+.header-logo { margin-bottom: 10px; }
+.header h1 { font-size: 24px; font-weight: 900; color: var(--text); }
+.header h1 span { color: var(--gold); }
+.header .sub { font-size: 13px; color: var(--muted); margin-top: 8px; letter-spacing: 1px; }
+.header-back {
+  position: absolute; left: 20px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold); text-decoration: none;
+  font-size: 14px; font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* ── 計畫說明 ── */
+.intro {
+  max-width: 680px; margin: 28px auto 0; padding: 0 20px;
+}
+.intro-card {
+  background: var(--card); border-radius: 12px;
+  padding: 20px 22px; border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+}
+.intro-card p { font-size: 13px; color: var(--muted); line-height: 1.9; }
+.intro-card strong { color: var(--text); }
+.intro-note {
+  margin-top: 12px; font-size: 12px; color: var(--green);
+  background: rgba(109,204,138,.08); border: 1px solid rgba(109,204,138,.3);
+  border-radius: 8px; padding: 10px 14px; line-height: 1.7;
+}
+
+/* ── Form Container ── */
+.form-wrap { max-width: 680px; margin: 28px auto 0; padding: 0 20px; }
+
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px; margin-top: 32px;
+}
+.section-tag {
+  background: var(--gold); color: var(--bg);
+  font-size: 10px; font-weight: 900;
+  padding: 4px 12px; border-radius: 3px; letter-spacing: 1px;
+}
+.section-name { font-size: 16px; font-weight: 800; color: var(--text); }
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(232,160,32,0.3), transparent); }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-grid.full { grid-template-columns: 1fr; }
+@media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.span2 { grid-column: 1 / -1; }
+.field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.field label .req { color: var(--gold); margin-left: 2px; }
+.field input, .field select, .field textarea {
+  background: #ffffff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 14px;
+  font-size: 14px; color: var(--text);
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.field textarea { resize: vertical; min-height: 90px; line-height: 1.7; }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--gold);
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--dim); }
+.field select { cursor: pointer; }
+
+/* 需求類型卡片 */
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 500px) { .type-grid { grid-template-columns: 1fr; } }
+.type-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: #ffffff; border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.type-item:has(input:checked) { border-color: var(--gold); background: rgba(232,160,32,0.06); }
+.type-item input[type="radio"] { accent-color: var(--gold); margin-top: 3px; flex-shrink: 0; }
+.type-emoji { font-size: 22px; line-height: 1; }
+.type-label { font-size: 14px; color: var(--text); font-weight: 800; }
+.type-desc { font-size: 11px; color: var(--dim); margin-top: 4px; line-height: 1.6; }
+
+/* 上傳 */
+.upload-box {
+  border: 2px dashed var(--border); border-radius: 12px;
+  padding: 28px 20px; text-align: center; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s; background: #fff;
+}
+.upload-box:hover { border-color: var(--gold); background: rgba(232,160,32,0.03); }
+.upload-box .up-icon { font-size: 32px; margin-bottom: 8px; }
+.upload-box .up-main { font-size: 14px; font-weight: 700; color: var(--text); }
+.upload-box .up-sub { font-size: 11px; color: var(--dim); margin-top: 6px; line-height: 1.6; }
+.file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.file-row {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 12px; font-size: 12px;
+}
+.file-row .fn { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
+.file-row .fsz { color: var(--dim); flex-shrink: 0; }
+.file-row .frm { color: #ff6b6b; cursor: pointer; font-weight: 900; flex-shrink: 0; padding: 0 4px; }
+
+/* 勾選 */
+.checkbox-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(232,160,32,0.05); border: 1px solid rgba(232,160,32,0.3);
+  border-radius: 8px; padding: 14px; cursor: pointer; margin-top: 12px;
+}
+.checkbox-item.plain { background: #fff; border-color: var(--border); }
+.checkbox-item input[type="checkbox"] { accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; }
+.checkbox-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+.hint { font-size: 11px; color: var(--dim); margin-top: 4px; }
+
+/* ── Submit ── */
+.submit-wrap { margin-top: 32px; }
+.btn-submit {
+  width: 100%; padding: 16px;
+  background: linear-gradient(135deg, #e8a020, #d4821a);
+  border: none; border-radius: 10px;
+  font-size: 16px; font-weight: 900; color: var(--bg);
+  cursor: pointer; letter-spacing: 1px;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn-submit:hover { opacity: 0.9; }
+.btn-submit:active { transform: scale(0.99); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* 上傳進度 */
+.progress-wrap { margin-top: 14px; display: none; }
+.progress-bar { height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#e8a020,#f5c842); transition: width 0.3s; }
+.progress-text { font-size: 11px; color: var(--muted); margin-top: 6px; text-align: center; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: #ffffff; border: 1px solid var(--gold);
+  color: var(--text); font-size: 14px; font-weight: 600;
+  padding: 14px 28px; border-radius: 50px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 999; max-width: 90%; text-align: center;
+}
+.toast.show { opacity: 1; }
+.toast.success { border-color: #6dcc8a; color: #6dcc8a; }
+.toast.error { border-color: #ff6b6b; color: #ff6b6b; }
+
+/* ── 成功畫面 ── */
+.success-screen {
+  display: none; text-align: center;
+  padding: 60px 20px; max-width: 480px; margin: 0 auto;
+}
+.success-icon { font-size: 64px; margin-bottom: 20px; }
+.success-screen h2 { font-size: 24px; font-weight: 900; color: var(--gold); margin-bottom: 12px; }
+.success-screen p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.success-screen .back-home {
+  display: inline-block; margin-top: 28px;
+  padding: 12px 32px; background: var(--gold);
+  color: var(--bg); border-radius: 8px; font-weight: 700;
+  text-decoration: none; font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<style>@media(max-width:640px){#nav-home,#nav-about,#nav-members,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none!important}#ham-btn{display:flex!important}}</style>
+<!-- 導覽列（與首頁一致） -->
+<style id="nav-glow-style">
+nav #nav-home,nav #nav-about,nav #nav-members,nav #nav-donate,nav #nav-sponsors,nav #nav-yt,nav #nav-ig{
+  border:1px solid transparent !important;background:transparent !important;
+  padding:9px 12px !important;border-radius:10px;
+  transition:background .22s ease,box-shadow .22s ease,color .22s ease !important;
+}
+nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-sponsors:hover{
+  background:rgba(232,160,32,.12) !important;color:#e8a020 !important;box-shadow:0 0 20px rgba(232,160,32,.28);
+}
+nav #nav-donate:hover{background:rgba(109,204,138,.14) !important;box-shadow:0 0 20px rgba(109,204,138,.30);}
+nav #nav-yt:hover{background:rgba(255,80,80,.12) !important;box-shadow:0 0 20px rgba(255,80,80,.28);}
+nav #nav-ig:hover{background:rgba(200,120,240,.14) !important;box-shadow:0 0 20px rgba(200,120,240,.30);}
+</style>
+<nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(14px);border-bottom:1px solid #e0e2e8;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
+  <a href="../" style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900;color:#e8a020;padding:10px 12px 10px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;text-decoration:none;">
+    <img loading="lazy" decoding="async" src="../assets/logo.png" alt="logo" style="height:36px;width:36px;object-fit:contain;flex-shrink:0;">
+    OLD CAR × NEW LIFE
+  </a>
+  <a id="nav-home" href="../" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">首頁</a>
+  <a id="nav-about" href="../about/" style="padding:14px 9px;font-size:12px;color:#555;font-weight:600;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;text-decoration:none;">認識我們</a>
+  <a id="nav-members" href="../members/" style="padding:14px 9px;font-size:12px;color:#555;font-weight:600;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;text-decoration:none;">成員介紹</a>
+  <div id="nav-spacer" style="flex:1;"></div>
+  <a id="nav-donate" href="../donate-notice/" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;white-space:nowrap;margin-left:8px;flex-shrink:0;text-decoration:none;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
+  <a id="nav-sponsors" href="../sponsors/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:600;color:#555;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">✦ 贊助夥伴</a>
+  <a id="nav-yt" href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="padding:7px 12px;background:rgba(255,0,0,.1);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ff6b6b;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    YouTube
+  </a>
+  <a id="nav-ig" href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="padding:7px 12px;background:rgba(200,120,240,.1);border:1px solid rgba(200,120,240,.35);border-radius:8px;font-size:12px;font-weight:700;color:#c878f0;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    IG
+  </a>
+  <button id="ham-btn" style="display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;margin-left:8px;" aria-label="選單">
+    <span style="display:block;width:22px;height:2px;background:#888;border-radius:2px;"></span>
+    <span style="display:block;width:22px;height:2px;background:#888;border-radius:2px;"></span>
+    <span style="display:block;width:22px;height:2px;background:#888;border-radius:2px;"></span>
+  </button>
+</nav>
+<div id="mobile-nav" style="display:none;flex-direction:column;background:#f5f6f8;border-bottom:1px solid #e0e2e8;padding:12px 20px 16px;position:sticky;top:52px;z-index:99;">
+  <a href="../" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">首頁</a>
+  <a href="../about/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">認識我們</a>
+  <a href="../members/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">成員介紹</a>
+  <a href="../donate-notice/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;font-family:'Noto Sans TC',sans-serif;">捐款支持</a>
+  <a href="../sponsors/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">✦ 贊助夥伴</a>
+  <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(255,0,0,.08);border:1px solid rgba(255,80,80,.3);color:#ff6b6b;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">▶ YouTube</a>
+  <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(200,120,240,.08);border:1px solid rgba(200,120,240,.3);color:#c878f0;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">📷 Instagram</a>
+</div>
+
+
+<div class="header">
+  <a href="../" class="header-back">← 返回</a>
+  <div class="header-logo"><img loading="lazy" decoding="async" src="../assets/logo.png" alt="OLD CAR × NEW LIFE" style="height:52px;object-fit:contain;"></div>
+  <h1>人車故事<span>公益計畫</span>申請</h1>
+  <div class="sub">維修 · 保養 · 翻新 · 送車媒合</div>
+</div>
+
+<!-- 計畫說明 -->
+<div class="intro">
+  <div class="intro-card">
+    <p>
+      <strong>人車故事公益計畫</strong>整併「老車翻新」專案，開放一般民眾申請車輛協助。
+      無論是需要<strong>維修、保養、翻新</strong>，或是<strong>需車維生但無代步工具</strong>，
+      都歡迎填寫本表單。協會將<strong>依車況與經費評估</strong>後篩選協助對象，並主動與您聯繫。
+    </p>
+    <div class="intro-note">
+      📌 本表單為初步收件，送出不代表核准。協會會逐案評估車況、經費與需求急迫性，
+      經審查後由專人與您聯繫後續。請盡量提供清楚的車輛照片或影片，有助於加速評估。
+    </div>
+  </div>
+</div>
+
+<!-- 表單 -->
+<div class="form-wrap" id="formWrap">
+  <form id="aidForm">
+
+    <!-- 需求類型 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 1</span>
+      <span class="section-name">申請類型</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="type-grid">
+      <label class="type-item">
+        <input type="radio" name="category" value="維修（保修）" required>
+        <div>
+          <div class="type-label"><span class="type-emoji">🔧</span> 維修 / 保修</div>
+          <div class="type-desc">車輛故障、事故或老化需修復，弱勢家庭可由協會協助評估補貼</div>
+        </div>
+      </label>
+      <label class="type-item">
+        <input type="radio" name="category" value="保養">
+        <div>
+          <div class="type-label"><span class="type-emoji">🛠️</span> 保養</div>
+          <div class="type-desc">定期保養、耗材更換，維持行車安全</div>
+        </div>
+      </label>
+      <label class="type-item">
+        <input type="radio" name="category" value="翻新">
+        <div>
+          <div class="type-label"><span class="type-emoji">✨</span> 老車翻新</div>
+          <div class="type-desc">具情感或故事性的老車整體翻新，重現價值</div>
+        </div>
+      </label>
+      <label class="type-item">
+        <input type="radio" name="category" value="送車媒合（需車維生）">
+        <div>
+          <div class="type-label"><span class="type-emoji">🚗</span> 送車媒合</div>
+          <div class="type-desc">需車維生但無代步工具者，由二手車圈媒合整理過堪用車輛</div>
+        </div>
+      </label>
+    </div>
+
+    <!-- 基本資料 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 2</span>
+      <span class="section-name">申請人資料</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>姓名（真實姓名）<span class="req">*</span></label>
+        <input type="text" name="name" placeholder="請填入真實姓名" required>
+      </div>
+      <div class="field">
+        <label>聯絡電話<span class="req">*</span></label>
+        <input type="tel" name="phone" placeholder="0912-345-678" required>
+      </div>
+      <div class="field">
+        <label>Email<span class="req">*</span></label>
+        <input type="email" name="email" placeholder="your@email.com" required>
+      </div>
+      <div class="field">
+        <label>LINE ID</label>
+        <input type="text" name="lineId" placeholder="方便協會聯繫（選填）">
+      </div>
+      <div class="field span2">
+        <label>所在縣市<span class="req">*</span></label>
+        <select name="city" required>
+          <option value="" disabled selected>請選擇</option>
+          <option>台北市</option><option>新北市</option><option>桃園市</option>
+          <option>台中市</option><option>台南市</option><option>高雄市</option>
+          <option>基隆市</option><option>新竹市</option><option>新竹縣</option>
+          <option>苗栗縣</option><option>彰化縣</option><option>南投縣</option>
+          <option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option>
+          <option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option>
+          <option>台東縣</option><option>澎湖縣</option><option>金門縣</option>
+          <option>連江縣</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 車輛資料 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 3</span>
+      <span class="section-name">車輛資料</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="form-grid">
+      <div class="field span2">
+        <label>車輛廠牌 / 車型 / 年份</label>
+        <input type="text" name="vehicle" placeholder="例：Toyota Corolla 2005 年（申請送車媒合可免填）">
+        <div class="hint">申請「送車媒合」尚無車輛者，此欄可留空</div>
+      </div>
+      <div class="field span2">
+        <label>目前車況描述</label>
+        <textarea name="condition" placeholder="請描述車輛目前狀況、故障或需求（例：引擎異音、鈑金鏽蝕、需更換零件…）"></textarea>
+      </div>
+    </div>
+
+    <!-- 人車故事 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 4</span>
+      <span class="section-name">你的人車故事</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="form-grid full">
+      <div class="field">
+        <label>為什麼需要這份協助？你與這台車（或這個需求）的故事<span class="req">*</span></label>
+        <textarea name="story" placeholder="協會希望認識每位申請者背後的故事——你的生活處境、這台車對你的意義、或你為什麼需要一台車。真誠的分享有助於我們評估與媒合。" required style="min-height:130px;"></textarea>
+      </div>
+      <div class="field">
+        <label>家庭 / 經濟狀況說明（供評估參考）</label>
+        <textarea name="situation" placeholder="例：家中人口、收入來源、是否領有低收入戶/中低收入戶證明、車輛對生計的重要性…（選填，有助於評估補貼額度）"></textarea>
+      </div>
+    </div>
+
+    <!-- 照片影片 -->
+    <div class="section-header">
+      <span class="section-tag">STEP 5</span>
+      <span class="section-name">車輛照片 / 影片</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="upload-box" id="uploadBox">
+      <div class="up-icon">📷</div>
+      <div class="up-main">點此上傳車輛照片或影片</div>
+      <div class="up-sub">支援照片與短影片｜最多 6 個檔案，單檔上限 20MB<br>清楚的車況照片有助於加速評估</div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*,video/*" multiple style="display:none;">
+    <div class="file-list" id="fileList"></div>
+
+    <!-- 同意 -->
+    <div style="margin-top:28px;">
+      <label class="checkbox-item">
+        <input type="checkbox" id="agree" required>
+        <span class="checkbox-text">
+          我同意社團法人台灣人車公益協會為<strong>審查與媒合之目的</strong>蒐集、處理及利用本表單所填個人資料，
+          並確認以上資訊屬實。個資僅供協會內部評估使用，不對外公開。
+        </span>
+      </label>
+      <label class="checkbox-item plain">
+        <input type="checkbox" id="publicConsent">
+        <span class="checkbox-text">
+          （選填）若我獲選為協助對象，我同意協會得將我的人車故事以<strong>影音、圖文</strong>形式於協會官網及社群平台公開露出，作為公益推廣使用。
+        </span>
+      </label>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="btn-submit" id="submitBtn">送出公益申請</button>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-text" id="progressText">準備上傳…</div>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- 成功畫面 -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🌱</div>
+    <h2>申請已送出！</h2>
+    <p>
+      感謝您向社團法人台灣人車公益協會提出申請！<br><br>
+      協會將逐案評估車況、經費與需求，經審查後由專人以電話、Email 或 LINE 與您聯繫。<br>
+      評估作業約需 1–2 週，敬請耐心等候。<br><br>
+      <strong style="color: var(--gold);">讓每一台車，都能延續它的故事 🚗</strong>
+    </p>
+    <a href="../" class="back-home">返回首頁</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Fx1--3AnuZKBQ33OmN50jNqOlZUvSy-PVQmIwjBRijIgnJ9i7_BF-3mnqSY87tND/exec';
+const MAX_FILES = 6;
+const MAX_SIZE = 20 * 1024 * 1024;      // 20MB / 檔
+const MAX_TOTAL = 32 * 1024 * 1024;     // 32MB 總量（後端單次上傳限制）
+
+const form = document.getElementById('aidForm');
+const submitBtn = document.getElementById('submitBtn');
+const toast = document.getElementById('toast');
+const fileInput = document.getElementById('fileInput');
+const uploadBox = document.getElementById('uploadBox');
+const fileListEl = document.getElementById('fileList');
+const progressWrap = document.getElementById('progressWrap');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+
+let selectedFiles = [];
+
+function showToast(msg, type = '') {
+  toast.textContent = msg;
+  toast.className = 'toast show ' + type;
+  setTimeout(() => { toast.className = 'toast'; }, 3800);
+}
+function fmtSize(b) {
+  if (b < 1024*1024) return (b/1024).toFixed(0) + ' KB';
+  return (b/1024/1024).toFixed(1) + ' MB';
+}
+function renderFiles() {
+  fileListEl.innerHTML = '';
+  selectedFiles.forEach((f, i) => {
+    const row = document.createElement('div');
+    row.className = 'file-row';
+    const isVid = f.type.startsWith('video');
+    row.innerHTML = '<span>' + (isVid ? '🎬' : '🖼️') + '</span>' +
+      '<span class="fn">' + f.name + '</span>' +
+      '<span class="fsz">' + fmtSize(f.size) + '</span>' +
+      '<span class="frm" data-i="' + i + '">✕</span>';
+    fileListEl.appendChild(row);
+  });
+  fileListEl.querySelectorAll('.frm').forEach(x => {
+    x.addEventListener('click', () => {
+      selectedFiles.splice(parseInt(x.dataset.i), 1);
+      renderFiles();
+    });
+  });
+}
+
+uploadBox.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => {
+  for (const f of fileInput.files) {
+    if (selectedFiles.length >= MAX_FILES) { showToast('最多上傳 ' + MAX_FILES + ' 個檔案', 'error'); break; }
+    if (f.size > MAX_SIZE) { showToast('「' + f.name + '」超過 20MB，請壓縮後再上傳', 'error'); continue; }
+    const total = selectedFiles.reduce((s, x) => s + x.size, 0);
+    if (total + f.size > MAX_TOTAL) { showToast('檔案總量超過 32MB，請減少數量或壓縮影片', 'error'); break; }
+    selectedFiles.push(f);
+  }
+  fileInput.value = '';
+  renderFiles();
+});
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const res = reader.result;
+      resolve({ name: file.name, mimeType: file.type || 'application/octet-stream', data: res.split(',')[1] });
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!document.getElementById('agree').checked) { showToast('請先勾選同意個資使用', 'error'); return; }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '送出中…';
+  progressWrap.style.display = 'block';
+
+  try {
+    // 讀取檔案為 base64
+    const files = [];
+    for (let i = 0; i < selectedFiles.length; i++) {
+      progressText.textContent = '處理檔案 ' + (i+1) + '/' + selectedFiles.length + '…';
+      progressFill.style.width = Math.round((i / (selectedFiles.length + 1)) * 100) + '%';
+      files.push(await fileToBase64(selectedFiles[i]));
+    }
+    progressFill.style.width = '92%';
+    progressText.textContent = '上傳中，請勿關閉頁面…';
+
+    const fd = new FormData(form);
+    const data = { type: 'aid' };
+    fd.forEach((v, k) => { data[k] = v; });
+    data.publicConsent = document.getElementById('publicConsent').checked ? '同意公開' : '不同意公開';
+    data.files = files;
+
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    progressFill.style.width = '100%';
+
+    if (json.status === 'success') {
+      document.getElementById('formWrap').querySelector('form').style.display = 'none';
+      progressWrap.style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      throw new Error(json.message || 'fail');
+    }
+  } catch (err) {
+    showToast('送出失敗，請稍後再試或改用電話聯繫協會', 'error');
+    submitBtn.disabled = false;
+    submitBtn.textContent = '送出公益申請';
+    progressWrap.style.display = 'none';
+  }
+});
+</script>
+
+<!-- Banner -->
+<div style="width:100%;overflow:hidden;line-height:0;margin-top:64px;">
+  <img loading="lazy" decoding="async" src="../assets/banner.jpg" alt="台灣人車公益協會 CAR STORY ALLIANCE" style="width:100%;display:block;object-fit:cover;">
+</div>
+
+<!-- Footer -->
+<footer style="padding:40px 24px;text-align:center;border-top:1px solid #e0e2e8;background:#f8f9fa;">
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+    <a href="../apply/" style="color:#777;font-size:13px;text-decoration:none;">公益申請</a>
+    <a href="../join/" style="color:#777;font-size:13px;text-decoration:none;">入會申請</a>
+    <a href="../donate-notice/" style="color:#777;font-size:13px;text-decoration:none;">捐款支持</a>
+    <a href="https://www.facebook.com/profile.php?id=61575342963645" target="_blank" style="color:#777;font-size:13px;text-decoration:none;">Facebook</a>
+    <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="color:#c878f0;font-size:13px;text-decoration:none;">📷 @oldcar.newlife</a>
+    <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="color:#ff6b6b;font-size:13px;text-decoration:none;">▶ YouTube @OLDCARNEWLIFE</a>
+  </div>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:14px;">
+    <div style="font-size:11px;color:#555;">🏛️ 內政部核准立案 · 台內團字第 1140047990 號</div>
+    <div style="font-size:11px;color:#555;">📋 社團法人登記證 · 115 證社字第 7 號</div>
+  </div>
+  <div style="font-size:11px;color:#444;letter-spacing:1px;">社團法人台灣人車公益協會 · OLD CAR × NEW LIFE · 2026</div>
+</footer>
+
+<script>
+(function(){var h=document.getElementById('ham-btn');if(!h)return;h.addEventListener('click',function(e){e.stopPropagation();var m=document.getElementById('mobile-nav');if(m)m.style.display=m.style.display==='flex'?'none':'flex';});})();
+</script>
+</body>
+</html>

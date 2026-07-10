@@ -6,6 +6,14 @@ const SHEET_ID = ''; // 填入你的 Google Sheets ID (URL 中的那串)
 const JOIN_SHEET = '入會申請';
 const DONATE_SHEET = '捐款記錄';
 const BEACH_SHEET = '淨灘活動報名';
+const AID_SHEET = '公益申請';      // 找不到 gid 分頁時的後備分頁名稱
+const AID_SHEET_GID = 599269247;   // 指定寫入的分頁 gid（公益申請）
+
+// 照片/影片上傳存放位置。留空 = 自動在雲端根目錄建立同名資料夾。
+const AID_FOLDER_ID = '';
+const AID_FOLDER_NAME = '人車故事公益申請_上傳';
+// 審閱者信箱（會把每筆申請的上傳子資料夾分享給這些人檢視）。留空 = 檔案僅擁有者可見。
+const AID_REVIEWER_EMAILS = []; // 例：['carstory.alliance@gmail.com', 'someone@gmail.com']
 
 function doPost(e) {
   try {
@@ -65,6 +73,45 @@ function doPost(e) {
         data.sizeS || 0, data.sizeM || 0, data.sizeL || 0, data.sizeXL || 0, data['size2XL'] || 0, data['size3XL'] || 0,
         data.shirtTotal || 0, data.amount || '', data.transferCode || '', '待確認'
       ]);
+
+    } else if (data.type === 'aid') {
+      // 人車故事公益計畫申請（維修/保養/翻新/送車）
+      const sheet = getSheetByGid_(ss, AID_SHEET_GID) || ss.getSheetByName(AID_SHEET) || ss.insertSheet(AID_SHEET);
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow([
+          '時間戳記', '申請類型', '姓名', '電話', 'Email', 'LINE ID', '所在縣市',
+          '車輛廠牌/年份', '車況描述', '人車故事', '家庭/經濟狀況',
+          '是否同意公開故事', '照片/影片連結', '狀態'
+        ]);
+      }
+
+      // 上傳照片/影片到雲端，取得審閱連結
+      let links = '';
+      if (data.files && data.files.length) {
+        const folder = getAidFolder_();
+        const subName = timestamp.replace(/[\/:]/g, '-') + '_' + (data.name || '申請者');
+        const sub = folder.createFolder(subName);
+        if (AID_REVIEWER_EMAILS && AID_REVIEWER_EMAILS.length) {
+          try { sub.addViewers(AID_REVIEWER_EMAILS); } catch (x) {}
+        }
+        const urls = [];
+        data.files.forEach(function (f) {
+          try {
+            const blob = Utilities.newBlob(Utilities.base64Decode(f.data), f.mimeType || 'application/octet-stream', f.name || 'file');
+            const file = sub.createFile(blob);
+            urls.push(f.name + ' → ' + file.getUrl());
+          } catch (x) {
+            urls.push('(檔案處理失敗: ' + (f.name || '') + ')');
+          }
+        });
+        links = urls.join('\n');
+      }
+
+      sheet.appendRow([
+        timestamp, data.category || '', data.name || '', data.phone || '', data.email || '',
+        data.lineId || '', data.city || '', data.vehicle || '', data.condition || '',
+        data.story || '', data.situation || '', data.publicConsent || '', links, '待審核'
+      ]);
     }
 
     return ContentService
@@ -76,6 +123,22 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// 依 gid 取得指定分頁
+function getSheetByGid_(ss, gid) {
+  const sheets = ss.getSheets();
+  for (let i = 0; i < sheets.length; i++) {
+    if (sheets[i].getSheetId() === gid) return sheets[i];
+  }
+  return null;
+}
+
+// 取得（或建立）上傳資料夾
+function getAidFolder_() {
+  if (AID_FOLDER_ID) return DriveApp.getFolderById(AID_FOLDER_ID);
+  const it = DriveApp.getFoldersByName(AID_FOLDER_NAME);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(AID_FOLDER_NAME);
 }
 
 function doGet(e) {
