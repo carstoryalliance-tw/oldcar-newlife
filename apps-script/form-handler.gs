@@ -84,8 +84,8 @@ function doPost(e) {
         ]);
       }
 
-      // 上傳照片/影片到雲端，取得審閱連結
-      let links = '';
+      // 上傳照片/影片到雲端，收集可點連結
+      const fileEntries = []; // { label, url }
       if (data.files && data.files.length) {
         const folder = getAidFolder_();
         const subName = timestamp.replace(/[\/:]/g, '-') + '_' + (data.name || '申請者');
@@ -93,24 +93,41 @@ function doPost(e) {
         if (AID_REVIEWER_EMAILS && AID_REVIEWER_EMAILS.length) {
           try { sub.addViewers(AID_REVIEWER_EMAILS); } catch (x) {}
         }
-        const urls = [];
-        data.files.forEach(function (f) {
+        data.files.forEach(function (f, i) {
           try {
             const blob = Utilities.newBlob(Utilities.base64Decode(f.data), f.mimeType || 'application/octet-stream', f.name || 'file');
             const file = sub.createFile(blob);
-            urls.push(f.name + ' → ' + file.getUrl());
+            fileEntries.push({ label: (f.name || ('檔案' + (i + 1))), url: file.getUrl() });
           } catch (x) {
-            urls.push('(檔案處理失敗: ' + (f.name || '') + ')');
+            fileEntries.push({ label: '(檔案處理失敗: ' + (f.name || '') + ')', url: '' });
           }
         });
-        links = urls.join('\n');
       }
+
+      // 純文字後備（RichText 建立失敗時仍看得到連結）
+      const linksText = fileEntries.map(function (e) { return e.url ? (e.label + ' → ' + e.url) : e.label; }).join('\n');
 
       sheet.appendRow([
         timestamp, data.category || '', data.name || '', data.phone || '', data.email || '',
         data.lineId || '', data.city || '', data.vehicle || '', data.condition || '',
-        data.story || '', data.situation || '', data.publicConsent || '', links, '待審核'
+        data.story || '', data.situation || '', data.publicConsent || '', linksText, '待審核'
       ]);
+
+      // 把「照片/影片連結」欄(第13欄)改成可點的超連結：每個檔名各自連到自己的檔案
+      if (fileEntries.length) {
+        try {
+          const row = sheet.getLastRow();
+          const display = fileEntries.map(function (e) { return e.label; }).join('\n');
+          const rt = SpreadsheetApp.newRichTextValue().setText(display);
+          let offset = 0;
+          fileEntries.forEach(function (e) {
+            const start = offset, end = offset + e.label.length;
+            if (e.url) rt.setLinkUrl(start, end, e.url);
+            offset = end + 1; // +1 換行字元
+          });
+          sheet.getRange(row, 13).setRichTextValue(rt.build());
+        } catch (x) { /* 保留純文字後備 */ }
+      }
     }
 
     return ContentService
