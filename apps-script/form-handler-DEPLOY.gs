@@ -1,41 +1,18 @@
-// 社團法人台灣人車公益協會 — Form Handler（全選貼上覆蓋舊版 → 存檔 → 執行 setupBeachSheet → 管理部署 → 編輯 → 新版本 → 部署）
-const SHEET_ID = '1i3ZnaKGuYpazZHXhZ_KF6-78UcyKp3Euts4u3ruUoMs';
+// 社團法人台灣人車公益協會 — Google Apps Script Form Handler
+// 部署為 Web App: 執行身分「我」，存取「所有人」
+// 建立後取得 URL 填入 HTML 表單的 SCRIPT_URL
+
+const SHEET_ID = '1i3ZnaKGuYpazZHXhZ_KF6-78UcyKp3Euts4u3ruUoMs'; // 填入你的 Google Sheets ID (URL 中的那串)
 const JOIN_SHEET = '入會申請';
 const DONATE_SHEET = '捐款記錄';
 const BEACH_SHEET = '淨灘活動報名';
-const BEACH_HEADERS = ['時間戳記','報名方式','服務單位','姓名','職稱','行動電話','E-mail','參加人數','S','M','L','XL','2XL','3XL','件數合計','匯款金額','匯款末五碼','狀態'];
+const AID_SHEET = '公益申請';      // 公益申請專用分頁（自動建立，與入會/捐款分開）
 
-// 各尺寸 T恤庫存上限（共 113 件）
-const BEACH_STOCK = { S:1, M:9, L:18, XL:45, '2XL':31, '3XL':15 };
-
-// 統計目前各尺寸已售出（讀 I:N 欄，第 9~14 欄）
-function beachSold_(sheet) {
-  const sold = { S:0, M:0, L:0, XL:0, '2XL':0, '3XL':0 };
-  const last = sheet.getLastRow();
-  if (last < 2) return sold;
-  const v = sheet.getRange(2, 9, last - 1, 6).getValues();
-  for (let i = 0; i < v.length; i++) {
-    sold.S    += Number(v[i][0]) || 0;
-    sold.M    += Number(v[i][1]) || 0;
-    sold.L    += Number(v[i][2]) || 0;
-    sold.XL   += Number(v[i][3]) || 0;
-    sold['2XL'] += Number(v[i][4]) || 0;
-    sold['3XL'] += Number(v[i][5]) || 0;
-  }
-  return sold;
-}
-
-// 各尺寸剩餘可報名數
-function beachRemaining_(sheet) {
-  const sold = beachSold_(sheet);
-  const rem = {};
-  for (const k in BEACH_STOCK) rem[k] = BEACH_STOCK[k] - (sold[k] || 0);
-  return rem;
-}
-
-function jsonOut_(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
-}
+// 照片/影片上傳存放位置。留空 = 自動在雲端根目錄建立同名資料夾。
+const AID_FOLDER_ID = '';
+const AID_FOLDER_NAME = '人車故事公益申請_上傳';
+// 審閱者信箱（會把每筆申請的上傳子資料夾分享給這些人檢視）。留空 = 檔案僅擁有者可見。
+const AID_REVIEWER_EMAILS = []; // 例：['carstory.alliance@gmail.com', 'someone@gmail.com']
 
 function doPost(e) {
   try {
@@ -46,122 +23,116 @@ function doPost(e) {
     if (data.type === 'join') {
       const sheet = ss.getSheetByName(JOIN_SHEET) || ss.insertSheet(JOIN_SHEET);
       if (sheet.getLastRow() === 0) {
-        sheet.appendRow(['時間戳記','姓名','電話','Email','LINE ID','公司/品牌','職稱/身份','所在縣市','會員類型','IG 帳號','Facebook 粉專','推薦人','付款方式','匯款後五碼','狀態']);
+        sheet.appendRow([
+          '時間戳記', '姓名', '電話', 'Email', 'LINE ID',
+          '公司/品牌', '職稱/身份', '所在縣市', '會員類型',
+          'IG 帳號', 'Facebook 粉專', '推薦人',
+          '付款方式', '匯款後五碼', '狀態'
+        ]);
       }
-      sheet.appendRow([timestamp,data.name,data.phone,data.email,data.lineId,data.company,data.role,data.city,data.memberType,data.ig||'',data.fb||'',data.referral||'',data.paymentMethod,data.transferCode||'','待審核']);
-      return jsonOut_({ status: 'success' });
+      sheet.appendRow([
+        timestamp,
+        data.name, data.phone, data.email, data.lineId,
+        data.company, data.role, data.city, data.memberType,
+        data.ig || '', data.fb || '', data.referral || '',
+        data.paymentMethod, data.transferCode || '',
+        '待審核'
+      ]);
 
     } else if (data.type === 'donate') {
       const sheet = ss.getSheetByName(DONATE_SHEET) || ss.insertSheet(DONATE_SHEET);
       if (sheet.getLastRow() === 0) {
-        sheet.appendRow(['時間戳記','姓名','電話','Email','身分證/統編','通訊地址','捐款金額','捐款方式','指定用途','是否需要收據','收據抬頭','統一編號','是否匿名','匯款後五碼','備註','狀態']);
+        sheet.appendRow([
+          '時間戳記', '姓名', '電話', 'Email',
+          '身分證/統編', '通訊地址', '捐款金額',
+          '捐款方式', '指定用途', '是否需要收據',
+          '收據抬頭', '統一編號', '是否匿名', '匯款後五碼', '備註', '狀態'
+        ]);
       }
-      sheet.appendRow([timestamp,data.name,data.phone,data.email,data.idNumber||'',data.address||'',data.amount,data.paymentMethod,data.purpose,data.receipt,data.receiptName||'',data.receiptTaxId||'',data.anonymous,data.transferCode,data.note||'','待確認']);
-      return jsonOut_({ status: 'success' });
+      sheet.appendRow([
+        timestamp,
+        data.name, data.phone, data.email,
+        data.idNumber || '', data.address || '', data.amount,
+        data.paymentMethod, data.purpose, data.receipt,
+        data.receiptName || '', data.receiptTaxId || '', data.anonymous, data.transferCode,
+        data.note || '', '待確認'
+      ]);
 
     } else if (data.type === 'beach') {
       const sheet = ss.getSheetByName(BEACH_SHEET) || ss.insertSheet(BEACH_SHEET);
-      if (sheet.getLastRow() === 0) sheet.appendRow(BEACH_HEADERS);
-
-      // 用鎖避免兩人同時送出造成超賣
-      const lock = LockService.getScriptLock();
-      lock.waitLock(20000);
-      try {
-        const want = {
-          S:  Number(data.sizeS)  || 0, M:  Number(data.sizeM)  || 0, L:  Number(data.sizeL)  || 0,
-          XL: Number(data.sizeXL) || 0, '2XL': Number(data['size2XL']) || 0, '3XL': Number(data['size3XL']) || 0
-        };
-        const rem = beachRemaining_(sheet);
-        const shortages = [];
-        for (const k in want) {
-          if (want[k] > rem[k]) shortages.push({ size: k, want: want[k], left: Math.max(0, rem[k]) });
-        }
-        if (shortages.length) {
-          return jsonOut_({ status: 'error', code: 'stock', shortages: shortages, stock: rem });
-        }
+      if (sheet.getLastRow() === 0) {
         sheet.appendRow([
-          timestamp, data.regType||'個人', data.unit||'', data.name, data.title||'',
-          data.phone, data.email, data.groupCount||1,
-          want.S, want.M, want.L, want.XL, want['2XL'], want['3XL'],
-          data.shirtTotal||0, data.amount||'', data.transferCode||'', '待確認'
+          '時間戳記','報名方式','服務單位','姓名','職稱','行動電話','E-mail','參加人數',
+          'S','M','L','XL','2XL','3XL','件數合計','匯款金額','匯款末五碼','狀態'
         ]);
-      } finally {
-        lock.releaseLock();
       }
-      return jsonOut_({ status: 'success' });
+      sheet.appendRow([
+        timestamp, data.regType || '個人', data.unit || '', data.name, data.title || '',
+        data.phone, data.email, data.groupCount || 1,
+        data.sizeS || 0, data.sizeM || 0, data.sizeL || 0, data.sizeXL || 0, data['size2XL'] || 0, data['size3XL'] || 0,
+        data.shirtTotal || 0, data.amount || '', data.transferCode || '', '待確認'
+      ]);
+
+    } else if (data.type === 'aid') {
+      // 人車故事公益計畫申請（維修/保養/翻新/送車）— 專用分頁，自動建立
+      const sheet = ss.getSheetByName(AID_SHEET) || ss.insertSheet(AID_SHEET);
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow([
+          '時間戳記', '申請類型', '姓名', '電話', 'Email', 'LINE ID', '所在縣市',
+          '車輛廠牌/年份', '車況描述', '人車故事', '家庭/經濟狀況',
+          '是否同意公開故事', '照片/影片連結', '狀態'
+        ]);
+      }
+
+      // 上傳照片/影片到雲端，取得審閱連結
+      let links = '';
+      if (data.files && data.files.length) {
+        const folder = getAidFolder_();
+        const subName = timestamp.replace(/[\/:]/g, '-') + '_' + (data.name || '申請者');
+        const sub = folder.createFolder(subName);
+        if (AID_REVIEWER_EMAILS && AID_REVIEWER_EMAILS.length) {
+          try { sub.addViewers(AID_REVIEWER_EMAILS); } catch (x) {}
+        }
+        const urls = [];
+        data.files.forEach(function (f) {
+          try {
+            const blob = Utilities.newBlob(Utilities.base64Decode(f.data), f.mimeType || 'application/octet-stream', f.name || 'file');
+            const file = sub.createFile(blob);
+            urls.push(f.name + ' → ' + file.getUrl());
+          } catch (x) {
+            urls.push('(檔案處理失敗: ' + (f.name || '') + ')');
+          }
+        });
+        links = urls.join('\n');
+      }
+
+      sheet.appendRow([
+        timestamp, data.category || '', data.name || '', data.phone || '', data.email || '',
+        data.lineId || '', data.city || '', data.vehicle || '', data.condition || '',
+        data.story || '', data.situation || '', data.publicConsent || '', links, '待審核'
+      ]);
     }
 
-    return jsonOut_({ status: 'error', message: 'unknown type' });
-  } catch(err) {
-    return jsonOut_({ status: 'error', message: err.toString() });
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
-// GET ?action=stock → 回傳各尺寸剩餘數，供報名頁即時顯示
+// 取得（或建立）上傳資料夾
+function getAidFolder_() {
+  if (AID_FOLDER_ID) return DriveApp.getFolderById(AID_FOLDER_ID);
+  const it = DriveApp.getFoldersByName(AID_FOLDER_NAME);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(AID_FOLDER_NAME);
+}
+
 function doGet(e) {
-  if (e && e.parameter && e.parameter.action === 'stock') {
-    try {
-      const ss = SpreadsheetApp.openById(SHEET_ID);
-      const sheet = ss.getSheetByName(BEACH_SHEET);
-      const rem = sheet ? beachRemaining_(sheet) : Object.assign({}, BEACH_STOCK);
-      for (const k in rem) if (rem[k] < 0) rem[k] = 0;
-      return jsonOut_({ status: 'ok', stock: rem, capacity: BEACH_STOCK });
-    } catch(err) {
-      return jsonOut_({ status: 'error', message: err.toString() });
-    }
-  }
-  return jsonOut_({ status: 'ok', message: '人車故事公益協會 Form API' });
-}
-
-// 一次性：選此函式按「執行」，建立「淨灘活動報名」分頁、表頭與即時統計面板
-// ※ 若分頁已存在但欄位是舊版，請先在試算表刪除該分頁再執行本函式
-function setupBeachSheet() {
-  const ss = SpreadsheetApp.openById(SHEET_ID);
-  const sheet = ss.getSheetByName(BEACH_SHEET) || ss.insertSheet(BEACH_SHEET);
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(BEACH_HEADERS);
-    sheet.getRange(1,1,1,BEACH_HEADERS.length).setFontWeight('bold').setBackground('#1a1a2e').setFontColor('#ffffff');
-    sheet.setFrozenRows(1);
-    sheet.setColumnWidth(1,150);
-    sheet.setColumnWidth(3,150);
-    sheet.setColumnWidth(7,200);
-  }
-  buildBeachStats_(sheet);
-}
-
-// 在報名分頁右側（T、U 欄）建立即時統計 + 各尺寸庫存剩餘，公式自動更新
-function buildBeachStats_(sheet) {
-  const stats = [
-    ['📊 報名統計', ''],
-    ['報名筆數', '=COUNTA(D2:D)'],
-    ['總參加人數', '=SUM(H2:H)'],
-    ['T恤總件數', '=SUM(O2:O)'],
-    ['應收金額合計', '=SUM(P2:P)'],
-    ['', ''],
-    ['尺寸統計（已售 / 上限）', ''],
-    ['S',   '=SUM(I2:I)&" / "&' + BEACH_STOCK.S],
-    ['M',   '=SUM(J2:J)&" / "&' + BEACH_STOCK.M],
-    ['L',   '=SUM(K2:K)&" / "&' + BEACH_STOCK.L],
-    ['XL',  '=SUM(L2:L)&" / "&' + BEACH_STOCK.XL],
-    ['2XL', '=SUM(M2:M)&" / "&' + BEACH_STOCK['2XL']],
-    ['3XL', '=SUM(N2:N)&" / "&' + BEACH_STOCK['3XL']],
-    ['', ''],
-    ['尺寸剩餘（可報名）', ''],
-    ['S 剩',   '=' + BEACH_STOCK.S + '-SUM(I2:I)'],
-    ['M 剩',   '=' + BEACH_STOCK.M + '-SUM(J2:J)'],
-    ['L 剩',   '=' + BEACH_STOCK.L + '-SUM(K2:K)'],
-    ['XL 剩',  '=' + BEACH_STOCK.XL + '-SUM(L2:L)'],
-    ['2XL 剩', '=' + BEACH_STOCK['2XL'] + '-SUM(M2:M)'],
-    ['3XL 剩', '=' + BEACH_STOCK['3XL'] + '-SUM(N2:N)'],
-  ];
-  sheet.getRange(1, 20, stats.length, 2).setValues(stats);
-  sheet.getRange(1, 20, 1, 2).merge().setFontWeight('bold').setFontSize(12)
-       .setBackground('#e8a020').setFontColor('#ffffff').setHorizontalAlignment('center');
-  sheet.getRange(7, 20, 1, 2).merge().setFontWeight('bold')
-       .setBackground('#f2f2f2').setHorizontalAlignment('center');
-  sheet.getRange(15, 20, 1, 2).merge().setFontWeight('bold')
-       .setBackground('#fff3d6').setHorizontalAlignment('center');
-  sheet.getRange(1, 20, stats.length, 1).setFontWeight('bold');
-  sheet.setColumnWidth(20, 160);
-  sheet.setColumnWidth(21, 90);
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: 'ok', message: '人車故事公益協會 Form API' }))
+    .setMimeType(ContentService.MimeType.JSON);
 }

@@ -6,8 +6,7 @@ const SHEET_ID = ''; // 填入你的 Google Sheets ID (URL 中的那串)
 const JOIN_SHEET = '入會申請';
 const DONATE_SHEET = '捐款記錄';
 const BEACH_SHEET = '淨灘活動報名';
-const AID_SHEET = '公益申請';      // 找不到 gid 分頁時的後備分頁名稱
-const AID_SHEET_GID = 599269247;   // 指定寫入的分頁 gid（公益申請）
+const AID_SHEET = '公益申請';      // 公益申請專用分頁（自動建立，與入會/捐款分開）
 
 // 照片/影片上傳存放位置。留空 = 自動在雲端根目錄建立同名資料夾。
 const AID_FOLDER_ID = '';
@@ -75,8 +74,8 @@ function doPost(e) {
       ]);
 
     } else if (data.type === 'aid') {
-      // 人車故事公益計畫申請（維修/保養/翻新/送車）
-      const sheet = getSheetByGid_(ss, AID_SHEET_GID) || ss.getSheetByName(AID_SHEET) || ss.insertSheet(AID_SHEET);
+      // 人車故事公益計畫申請（維修/保養/翻新/送車）— 專用分頁，自動建立
+      const sheet = ss.getSheetByName(AID_SHEET) || ss.insertSheet(AID_SHEET);
       if (sheet.getLastRow() === 0) {
         sheet.appendRow([
           '時間戳記', '申請類型', '姓名', '電話', 'Email', 'LINE ID', '所在縣市',
@@ -123,15 +122,6 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   }
-}
-
-// 依 gid 取得指定分頁
-function getSheetByGid_(ss, gid) {
-  const sheets = ss.getSheets();
-  for (let i = 0; i < sheets.length; i++) {
-    if (sheets[i].getSheetId() === gid) return sheets[i];
-  }
-  return null;
 }
 
 // 取得（或建立）上傳資料夾
