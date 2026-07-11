@@ -170,7 +170,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 @keyframes fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:640px){
-  #nav-home,#nav-about,#nav-members,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
+  #nav-home,#nav-about,#nav-members,#nav-apply,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
   #ham-btn{display:flex !important;}
   .pc-br{display:none !important;}
   #hero-section{min-height:0 !important;padding:20px 20px 28px !important;overflow:hidden !important;}
@@ -215,17 +215,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <!-- ── 導覽列 ── -->
 <style id="nav-glow-style">/* 無框線導覽 + hover 背景光暈（仿 tar-tw.com） */
-nav #nav-home,nav #nav-about,nav #nav-members,nav #nav-donate,nav #nav-sponsors,nav #nav-yt,nav #nav-ig{
+nav #nav-home,nav #nav-about,nav #nav-members,nav #nav-apply,nav #nav-donate,nav #nav-sponsors,nav #nav-yt,nav #nav-ig{
   border:1px solid transparent !important;background:transparent !important;
   padding:9px 12px !important;border-radius:10px;
   transition:background .22s ease,box-shadow .22s ease,color .22s ease !important;
 }
-nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-sponsors:hover{
+nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-apply:hover,nav #nav-donate:hover,nav #nav-sponsors:hover,nav #nav-yt:hover,nav #nav-ig:hover{
   background:rgba(232,160,32,.12) !important;color:#e8a020 !important;box-shadow:0 0 20px rgba(232,160,32,.28);
 }
-nav #nav-donate:hover{background:rgba(109,204,138,.14) !important;box-shadow:0 0 20px rgba(109,204,138,.30);}
-nav #nav-yt:hover{background:rgba(255,80,80,.12) !important;box-shadow:0 0 20px rgba(255,80,80,.28);}
-nav #nav-ig:hover{background:rgba(200,120,240,.14) !important;box-shadow:0 0 20px rgba(200,120,240,.30);}
 </style>
 <nav style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(14px);border-bottom:1px solid #e0e2e8;display:flex;align-items:center;padding:0 16px;gap:0;min-height:52px;">
   <button onClick="{{ gotoHome }}" style="display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900;color:#e8a020;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;padding:10px 12px 10px 0;white-space:nowrap;letter-spacing:1px;flex-shrink:0;">
@@ -236,13 +233,14 @@ nav #nav-ig:hover{background:rgba(200,120,240,.14) !important;box-shadow:0 0 20p
   <a id="nav-about" href="./about/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">認識我們</a>
   <a id="nav-members" href="./members/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">成員介紹</a>
   <div id="nav-spacer" style="flex:1;"></div>
-  <button id="nav-donate" onClick="{{ gotoDonate }}" style="padding:7px 13px;background:rgba(109,204,138,.12);border:1px solid rgba(109,204,138,.4);border-radius:8px;font-size:12px;font-weight:700;color:#6dcc8a;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;margin-left:8px;flex-shrink:0;">捐款支持</button>
+  <a id="nav-apply" href="apply/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">個案投稿</a>
+  <button id="nav-donate" onClick="{{ gotoDonate }}" style="padding:7px 13px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;margin-left:8px;flex-shrink:0;">捐款支持</button>
   <a id="nav-sponsors" href="sponsors/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">✦ 贊助夥伴</a>
-  <a id="nav-yt" href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="padding:7px 12px;background:rgba(255,0,0,.1);border:1px solid rgba(255,80,80,.35);border-radius:8px;font-size:12px;font-weight:700;color:#ff6b6b;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
+  <a id="nav-yt" href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
     YouTube
   </a>
-  <a id="nav-ig" href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="padding:7px 12px;background:rgba(200,120,240,.1);border:1px solid rgba(200,120,240,.35);border-radius:8px;font-size:12px;font-weight:700;color:#c878f0;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
+  <a id="nav-ig" href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;display:inline-flex;align-items:center;gap:5px;">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
     IG
   </a>
@@ -258,10 +256,11 @@ nav #nav-ig:hover{background:rgba(200,120,240,.14) !important;box-shadow:0 0 20p
   <button onClick="{{ navGotoHome }}" style="display:block;padding:10px 0;font-size:14px;color:#555;background:none;border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-align:left;width:100%;">首頁</button>
   <a href="./about/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">認識我們</a>
   <a href="./members/" style="display:block;padding:10px 0;font-size:14px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;text-decoration:none;">成員介紹</a>
-  <button onClick="{{ navGotoDonate }}" style="margin-top:8px;padding:11px 16px;background:rgba(109,204,138,.15);border:1px solid rgba(109,204,138,.4);color:#6dcc8a;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">捐款支持</button>
+  <a href="apply/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.4);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">個案投稿</a>
+  <button onClick="{{ navGotoDonate }}" style="margin-top:8px;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;width:100%;">捐款支持</button>
   <a href="sponsors/" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">✦ 贊助夥伴</a>
-  <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(255,0,0,.08);border:1px solid rgba(255,80,80,.3);color:#ff6b6b;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">▶ YouTube</a>
-  <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(200,120,240,.08);border:1px solid rgba(200,120,240,.3);color:#c878f0;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">📷 Instagram</a>
+  <a href="https://www.youtube.com/@OLDCARNEWLIFE" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">▶ YouTube</a>
+  <a href="https://www.instagram.com/oldcar.newlife/" target="_blank" style="margin-top:8px;display:block;padding:11px 16px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);color:#e8a020;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;text-align:center;">📷 Instagram</a>
 </div>
 
 <!-- ══════════ 首頁 ══════════ -->
@@ -282,6 +281,7 @@ nav #nav-ig:hover{background:rgba(200,120,240,.14) !important;box-shadow:0 0 20p
     <p style="font-size:14px;color:rgba(255,255,255,.9);font-weight:700;line-height:2;margin-bottom:40px;text-shadow:0 1px 6px rgba(0,0,0,.5);">致力協助弱勢族群解決交通與生活困難，讓車圈的熱情與專業<span class="pc-br"><br></span>成為改變社會的善的力量。</p>
     <div id="hero-cta" class="hero-hide-mobile" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
       <button onClick="{{ gotoDonate }}" style="padding:15px 34px;background:linear-gradient(135deg,#e8a020,#d4821a);border:none;border-radius:10px;font-size:15px;font-weight:900;color:#0a0b0f;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;box-shadow:0 4px 20px rgba(232,160,32,.3);">立即捐款</button>
+      <a href="apply/" style="padding:15px 34px;background:rgba(255,255,255,.06);border:1.5px solid rgba(232,160,32,.75);border-radius:10px;font-size:15px;font-weight:900;color:#e8a020;text-decoration:none;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;backdrop-filter:blur(4px);box-shadow:0 4px 20px rgba(0,0,0,.25);">個案投稿</a>
     </div>
   </div>
   <div id="hero-scroll-hint" style="position: absolute; bottom: 28px; left: 50%; animation: bounce 2s infinite; color: #08080899; font-size: 11px; letter-spacing: 2px; text-shadow: 0px 1px 4px #02020265">↓ 了解更多</div>
