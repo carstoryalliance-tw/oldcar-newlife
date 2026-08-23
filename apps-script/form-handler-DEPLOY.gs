@@ -7,6 +7,7 @@ const JOIN_SHEET = '入會申請';
 const DONATE_SHEET = '捐款記錄';
 const BEACH_SHEET = '淨灘活動報名';
 const AID_SHEET = '公益申請';      // 公益申請專用分頁（自動建立，與入會/捐款分開）
+const MEETING_SHEET = '例會報名';   // 例會出席報名（自動建立）
 
 // 照片/影片上傳存放位置。留空 = 自動在雲端根目錄建立同名資料夾。
 const AID_FOLDER_ID = '';
@@ -71,6 +72,21 @@ function doPost(e) {
         data.phone, data.email, data.groupCount || 1,
         data.sizeS || 0, data.sizeM || 0, data.sizeL || 0, data.sizeXL || 0, data['size2XL'] || 0, data['size3XL'] || 0,
         data.shirtTotal || 0, data.amount || '', data.transferCode || '', '待確認'
+      ]);
+
+    } else if (data.type === 'meeting') {
+      // 協會例會出席報名
+      const sheet = ss.getSheetByName(MEETING_SHEET) || ss.insertSheet(MEETING_SHEET);
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow([
+          '時間戳記', '場次', '姓名', '公司/品牌', '職稱', '電話', 'Email',
+          '身份', '出席人數', '餐點需求', '備註', '狀態'
+        ]);
+      }
+      sheet.appendRow([
+        timestamp, data.session || '', data.name || '', data.company || '', data.title || '',
+        data.phone || '', data.email || '', data.identity || '', data.count || 1,
+        data.meal || '', data.note || '', '已報名'
       ]);
 
     } else if (data.type === 'aid') {
