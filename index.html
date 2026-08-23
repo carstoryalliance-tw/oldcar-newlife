@@ -170,7 +170,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 @keyframes fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:640px){
-  #nav-home,#nav-about,#nav-members,#nav-apply,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
+  #nav-home,#nav-about,#nav-members,#nav-videos,#nav-apply,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
   #ham-btn{display:flex !important;}
   .pc-br{display:none !important;}
   #hero-section{min-height:0 !important;padding:20px 20px 28px !important;overflow:hidden !important;}
@@ -215,12 +215,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <!-- ── 導覽列 ── -->
 <style id="nav-glow-style">/* 無框線導覽 + hover 背景光暈（仿 tar-tw.com） */
-nav #nav-home,nav #nav-about,nav #nav-members,nav #nav-apply,nav #nav-donate,nav #nav-sponsors,nav #nav-yt,nav #nav-ig{
+nav #nav-home,nav #nav-about,nav #nav-members,nav #nav-videos,nav #nav-apply,nav #nav-donate,nav #nav-sponsors,nav #nav-yt,nav #nav-ig{
   border:1px solid transparent !important;background:transparent !important;
   padding:9px 12px !important;border-radius:10px;
   transition:background .22s ease,box-shadow .22s ease,color .22s ease !important;
 }
-nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-apply:hover,nav #nav-donate:hover,nav #nav-sponsors:hover,nav #nav-yt:hover,nav #nav-ig:hover{
+nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:hover,nav #nav-apply:hover,nav #nav-donate:hover,nav #nav-sponsors:hover,nav #nav-yt:hover,nav #nav-ig:hover{
   background:rgba(232,160,32,.12) !important;color:#e8a020 !important;box-shadow:0 0 20px rgba(232,160,32,.28);
 }
 </style>
@@ -232,6 +232,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-apply:h
   <a id="nav-home" href="./index.html" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">首頁</a>
   <a id="nav-about" href="./about/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">認識我們</a>
   <a id="nav-members" href="./members/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">成員介紹</a>
+  <a id="nav-videos" href="./videos/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">公益影片</a>
   <div id="nav-spacer" style="flex:1;"></div>
   <a id="nav-apply" href="apply/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">個案投稿</a>
   <button id="nav-donate" onClick="{{ gotoDonate }}" style="padding:7px 13px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;cursor:pointer;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;margin-left:8px;flex-shrink:0;">捐款支持</button>
@@ -335,6 +336,15 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-apply:h
     <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">公益影片</h2>
     <p style="font-size:14px;color:#666;line-height:1.8;margin-top:12px;">每一支影片，都是我們用行動訴說的故事</p>
   </div>
+  <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.55);box-shadow:0 0 40px rgba(232,160,32,.14);">
+    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+      <iframe src="https://www.youtube.com/embed/a_1hTQ62wQA?rel=0&modestbranding=1" title="台灣史上最大公益洗車活動" frameborder="0" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+    </div>
+    <div style="background:#ffffff;padding:16px 22px;display:flex;align-items:center;gap:12px;">
+      <div style="background:#e83d46;color:#fff;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">最新</div>
+      <div><div style="font-size:16px;font-weight:900;margin-bottom:2px;">台灣史上最大公益洗車活動｜一天洗完破百台車</div><div style="font-size:11px;color:#555;">2026.08.22 · 公益活動紀錄</div></div>
+    </div>
+  </div>
   <div style="border-radius:16px;overflow:hidden;margin-bottom:24px;border:1px solid rgba(232,160,32,.4);box-shadow:0 0 40px rgba(232,160,32,.08);">
     <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
       <iframe src="https://www.youtube.com/embed/XT_F3p2LyaU?si=Huy5Br0R-wklOhNR" title="第一個案例" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
@@ -361,6 +371,9 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-apply:h
       <div style="background:#e8a020;color:#0a0b0f;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:1px;flex-shrink:0;">EP 03</div>
       <div><div style="font-size:16px;font-weight:900;margin-bottom:2px;">第三個案例｜宜蘭</div><div style="font-size:11px;color:#555;">OLD CAR × NEW LIFE</div></div>
     </div>
+  </div>
+  <div style="text-align:center;margin-top:8px;">
+    <a href="/videos/" style="display:inline-block;padding:12px 28px;background:#e8a020;color:#0a0b0f;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;">看全部公益影片 →</a>
   </div>
 </section>
 
