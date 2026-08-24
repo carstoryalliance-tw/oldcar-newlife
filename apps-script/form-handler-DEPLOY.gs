@@ -84,10 +84,12 @@ function doPost(e) {
         ]);
       }
       // 電話欄固定純文字，否則 0900… 會被當成數字吃掉開頭的 0
+      // （只設格式不夠：appendRow 仍會把純數字字串轉成數值，所以再加 ' 前綴強制文字）
       sheet.getRange('F:F').setNumberFormat('@');
+      const phoneTxt = data.phone ? "'" + String(data.phone).trim() : '';
       sheet.appendRow([
         timestamp, data.session || '', data.name || '', data.company || '', data.title || '',
-        data.phone || '', data.email || '', data.identity || '', data.count || 1,
+        phoneTxt, data.email || '', data.identity || '', data.count || 1,
         data.meal || '', data.note || '', '已報名'
       ]);
 
