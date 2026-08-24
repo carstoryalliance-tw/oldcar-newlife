@@ -83,6 +83,8 @@ function doPost(e) {
           '身份', '出席人數', '餐點需求', '備註', '狀態'
         ]);
       }
+      // 電話欄固定純文字，否則 0900… 會被當成數字吃掉開頭的 0
+      sheet.getRange('F:F').setNumberFormat('@');
       sheet.appendRow([
         timestamp, data.session || '', data.name || '', data.company || '', data.title || '',
         data.phone || '', data.email || '', data.identity || '', data.count || 1,
