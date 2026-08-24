@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026 第二場例會報名 | 社團法人台灣人車公益協會</title>
-<meta name="description" content="2026 第二場例會｜9/1（二）13:00-15:00 卓越凹痕修復中心 桃園平鎮店。主講：馬成傑 Jay《我不會寫程式，但公司系統是我寫的》。參與費用 $500／位含餐費，線上報名。">
+<meta name="description" content="2026 第二場例會｜9/1（二）13:00-15:00 卓越凹痕修復中心 桃園平鎮店。主講：馬成傑 Jay《我不會寫程式，但公司系統是我寫的》。參與費用 $500／位（含點心飲料），線上報名。">
 <meta name="keywords" content="人車公益協會例會,協會例會報名,馬成傑,卓越凹痕修復中心,桃園平鎮,AI 導入,車圈交流">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://oldcarnewlife.org.tw/meeting/">
@@ -96,6 +96,14 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
 .f textarea{min-height:84px;resize:vertical}
 .fee-box{background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.35);border-radius:12px;padding:16px 18px;margin-bottom:20px;font-size:13.5px;line-height:1.9;color:#5a4a2a}
 .fee-box b{color:#b4761a}
+.acct{background:#fff;border:1px dashed rgba(232,160,32,.55);border-radius:12px;padding:18px 20px 16px;margin-bottom:22px}
+.acct h4{font-size:14px;font-weight:900;margin-bottom:12px;color:#333}
+.acct-row{display:flex;gap:12px;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px}
+.acct-row:last-of-type{border-bottom:none}
+.acct-row .k{flex:0 0 54px;color:var(--muted);font-size:13px}
+.acct-row .v{font-weight:700;letter-spacing:.5px}
+.acct-note{margin-top:10px;font-size:12px;color:var(--muted)}
+.hint{margin-top:6px;font-size:11.5px;color:var(--dim)}
 .submit{width:100%;padding:15px;background:var(--gold);color:#0a0b0f;border:none;border-radius:11px;font-size:16px;font-weight:900;
   cursor:pointer;font-family:'Noto Sans TC',sans-serif;margin-top:6px}
 .submit:hover{background:var(--gold-light)}
@@ -151,7 +159,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
       <div class="when">
         <div>📅 <b>9/1（二）</b> 13:00-15:00</div>
         <div>📍 <b>桃園平鎮</b> 卓越凹痕修復中心</div>
-        <div>💰 <b>$500</b>／位（含餐費）</div>
+        <div>💰 <b>$500</b>／位（含點心飲料）</div>
       </div>
       <div class="hero-cta">
         <a class="btn gold" href="#signup">立即線上報名</a>
@@ -231,8 +239,16 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
   <div class="sec-head" id="signup"><span class="kicker">SIGN UP</span><h2>線上報名</h2><div class="rule"></div></div>
   <div class="form-sec">
     <div class="fee-box">
-      參與費用 <b>$500／位（含餐費）</b>，現場繳交。<br>
-      為統計餐點與座位，請於 <b>8/28（四）前</b> 完成報名；報名後若不克出席，請提前告知協會，以免造成餐點浪費。
+      參與費用 <b>$500／位</b>，現場備有<b>點心與飲料</b>。<br>
+      請於 <b>8/28（四）前</b> 完成報名並匯款，以利統計點心與座位；報名後若不克出席，請提前告知協會。
+    </div>
+
+    <div class="acct">
+      <h4>💳 報名費匯款帳戶</h4>
+      <div class="acct-row"><span class="k">銀行</span><span class="v">國泰銀行 新泰分行</span></div>
+      <div class="acct-row"><span class="k">帳號</span><span class="v">214 · 03-50107-18</span></div>
+      <div class="acct-row"><span class="k">戶名</span><span class="v">社團法人台灣人車公益協會</span></div>
+      <div class="acct-note">匯款後請在下方填寫金額與帳號末五碼，方便協會對帳。</div>
     </div>
 
     <form id="meetingForm">
@@ -274,6 +290,12 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
           </select>
         </div>
       </div>
+      <div class="frow">
+        <div class="f"><label>匯款金額<i>*</i></label><input type="text" name="amount" id="amount" required placeholder="500">
+          <div class="hint">依出席人數自動帶入（每位 $500），可自行修改</div></div>
+        <div class="f"><label>匯款帳號末五碼<i>*</i></label><input type="text" name="transferCode" required maxlength="5" placeholder="12345" inputmode="numeric">
+          <div class="hint">方便協會對帳，感謝配合</div></div>
+      </div>
       <div class="f" style="margin-bottom:16px;"><label>備註</label><textarea name="note" placeholder="想先問的問題、同行夥伴名單、其他需求…"></textarea></div>
       <input type="hidden" name="session" value="2026 第二場例會 · 9/1 桃園平鎮">
       <button type="submit" class="submit" id="submitBtn">送出報名</button>
@@ -282,8 +304,8 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
     <div class="success" id="successScreen">
       <div class="ic">✅</div>
       <h3>報名完成，9/1 見！</h3>
-      <p>我們已收到你的報名資料。<br>
-      活動前協會會再以電話或 LINE 與你確認出席人數。<br>
+      <p>我們已收到你的報名資料，協會會核對匯款後與你確認。<br>
+      活動前會再以電話或 LINE 聯繫，現場備有點心與飲料。<br>
       地點：卓越凹痕修復中心 桃園平鎮店（桃園市平鎮區興隆路 230 號）</p>
       <p style="margin-top:20px;"><a class="btn gold" href="../">回到協會首頁</a></p>
     </div>
@@ -322,6 +344,15 @@ function showToast(msg){
   clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),3800);
 }
 
+// 出席人數 × 500 自動帶入匯款金額
+(function(){
+  const cnt=document.querySelector('select[name="count"]'), amt=document.getElementById('amount');
+  if(!cnt||!amt) return;
+  const sync=()=>{ const n=parseInt(cnt.value,10); if(!isNaN(n)) amt.value=n*500; };
+  sync();
+  cnt.addEventListener('change', sync);
+})();
+
 document.getElementById('meetingForm').addEventListener('submit', async function(e){
   e.preventDefault();
   const btn=document.getElementById('submitBtn');
@@ -335,6 +366,7 @@ document.getElementById('meetingForm').addEventListener('submit', async function
     if(json.status==='success'){
       e.target.style.display='none';
       document.querySelector('.fee-box').style.display='none';
+      const ac=document.querySelector('.acct'); if(ac) ac.style.display='none';
       document.getElementById('successScreen').style.display='block';
       window.scrollTo({top:document.getElementById('signup').offsetTop-40,behavior:'smooth'});
     } else { throw new Error(json.message||'fail'); }

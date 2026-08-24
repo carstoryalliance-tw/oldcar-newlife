@@ -80,7 +80,7 @@ function doPost(e) {
       if (sheet.getLastRow() === 0) {
         sheet.appendRow([
           '時間戳記', '場次', '姓名', '公司/品牌', '職稱', '電話', 'Email',
-          '身份', '出席人數', '餐點需求', '備註', '狀態'
+          '身份', '出席人數', '餐點需求', '匯款金額', '匯款末五碼', '備註', '狀態'
         ]);
       }
       // 電話欄固定純文字，否則 0900… 會被當成數字吃掉開頭的 0
@@ -90,7 +90,8 @@ function doPost(e) {
       sheet.appendRow([
         timestamp, data.session || '', data.name || '', data.company || '', data.title || '',
         phoneTxt, data.email || '', data.identity || '', data.count || 1,
-        data.meal || '', data.note || '', '已報名'
+        data.meal || '', data.amount || '', data.transferCode ? "'" + String(data.transferCode).trim() : '',
+        data.note || '', '待確認匯款'
       ]);
 
     } else if (data.type === 'aid') {
