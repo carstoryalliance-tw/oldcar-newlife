@@ -146,6 +146,8 @@
 <style>
 #impact-map{height:560px;position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 4px 24px rgba(0,0,0,.10);}
 .leaflet-container{background:#d4e5f0;}
+.leaflet-tile-pane{filter:grayscale(.92) brightness(1.08) contrast(.9) saturate(.5);opacity:.9;}
+.map-credit{margin-top:8px;font-size:10px;color:#9aa0a8;letter-spacing:.3px;}
 @keyframes pulse-orange{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
 .custom-popup .leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0;}
 .custom-popup .leaflet-popup-content{margin:0;}
@@ -295,7 +297,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
   <div style="text-align:center;margin-bottom:40px;">
     <div style="display:inline-block;background:#e8a020;color:#0a0b0f;font-size:10px;font-weight:900;padding:4px 14px;border-radius:3px;letter-spacing:2px;margin-bottom:16px;">IMPACT MAP</div>
     <h2 style="font-size:clamp(22px,4vw,34px);font-weight:900;">足跡持續延伸</h2>
-    <p style="font-size:14px;color:#666;line-height:1.8;margin-top:12px;">每一個標點，都是一個真實改變的故事</p>
+    <p style="font-size:14px;color:#666;line-height:1.8;margin-top:12px;">每一個標點，都是一個真實改變的故事<br>橘色是老車翻新個案，綠色是公益活動辦過的地方</p>
     <div style="margin-top:20px;display:inline-flex;align-items:center;gap:10px;background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.3);border-radius:30px;padding:10px 24px;">
       <span style="font-size:28px;font-weight:900;color:#e8a020;">3</span>
       <span style="font-size:13px;color:#666;line-height:1.8;">已累積幫助<br><strong style="color:#1a1a2e;">個案 · 桃園 · 永和 · 宜蘭</strong></span>
@@ -304,6 +306,15 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
   <div style="display:flex;flex-direction:column;gap:24px;">
     <div style="position:relative;height:480px;">
       <div id="impact-map" style="height:100%;"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:-10px;">
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#666;">
+        <i style="width:11px;height:11px;border-radius:50%;background:#e8a020;border:2px solid #fff;box-shadow:0 0 0 1px #e8a02066;display:inline-block;"></i>老車翻新個案
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#666;">
+        <i style="width:11px;height:11px;border-radius:50%;background:#4aab6a;border:2px solid #fff;box-shadow:0 0 0 1px #4aab6a66;display:inline-block;"></i>公益活動地點
+      </span>
+      <span class="map-credit">地圖資料 © OpenStreetMap 貢獻者</span>
     </div>
     <div id="case-video-panel" style="background:#f5f6f8;border-radius:14px;border:1px solid #e0e2e8;overflow:hidden;display:flex;flex-direction:column;min-height:240px;">
       <div id="case-video-placeholder" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;">
@@ -909,6 +920,14 @@ class Component extends DCLogic {
       { lat: 24.7021, lng: 121.7378, ep: 'EP 03', loc: '宜蘭', title: '對父親的念想！讓25年老車重生', sub: '宜蘭縣', desc: '一台陪伴了二十五年的老車，承載著對父親最深的思念。人車故事公益聯盟讓這份跨越時間的情感，透過老車翻新得以延續傳承。', vid: 'UdIXadkrXTs?si=XOGKMQ_IdtrIMDju' }
     ];
 
+    // 公益活動地點（與個案不同色，滑過顯示名稱）
+    const EVENTS = [
+      { lat: 25.0629, lng: 121.4393, name: '公益洗車活動', place: 'A8 旋風洗車中心', date: '2026.04.21',
+        addr: '新北市泰山區楓樹里新五路一段 108-6 號' },
+      { lat: 25.1175, lng: 121.2420, name: '公益淨灘・守護海洋', place: '竹圍漁港', date: '2026.07.21',
+        addr: '桃園市大園區竹圍漁港' }
+    ];
+
     function showVideo(i) {
       const c = CASES[i];
       const ph = document.getElementById('case-video-placeholder');
@@ -930,11 +949,18 @@ class Component extends DCLogic {
       if (el._mapInit) return; el._mapInit = true;
       if (typeof L === 'undefined') { el._mapInit = false; return; }
       _map = L.map(el, { zoomControl: false, scrollWheelZoom: false, attributionControl: false, dragging: false, doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomSnap: 0.1 });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 14, minZoom: 5, subdomains: 'abcd' }).addTo(_map);
+      L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', { maxZoom: 14, minZoom: 5, crossOrigin: true }).addTo(_map);
       _map.fitBounds([[21.8, 119.8], [25.4, 122.2]], { padding: [28, 28] });
       CASES.forEach((c, i) => {
         const html = '<div style="position:relative;width:32px;height:32px;cursor:pointer;"><div style="position:absolute;inset:0;border-radius:50%;border:2.5px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8a020;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);position:absolute;top:8px;left:8px;"></div></div>';
         L.marker([c.lat, c.lng], { icon: L.divIcon({ className: '', html, iconSize: [28, 28], iconAnchor: [14, 14] }) }).addTo(_map).on('click', () => showVideo(i));
+      });
+      EVENTS.forEach((e) => {
+        const h = '<div style="position:relative;width:30px;height:30px;"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid #4aab6a;animation:pulse-orange 2.6s ease-out infinite;"></div><div style="width:14px;height:14px;border-radius:50%;background:#4aab6a;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);position:absolute;top:8px;left:8px;"></div></div>';
+        L.marker([e.lat, e.lng], { icon: L.divIcon({ className: '', html: h, iconSize: [26, 26], iconAnchor: [13, 13] }) })
+          .addTo(_map)
+          .bindTooltip('<b>' + e.name + '</b><br>' + e.place + '　' + e.date,
+                       { direction: 'top', offset: [0, -12], opacity: 1 });
       });
       setTimeout(() => { if (_map) _map.invalidateSize(); }, 200);
       setTimeout(() => { if (_map) _map.invalidateSize(); }, 800);
