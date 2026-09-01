@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>孤兒院用車整理專案 · 募資 — 社團法人台灣人車公益協會</title>
+<meta name="description" content="孩子的車該有人照顧。台灣人車公益協會發起孤兒院用車整理專案募資，目標 15 萬元，技術與工時由協會成員無償投入，募款全數用於材料與零件。">
+<meta property="og:title" content="孤兒院用車整理專案 · 募資｜台灣人車公益協會">
+<meta property="og:description" content="目標 15 萬元。技術我們出，材料需要你。">
+<meta property="og:image" content="https://oldcarnewlife.org.tw/uploads/DSC08251.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#e8a020;--gold2:#d97b1e;--green:#4aab6a;--bg:#f8f9fa;--card:#fff;
+  --border:#e3e5ea;--text:#1a1a2e;--muted:#5c5f66;--dim:#93969d}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);
+  padding-bottom:60px;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px}
+
+/* hero */
+.hero{position:relative;min-height:380px;display:flex;align-items:flex-end;
+  background:#111 url('../uploads/DSC08251.jpg') center 38%/cover;color:#fff}
+.hero::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,14,.62) 0%,rgba(10,10,14,.35) 40%,rgba(10,10,14,.92) 100%)}
+.hero .in{position:relative;z-index:2;width:100%;padding:34px 0 74px}
+.kicker{display:inline-block;background:var(--gold);color:#14141c;font-size:12px;font-weight:900;
+  letter-spacing:2px;padding:6px 14px;border-radius:20px}
+.hero h1{margin-top:14px;font-size:38px;font-weight:900;line-height:1.25;letter-spacing:1px;text-shadow:0 2px 18px rgba(0,0,0,.5)}
+.hero p{margin-top:12px;font-size:15px;line-height:1.9;color:#e6e7ea;max-width:640px}
+.backlink{position:absolute;top:16px;left:0;right:0;z-index:3}
+.backlink a{color:#fff;text-decoration:none;font-size:13px;opacity:.85;
+  background:rgba(0,0,0,.32);padding:6px 13px;border-radius:16px}
+
+/* 進度條 */
+.prog-card{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  box-shadow:0 10px 34px rgba(20,20,40,.09);padding:26px 24px;margin-top:-46px;position:relative;z-index:4}
+.prog-top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.raised{font-size:13px;color:var(--muted)}
+.raised b{display:block;font-size:38px;font-weight:900;color:var(--gold2);line-height:1.15;
+  font-variant-numeric:tabular-nums}
+.goal{text-align:right;font-size:13px;color:var(--muted);line-height:1.9}
+.goal b{color:var(--text);font-size:16px}
+.bar{margin-top:16px;height:16px;border-radius:10px;background:#eceef2;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:10px;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1.1s cubic-bezier(.2,.7,.3,1)}
+.prog-foot{margin-top:12px;display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);flex-wrap:wrap;gap:8px}
+.prog-foot .pct{color:var(--gold2);font-weight:900;font-size:14px}
+.btn-row{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{flex:1;min-width:150px;text-align:center;text-decoration:none;padding:13px 18px;border-radius:11px;
+  font-weight:900;font-size:15px;letter-spacing:1px;border:0;cursor:pointer;font-family:inherit}
+.btn.primary{background:var(--gold2);color:#fff}
+.btn.ghost{background:#fff;color:var(--text);border:1.5px solid var(--border)}
+
+/* 區塊 */
+section{margin-top:34px}
+h2{font-size:22px;font-weight:900;letter-spacing:1px;display:flex;align-items:center;gap:10px}
+h2::before{content:'';width:5px;height:20px;background:var(--gold);border-radius:3px}
+.lead{margin-top:12px;font-size:15px;line-height:2;color:var(--muted)}
+.lead b{color:var(--text)}
+.cards{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.c{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+.c h3{font-size:16px;font-weight:900;margin-bottom:8px}
+.c p{font-size:13.5px;line-height:1.9;color:var(--muted)}
+
+/* 用途表 */
+.use{margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.use .r{display:flex;justify-content:space-between;gap:12px;padding:13px 20px;border-bottom:1px solid var(--border);font-size:14px}
+.use .r:last-child{border-bottom:0}
+.use .r span{color:var(--muted)}
+.use .r b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.use .r.sum{background:#fdf7ef;font-weight:900}
+.use .r.sum span{color:var(--text)}
+.use .r.sum b{color:var(--gold2)}
+.usenote{margin-top:10px;font-size:12.5px;color:var(--dim);line-height:1.9}
+
+/* 照片 */
+.gal{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.gal figure{margin:0;border-radius:12px;overflow:hidden;background:#ddd;position:relative}
+.gal img{width:100%;height:150px;object-fit:cover}
+.gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 12px 8px;color:#fff;font-size:11.5px;
+  background:linear-gradient(transparent,rgba(0,0,0,.72))}
+.photo-note{margin-top:10px;font-size:12.5px;color:var(--dim);background:#fff;border:1px dashed var(--border);
+  border-radius:10px;padding:11px 14px;line-height:1.8}
+
+/* 表單 */
+.form{margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px 20px}
+.fg{margin-bottom:15px}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+label .req{color:#d94f4f}
+input,select,textarea{width:100%;padding:12px 13px;border:1.5px solid var(--border);border-radius:10px;
+  font-family:inherit;font-size:14.5px;background:#fff;color:var(--text)}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--gold)}
+textarea{min-height:78px;resize:vertical}
+.hint{margin-top:6px;font-size:11.5px;color:var(--dim);line-height:1.7}
+.amt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px}
+.amt button{flex:1;min-width:82px;padding:11px 6px;border:1.5px solid var(--border);background:#fff;
+  border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;color:var(--text)}
+.amt button.on{background:var(--gold2);border-color:var(--gold2);color:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.two{grid-template-columns:1fr}.hero h1{font-size:29px}}
+.acct{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.ab{background:#fff;border:1px solid var(--border);border-left:4px solid var(--green);border-radius:12px;padding:15px 18px}
+.ab.g{border-left-color:var(--gold)}
+.ab h4{font-size:14px;margin-bottom:9px}
+.ab .row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:4px 0;color:var(--muted)}
+.ab .row b{color:var(--text);font-weight:700}
+
+/* 芳名 */
+.names{margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:8px 4px}
+.nm{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #f0f1f4}
+.nm:last-child{border-bottom:0}
+.nm .who{font-size:14px;font-weight:700}
+.nm .msg{margin-top:4px;font-size:12.5px;color:var(--muted);line-height:1.7}
+.nm .amt2{font-size:14px;font-weight:900;color:var(--gold2);white-space:nowrap;font-variant-numeric:tabular-nums}
+.empty{padding:26px 16px;text-align:center;color:var(--dim);font-size:13.5px;line-height:1.9}
+footer{margin-top:44px;text-align:center;font-size:12px;color:var(--dim);line-height:2}
+footer a{color:var(--muted)}
+.ok{margin-top:14px;padding:16px;border-radius:12px;background:#eefaf1;border:1px solid #bfe6cb;
+  color:#256b3f;font-size:14px;line-height:1.9;display:none}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="backlink wrap"><a href="../">← 返回協會首頁</a></div>
+  <div class="in">
+    <div class="wrap">
+      <span class="kicker">FUNDRAISING · 專案募資</span>
+      <h1>孩子每天坐的那台車，<br>該有人好好照顧它</h1>
+      <p>孤兒院・教會用車整理專案。技術和工時，協會成員自己扛；材料和零件，需要你一起。目標 15 萬元。</p>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="prog-card">
+    <div class="prog-top">
+      <div class="raised">目前募得<b id="raised">NT$ 0</b></div>
+      <div class="goal">募資目標<br><b id="goal">NT$ 150,000</b></div>
+    </div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="prog-foot">
+      <div>已完成 <span class="pct" id="pct">0%</span>　·　<span id="donors">0</span> 位善心夥伴</div>
+      <div id="stamp">進度以財務審核通過的款項為準</div>
+    </div>
+    <div class="btn-row">
+      <a class="btn primary" href="#form">我要贊助這個專案</a>
+      <a class="btn ghost" href="#use">看看錢會怎麼用</a>
+    </div>
+  </div>
+
+  <section>
+    <h2>這件事是這樣開始的</h2>
+    <p class="lead">
+      機構每天要接送孩子上下學、看醫生、參加活動，靠的就是那一台車。可是<b>維修保養從來排不進預算</b>——
+      有錢先給孩子吃、給孩子讀書，車子只要還能發動，就繼續開。
+    </p>
+    <p class="lead">
+      我們這群人剛好會的就是這件事。<b>協會成員裡有鈑金、烤漆、塗裝、包膜、鍍膜、內裝、凹痕修復</b>，
+      一台車從頭到尾，我們自己就能一條龍做完。技術跟工時我們無償投入，
+      但材料、零件、耗材要花錢——這就是這次募資的全部用途。
+    </p>
+  </section>
+
+  <section>
+    <h2>我們會做什麼</h2>
+    <div class="cards">
+      <div class="c"><h3>安全先顧好</h3><p>煞車、輪胎、電瓶、燈系、雨刷、底盤——載孩子的車，這些不能將就。</p></div>
+      <div class="c"><h3>把外觀救回來</h3><p>凹痕修復、鈑金烤漆、除鏽處理，讓車看起來體面，孩子坐上去也有面子。</p></div>
+      <div class="c"><h3>內裝徹底清潔</h3><p>座椅、地毯、冷氣系統深度清潔除臭，孩子每天坐的空間要乾淨。</p></div>
+      <div class="c"><h3>做完還要顧</h3><p>交車不是結束。後續回訪、定期保養，協會成員接手照顧下去。</p></div>
+    </div>
+  </section>
+
+  <section id="use">
+    <h2>15 萬會這樣用</h2>
+    <div class="use">
+      <div class="r"><span>鈑金・烤漆・除鏽材料</span><b>NT$ 60,000</b></div>
+      <div class="r"><span>引擎與底盤保養、機油與耗材</span><b>NT$ 35,000</b></div>
+      <div class="r"><span>輪胎、電瓶、燈具等消耗零件</span><b>NT$ 25,000</b></div>
+      <div class="r"><span>內裝清潔、冷氣除臭、美容耗材</span><b>NT$ 15,000</b></div>
+      <div class="r"><span>車輛接送、保險與雜支</span><b>NT$ 15,000</b></div>
+      <div class="r sum"><span>合計</span><b>NT$ 150,000</b></div>
+    </div>
+    <p class="usenote">
+      ＊ 技師工時、技術與場地由協會成員無償投入，不從募款支出。<br>
+      ＊ 所有收支建立可追蹤帳目，於協會例會與官網公開報告；捐款收據由協會統一開立，可用於個人及企業所得稅列舉扣除。<br>
+      ＊ 若募得金額超過目標，超出部分將投入協會下一件公益個案；若未達目標，仍會依實際金額調整施作範圍，優先完成安全相關項目。
+    </p>
+  </section>
+
+  <section>
+    <h2>我們一直都在做這些事</h2>
+    <div class="gal">
+      <figure><img src="../uploads/DSC08251.jpg" alt="協會公益洗車活動大合照" loading="lazy"><figcaption>公益洗車活動．全台車圈職人一起下場</figcaption></figure>
+      <figure><img src="../uploads/DSC08180.jpg" alt="協會成員在公益活動現場" loading="lazy"><figcaption>不收一塊錢，一天洗完破百台車</figcaption></figure>
+      <figure><img src="../uploads/DSC08324.jpg" alt="協會核心成員" loading="lazy"><figcaption>這群人，就是要動手的那群人</figcaption></figure>
+    </div>
+    <p class="photo-note">📷 這台車與機構的實際照片，會在專案啟動、取得機構同意後補上。<b>依照我們一貫的原則，機構的孩子不會露臉</b>。</p>
+  </section>
+
+  <section id="form">
+    <h2>贊助這個專案</h2>
+    <p class="lead">先匯款，再填下面這張表，讓我們對得到帳。財務核對無誤後，你的贊助就會計入上面的進度條。</p>
+
+    <div class="acct">
+      <div class="ab"><h4>🏦 永豐銀行（新莊副都心）</h4>
+        <div class="row"><span>銀行代碼</span><b>807</b></div>
+        <div class="row"><span>帳號</span><b>132-01-80110-2656</b></div>
+        <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
+      </div>
+      <div class="ab g"><h4>📮 郵政劃撥</h4>
+        <div class="row"><span>劃撥帳號</span><b>50485386</b></div>
+        <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
+      </div>
+    </div>
+
+    <form class="form" id="f">
+      <div class="two">
+        <div class="fg"><label>姓名 <span class="req">*</span></label>
+          <input type="text" name="name" required placeholder="請填真實姓名，方便對帳"></div>
+        <div class="fg"><label>公司／單位</label>
+          <input type="text" name="company" placeholder="個人贊助可留空"></div>
+      </div>
+      <div class="two">
+        <div class="fg"><label>行動電話 <span class="req">*</span></label>
+          <input type="tel" name="phone" required placeholder="09xxxxxxxx"></div>
+        <div class="fg"><label>Email</label>
+          <input type="email" name="email" placeholder="收據與進度回報會寄到這裡"></div>
+      </div>
+
+      <div class="fg">
+        <label>贊助金額 <span class="req">*</span></label>
+        <div class="amt">
+          <button type="button" data-v="1000">1,000</button>
+          <button type="button" data-v="3000">3,000</button>
+          <button type="button" data-v="5000">5,000</button>
+          <button type="button" data-v="10000">10,000</button>
+          <button type="button" data-v="30000">30,000</button>
+        </div>
+        <input type="number" name="amount" id="amount" required min="100" step="100" placeholder="也可以自己填，單位：元">
+      </div>
+
+      <div class="fg"><label>匯款帳號末五碼 <span class="req">*</span></label>
+        <input type="text" name="transferCode" required maxlength="5" placeholder="例如 12345">
+        <div class="hint">財務會用這五碼核對入帳。核對通過後，進度條就會往前跑。</div>
+      </div>
+
+      <div class="two">
+        <div class="fg"><label>芳名要怎麼呈現 <span class="req">*</span></label>
+          <select name="display" id="display" required>
+            <option value="">請選擇</option>
+            <option value="公開姓名">公開我的姓名</option>
+            <option value="公開公司名">公開公司／品牌名稱</option>
+            <option value="匿名">匿名（顯示為「善心人士」）</option>
+          </select></div>
+        <div class="fg"><label>公開時要顯示的名稱</label>
+          <input type="text" name="displayName" id="displayName" placeholder="例：卓越凹痕修復中心 馬成傑">
+          <div class="hint">選匿名可留空。</div></div>
+      </div>
+
+      <div class="fg"><label>想對機構或孩子說的話</label>
+        <textarea name="message" placeholder="會公開在芳名錄，也會轉達給機構（選填）"></textarea></div>
+
+      <div class="two">
+        <div class="fg"><label>需要收據嗎</label>
+          <select name="receipt">
+            <option value="需要（個人）">需要（個人）</option>
+            <option value="需要（公司）">需要（公司）</option>
+            <option value="不需要">不需要</option>
+          </select></div>
+        <div class="fg"><label>收據抬頭</label>
+          <input type="text" name="receiptTitle" placeholder="公司抬頭或個人姓名"></div>
+      </div>
+      <div class="two">
+        <div class="fg"><label>統一編號</label>
+          <input type="text" name="taxId" maxlength="8" placeholder="公司收據才需要"></div>
+        <div class="fg"><label>備註</label>
+          <input type="text" name="note" placeholder="其他想告訴我們的事"></div>
+      </div>
+
+      <button class="btn primary" type="submit" id="sb" style="width:100%">送出贊助資料</button>
+      <div class="ok" id="ok"></div>
+    </form>
+  </section>
+
+  <section>
+    <h2>感謝這些人</h2>
+    <div class="names" id="names">
+      <div class="empty">載入中…</div>
+    </div>
+  </section>
+
+  <footer>
+    社團法人台灣人車公益協會　·　OLD CAR × NEW LIFE<br>
+    內政部核准立案 台內團字第 1140047990 號　·　社團法人登記證 115 證社字第 7 號<br>
+    <a href="../">協會首頁</a>　·　<a href="../videos/">公益影片</a>　·　<a href="../about/">認識我們</a>
+  </footer>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Fx1--3AnuZKBQ33OmN50jNqOlZUvSy-PVQmIwjBRijIgnJ9i7_BF-3mnqSY87tND/exec';
+const nf = n => 'NT$ ' + Number(n || 0).toLocaleString('en-US');
+
+// 金額快捷鈕
+document.querySelectorAll('.amt button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.amt button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById('amount').value = b.dataset.v;
+  });
+});
+document.getElementById('amount').addEventListener('input', () => {
+  document.querySelectorAll('.amt button').forEach(x => x.classList.remove('on'));
+});
+// 匿名時不需要顯示名稱
+document.getElementById('display').addEventListener('change', e => {
+  const dn = document.getElementById('displayName');
+  if (e.target.value === '匿名') { dn.value = ''; dn.disabled = true; }
+  else { dn.disabled = false; }
+});
+
+// 讀進度
+async function loadStats() {
+  try {
+    const r = await fetch(SCRIPT_URL + '?stat=fund', { cache: 'no-store' });
+    const d = await r.json();
+    const goal = d.goal || 150000, raised = d.raised || 0;
+    const pct = Math.min(100, Math.round(raised / goal * 1000) / 10);
+    document.getElementById('raised').textContent = nf(raised);
+    document.getElementById('goal').textContent = nf(goal);
+    document.getElementById('donors').textContent = d.donors || 0;
+    document.getElementById('pct').textContent = pct + '%';
+    setTimeout(() => { document.getElementById('bar').style.width = pct + '%'; }, 260);
+
+    const box = document.getElementById('names');
+    if (!d.list || !d.list.length) {
+      box.innerHTML = '<div class="empty">還沒有已完成核對的贊助紀錄。<br>你可以是第一個。</div>';
+    } else {
+      box.innerHTML = d.list.map(x =>
+        '<div class="nm"><div><div class="who">' + esc(x.name) + '</div>' +
+        (x.msg ? '<div class="msg">「' + esc(x.msg) + '」</div>' : '') +
+        '</div><div class="amt2">' + nf(x.amount) + '</div></div>'
+      ).join('');
+    }
+  } catch (err) {
+    document.getElementById('stamp').textContent = '進度資料載入失敗，請稍後重新整理';
+    document.getElementById('names').innerHTML =
+      '<div class="empty">芳名錄暫時讀取不到，請稍後再試。</div>';
+  }
+}
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+loadStats();
+
+// 送出
+document.getElementById('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = document.getElementById('sb');
+  btn.disabled = true; btn.textContent = '送出中…';
+  const data = Object.fromEntries(new FormData(e.target));
+  data.type = 'fund';
+  try {
+    await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+    e.target.style.display = 'none';
+    const ok = document.getElementById('ok');
+    ok.style.display = 'block';
+    ok.innerHTML = '✅ <b>收到了，謝謝你。</b><br>' +
+      '財務會用你填的末五碼核對入帳，核對完成後，你的贊助就會出現在上面的進度條與芳名錄。<br>' +
+      '需要收據的話，我們會另外跟你聯絡。';
+    ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } catch (err) {
+    alert('送出失敗，請檢查網路後再試一次，或直接聯絡協會。');
+    btn.disabled = false; btn.textContent = '送出贊助資料';
+  }
+});
+</script>
+</body>
+</html>

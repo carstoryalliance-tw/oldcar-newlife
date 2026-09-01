@@ -8,6 +8,9 @@ const DONATE_SHEET = '捐款記錄';
 const BEACH_SHEET = '淨灘活動報名';
 const AID_SHEET = '公益申請';      // 公益申請專用分頁（自動建立，與入會/捐款分開）
 const MEETING_SHEET = '例會報名';   // 例會出席報名（自動建立）
+const FUND_SHEET = '孤兒院募資';    // 孤兒院用車整理專案募資（自動建立）
+const FUND_GOAL = 150000;          // 募資目標金額
+const FUND_OK = '已通過';           // 審核狀態填這三個字，進度條才會計入
 
 // 照片/影片上傳存放位置。留空 = 自動在雲端根目錄建立同名資料夾。
 const AID_FOLDER_ID = '';
@@ -94,6 +97,30 @@ function doPost(e) {
         data.note || '', '待確認匯款'
       ]);
 
+    } else if (data.type === 'fund') {
+      // 孤兒院用車整理專案 · 募資捐款
+      const sheet = ss.getSheetByName(FUND_SHEET) || ss.insertSheet(FUND_SHEET);
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow([
+          '時間戳記', '姓名', '公司/單位', '電話', 'Email', '捐款金額', '匯款末五碼',
+          '芳名公開方式', '公開顯示名稱', '想說的話', '收據需求', '收據抬頭', '統一編號',
+          '備註', '審核狀態'
+        ]);
+        sheet.setFrozenRows(1);
+      }
+      sheet.getRange('D:D').setNumberFormat('@');
+      sheet.getRange('G:G').setNumberFormat('@');
+      const amount = Number(String(data.amount || '').replace(/[^0-9.]/g, '')) || 0;
+      sheet.appendRow([
+        timestamp, data.name || '', data.company || '',
+        data.phone ? "'" + String(data.phone).trim() : '',
+        data.email || '', amount,
+        data.transferCode ? "'" + String(data.transferCode).trim() : '',
+        data.display || '', data.displayName || '', data.message || '',
+        data.receipt || '', data.receiptTitle || '', data.taxId || '',
+        data.note || '', '待審核'
+      ]);
+
     } else if (data.type === 'aid') {
       // 人車故事公益計畫申請（維修/保養/翻新/送車）— 專用分頁，自動建立
       const sheet = ss.getSheetByName(AID_SHEET) || ss.insertSheet(AID_SHEET);
@@ -170,7 +197,47 @@ function getAidFolder_() {
 }
 
 function doGet(e) {
+  const p = (e && e.parameter) || {};
+  if (p.stat === 'fund') return fundStats_();
+  return jsonOut_({ status: 'ok', message: '人車故事公益協會 Form API' });
+}
+
+function jsonOut_(obj) {
   return ContentService
-    .createTextOutput(JSON.stringify({ status: 'ok', message: '人車故事公益協會 Form API' }))
+    .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// 募資進度：只計入「審核狀態 = 已通過」的捐款
+function fundStats_() {
+  try {
+    const ss = SpreadsheetApp.openById(SHEET_ID);
+    const sh = ss.getSheetByName(FUND_SHEET);
+    if (!sh || sh.getLastRow() < 2) {
+      return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, list: [] });
+    }
+    const v = sh.getDataRange().getValues();
+    const h = v[0];
+    const iAmt = h.indexOf('捐款金額'), iSt = h.indexOf('審核狀態');
+    const iWay = h.indexOf('芳名公開方式'), iName = h.indexOf('公開顯示名稱');
+    const iMsg = h.indexOf('想說的話'), iTs = h.indexOf('時間戳記');
+    let raised = 0, donors = 0;
+    const list = [];
+    for (let r = 1; r < v.length; r++) {
+      if (String(v[r][iSt] || '').trim() !== FUND_OK) continue;
+      const amt = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+      raised += amt; donors++;
+      const way = String(v[r][iWay] || '');
+      const anon = way.indexOf('匿名') >= 0;
+      list.push({
+        name: anon ? '善心人士' : (String(v[r][iName] || '').trim() || '善心人士'),
+        amount: amt,
+        msg: anon ? '' : String(v[r][iMsg] || '').trim(),
+        ts: String(v[r][iTs] || '')
+      });
+    }
+    return jsonOut_({ goal: FUND_GOAL, raised: raised, donors: donors, list: list.reverse().slice(0, 40) });
+  } catch (err) {
+    return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, list: [], error: String(err) });
+  }
 }
