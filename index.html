@@ -323,7 +323,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
     <div id="case-video-panel" style="background:#f5f6f8;border-radius:14px;border:1px solid #e0e2e8;overflow:hidden;display:flex;flex-direction:column;min-height:240px;">
       <div id="case-video-placeholder" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px;text-align:center;">
         <div style="font-size:40px;opacity:.3;">▶</div>
-        <div style="font-size:13px;color:#555;line-height:1.8;">點擊地圖上的<br><span style="color:#e8a020;">橘色標點</span>查看個案影片</div>
+        <div style="font-size:13px;color:#555;line-height:1.8;">點擊地圖上的<br><span style="color:#e8a020;">橘色</span>或<span style="color:#4aab6a;">綠色標點</span><br>看個案與活動影片</div>
       </div>
       <div id="case-video-wrap" style="display:none;flex-direction:column;height:100%;">
         <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;flex-shrink:0;">
@@ -927,13 +927,21 @@ class Component extends DCLogic {
     // 公益活動地點（與個案不同色，滑過顯示名稱）
     const EVENTS = [
       { lat: 25.0629, lng: 121.4393, name: '公益洗車活動', place: 'A8 旋風洗車中心', date: '2026.04.21',
-        addr: '新北市泰山區楓樹里新五路一段 108-6 號' },
+        addr: '新北市泰山區楓樹里新五路一段 108-6 號',
+        ep: '公益活動', loc: '新北泰山', title: '台灣史上最大公益洗車活動',
+        sub: 'A8 旋風洗車中心 · 2026.04.21',
+        desc: '協會號召全台車圈職人，一天之內免費洗完上百台車。沒有收一塊錢，只為了一件事——讓更多人知道，車不只是代步工具，它載著一個家的故事。',
+        vid: 'a_1hTQ62wQA' },
       { lat: 25.1175, lng: 121.2420, name: '公益淨灘・守護海洋', place: '竹圍漁港', date: '2026.07.21',
-        addr: '桃園市大園區竹圍漁港' }
+        addr: '桃園市大園區竹圍漁港',
+        ep: '公益活動', loc: '竹圍漁港', title: '守護海洋　熱血行動　跟著我們一同去淨灘',
+        sub: '竹圍漁港 · 2026.07.21 · 9 組家庭 39 人',
+        desc: '協會夥伴帶著家人一起出動，在竹圍漁港撿了整個上午。車圈的人平常在店裡修車、洗車，這天換個地方，把海灘也清乾淨。',
+        vid: 'TGWnySqmF3g' }
     ];
 
-    function showVideo(i) {
-      const c = CASES[i];
+    function showVideo(c) {
+      if (typeof c === 'number') c = CASES[c];
       const ph = document.getElementById('case-video-placeholder');
       const wr = document.getElementById('case-video-wrap');
       const fr = document.getElementById('case-video-iframe');
@@ -999,12 +1007,13 @@ class Component extends DCLogic {
       _map.addControl(new ResetCtl());
       CASES.forEach((c, i) => {
         const html = '<div style="position:relative;width:32px;height:32px;cursor:pointer;"><div style="position:absolute;inset:0;border-radius:50%;border:2.5px solid #e8a020;animation:pulse-orange 2s ease-out infinite;"></div><div style="width:16px;height:16px;border-radius:50%;background:#e8a020;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);position:absolute;top:8px;left:8px;"></div></div>';
-        L.marker([c.lat, c.lng], { icon: L.divIcon({ className: '', html, iconSize: [28, 28], iconAnchor: [14, 14] }) }).addTo(_map).on('click', () => showVideo(i));
+        L.marker([c.lat, c.lng], { icon: L.divIcon({ className: '', html, iconSize: [28, 28], iconAnchor: [14, 14] }) }).addTo(_map).on('click', () => showVideo(c));
       });
       EVENTS.forEach((e) => {
         const h = '<div style="position:relative;width:30px;height:30px;"><div style="position:absolute;inset:0;border-radius:50%;border:2px solid #4aab6a;animation:pulse-orange 2.6s ease-out infinite;"></div><div style="width:14px;height:14px;border-radius:50%;background:#4aab6a;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);position:absolute;top:8px;left:8px;"></div></div>';
         L.marker([e.lat, e.lng], { icon: L.divIcon({ className: '', html: h, iconSize: [26, 26], iconAnchor: [13, 13] }) })
           .addTo(_map)
+          .on('click', () => showVideo(e))
           .bindTooltip('<b>' + e.name + '</b><br>' + e.place + '　' + e.date,
                        { direction: 'top', offset: [0, -12], opacity: 1 });
       });
