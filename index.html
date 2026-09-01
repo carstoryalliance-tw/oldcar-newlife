@@ -145,9 +145,13 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 #impact-map{height:560px;position:relative;border-radius:14px;overflow:hidden;border:1px solid rgba(0,0,0,.08);box-shadow:0 4px 24px rgba(0,0,0,.10);}
-.leaflet-container{background:#d4e5f0;}
+.leaflet-container{background:#d4e5f0;touch-action:pan-y !important;}
 .leaflet-tile-pane{filter:grayscale(.92) brightness(1.08) contrast(.9) saturate(.5);opacity:.9;}
 .map-credit{margin-top:8px;font-size:10px;color:#9aa0a8;letter-spacing:.3px;}
+@media(max-width:768px){
+  .leaflet-control-zoom a{width:40px !important;height:40px !important;line-height:38px !important;font-size:22px !important;}
+  .leaflet-control-zoom{box-shadow:0 2px 10px rgba(0,0,0,.25) !important;}
+}
 @keyframes pulse-orange{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
 .custom-popup .leaflet-popup-content-wrapper{background:transparent;box-shadow:none;padding:0;border-radius:0;}
 .custom-popup .leaflet-popup-content{margin:0;}
@@ -959,17 +963,26 @@ class Component extends DCLogic {
         if (e.ctrlKey) { e.preventDefault(); _map.scrollWheelZoom.enable(); }
         else { _map.scrollWheelZoom.disable(); }
       }, { passive: false });
-      // 手機：單指捲頁、兩指才拖地圖
+      // 手機：單指捲頁、兩指縮放與拖曳（touchZoom 一律開著）
+      _map.touchZoom.enable();
       if (L.Browser.mobile) {
         _map.dragging.disable();
+        let _t = null;
         el.addEventListener('touchstart', function (e) {
-          if (e.touches.length >= 2) _map.dragging.enable(); else _map.dragging.disable();
+          if (e.touches.length >= 2) { clearTimeout(_t); _map.dragging.enable(); }
         }, { passive: true });
-        el.addEventListener('touchend', function () { _map.dragging.disable(); }, { passive: true });
+        el.addEventListener('touchend', function (e) {
+          if (e.touches.length === 0) { clearTimeout(_t); _t = setTimeout(function () { _map.dragging.disable(); }, 400); }
+        }, { passive: true });
       }
       L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', { maxZoom: 18, minZoom: 5, crossOrigin: true }).addTo(_map);
       const HOME = [[21.8, 119.8], [25.4, 122.2]];
-      _map.fitBounds(HOME, { padding: [28, 28] });
+      const ZOOM_BOOST = 0.58;   // 比 fitBounds 再放大約 1.5 倍
+      function homeView() {
+        _map.fitBounds(HOME, { padding: [28, 28] });
+        _map.setZoom(_map.getZoom() + ZOOM_BOOST, { animate: false });
+      }
+      homeView();
       const ResetCtl = L.Control.extend({
         options: { position: 'bottomright' },
         onAdd: function () {
@@ -979,7 +992,7 @@ class Component extends DCLogic {
           b.style.cssText = 'margin-top:6px;padding:6px 10px;font:600 12px/1 "Noto Sans TC",sans-serif;'
             + 'background:#fff;border:2px solid rgba(0,0,0,.2);border-radius:4px;cursor:pointer;color:#333;';
           L.DomEvent.disableClickPropagation(b);
-          b.onclick = function () { _map.fitBounds(HOME, { padding: [28, 28] }); };
+          b.onclick = function () { homeView(); };
           return b;
         }
       });
