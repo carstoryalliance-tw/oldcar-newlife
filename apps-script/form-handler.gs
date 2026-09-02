@@ -101,14 +101,7 @@ function doPost(e) {
     } else if (data.type === 'fund') {
       // 孤兒院用車整理專案 · 募資捐款
       const sheet = ss.getSheetByName(FUND_SHEET) || ss.insertSheet(FUND_SHEET);
-      if (sheet.getLastRow() === 0) {
-        sheet.appendRow([
-          '時間戳記', '姓名', '公司/單位', '電話', 'Email', '捐款金額', '匯款末五碼',
-          '芳名公開方式', '公開顯示名稱', '想說的話', '收據需求', '收據抬頭', '統一編號',
-          '備註', '審核狀態'
-        ]);
-        sheet.setFrozenRows(1);
-      }
+      ensureFundHeader_(sheet);
       sheet.getRange('D:D').setNumberFormat('@');
       sheet.getRange('G:G').setNumberFormat('@');
       const amount = Number(String(data.amount || '').replace(/[^0-9.]/g, '')) || 0;
@@ -200,6 +193,22 @@ function doPost(e) {
 }
 
 // 取得（或建立）上傳資料夾
+// 募資分頁表頭：個人收據要身分證字號、公司要統一編號，欄名改成兩者合併
+function ensureFundHeader_(sheet) {
+  const HEAD = ['時間戳記', '姓名', '公司/單位', '電話', 'Email', '捐款金額', '匯款末五碼',
+    '芳名公開方式', '公開顯示名稱', '想說的話', '收據需求', '收據抬頭',
+    '身分證字號／統一編號', '備註', '審核狀態'];
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEAD);
+    sheet.setFrozenRows(1);
+    return;
+  }
+  // 既有分頁：把舊欄名換掉，資料不動
+  const cur = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), HEAD.length)).getValues()[0];
+  const i = cur.indexOf('統一編號');
+  if (i >= 0) sheet.getRange(1, i + 1).setValue('身分證字號／統一編號');
+}
+
 function getAidFolder_() {
   if (AID_FOLDER_ID) return DriveApp.getFolderById(AID_FOLDER_ID);
   const it = DriveApp.getFoldersByName(AID_FOLDER_NAME);
