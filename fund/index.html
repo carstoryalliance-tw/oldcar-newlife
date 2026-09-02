@@ -144,7 +144,10 @@ textarea{min-height:78px;resize:vertical}
 .side-foot{padding:13px 16px 16px;border-top:1px solid var(--border);background:#fcfcfd}
 .side-foot .btn{display:block;width:100%;font-size:14.5px;padding:12px}
 @media(max-width:1023px){
-  .layout{display:flex;flex-direction:column;gap:0}
+  .layout{display:flex;flex-direction:column;gap:0;align-items:stretch}
+  .acts-card{padding:16px !important}
+  .side .act{font-size:17px;padding:15px 15px 15px 22px}
+  .side .act i{min-width:60px;font-size:16px;padding:6px 10px}
   .side{display:contents}            /* 讓兩張卡各自成為 flex item 才能排序 */
   .main{order:0;margin-top:26px}
   .acts-card{order:1;margin:22px 0 0 !important}
