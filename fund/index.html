@@ -285,8 +285,9 @@ footer a{color:var(--muted)}
           <input type="text" name="receiptTitle" placeholder="公司抬頭或個人姓名"></div>
       </div>
       <div class="two">
-        <div class="fg"><label>統一編號</label>
-          <input type="text" name="taxId" maxlength="8" placeholder="公司收據才需要"></div>
+        <div class="fg"><label>身分證字號／統一編號</label>
+          <input type="text" name="taxId" id="taxId" maxlength="10" placeholder="個人收據填身分證字號，公司收據填統一編號">
+          <div class="hint" id="taxHint">開立收據需要：個人 → 身分證字號；公司 → 統一編號（8 碼）。</div></div>
         <div class="fg"><label>備註</label>
           <input type="text" name="note" placeholder="其他想告訴我們的事"></div>
       </div>
@@ -332,6 +333,28 @@ document.getElementById('display').addEventListener('change', e => {
   if (e.target.value === '匿名') { dn.value = ''; dn.disabled = true; }
   else { dn.disabled = false; }
 });
+
+// 收據類型 → 切換欄位提示
+(function () {
+  const sel = document.querySelector('select[name="receipt"]');
+  const inp = document.getElementById('taxId');
+  const hint = document.getElementById('taxHint');
+  if (!sel || !inp) return;
+  function sync() {
+    const v = sel.value;
+    if (v.indexOf('公司') >= 0) {
+      inp.placeholder = '公司統一編號（8 碼）'; inp.maxLength = 8;
+      hint.textContent = '公司收據請填統一編號。';
+    } else if (v.indexOf('個人') >= 0) {
+      inp.placeholder = '身分證字號（例 A123456789）'; inp.maxLength = 10;
+      hint.textContent = '個人收據依規定需要身分證字號才能開立。';
+    } else {
+      inp.placeholder = '不需要收據可留空'; inp.maxLength = 10;
+      hint.textContent = '不開立收據就不用填。';
+    }
+  }
+  sel.addEventListener('change', sync); sync();
+})();
 
 // 讀進度
 async function loadStats() {
