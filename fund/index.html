@@ -129,6 +129,9 @@ textarea{min-height:78px;resize:vertical}
 
 /* 兩欄版面 */
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:30px;align-items:start;margin-top:34px}
+.main{grid-column:1;grid-row:1}
+.form-sec{grid-column:1;grid-row:2}
+.side{grid-column:2;grid-row:1/span 2}
 .side{position:sticky;top:16px}
 .side-card{background:var(--card);border:1px solid var(--border);border-radius:16px;
   box-shadow:0 6px 22px rgba(20,20,40,.06);overflow:hidden}
@@ -139,13 +142,25 @@ textarea{min-height:78px;resize:vertical}
 .side-foot{padding:13px 16px 16px;border-top:1px solid var(--border);background:#fcfcfd}
 .side-foot .btn{display:block;width:100%;font-size:14.5px;padding:12px}
 @media(max-width:1023px){
-  .layout{grid-template-columns:1fr;gap:0}
-  .side{display:contents}            /* 讓兩張卡各自成為 grid item 才能排序 */
-  .acts-card{order:-2;margin:20px 0 0 !important}
-  .list-card{order:-1;margin-top:14px}
-  .main{order:0;margin-top:34px}
+  .layout{display:flex;flex-direction:column;gap:0}
+  .side{display:contents}            /* 讓兩張卡各自成為 flex item 才能排序 */
+  .main{order:0;margin-top:26px}
+  .acts-card{order:1;margin:22px 0 0 !important}
+  .list-card{order:2;margin-top:14px}
+  .form-sec{order:3}
   .names{max-height:420px !important}   /* 固定視窗，內部獨立捲動 */
+
+  /* 內文先收起來，想看的人再展開 */
+  .main{position:relative;overflow:hidden;max-height:460px;transition:max-height .35s ease}
+  .main.open{max-height:none}
+  .main::after{content:'';position:absolute;left:0;right:0;bottom:0;height:120px;pointer-events:none;
+    background:linear-gradient(transparent,var(--bg) 82%)}
+  .main.open::after{display:none}
+  #readmore{display:block;width:100%;margin-top:12px;padding:12px;border:1.5px solid var(--border);
+    border-radius:11px;background:#fff;color:var(--gold2);font-family:inherit;font-size:14.5px;
+    font-weight:900;letter-spacing:1px;cursor:pointer;order:0}
 }
+#readmore{display:none}
 
 /* 芳名 */
 .names{background:transparent;padding:4px 0;max-height:560px;overflow-y:auto;overscroll-behavior:contain}
@@ -280,93 +295,10 @@ footer a{color:var(--muted)}
     <p class="photo-note">📷 這台車與教會的實際照片，會在專案啟動、取得教會同意後補上。<b>依照我們一貫的原則，受助的長輩與住戶不會露臉</b>。</p>
   </section>
 
-  <section id="form">
-    <h2>贊助這個專案</h2>
-    <p class="lead">先匯款，再填下面這張表，讓我們對得到帳。財務核對無誤後，你的贊助就會計入上面的進度條。</p>
-
-    <div class="acct">
-      <div class="ab"><h4>🏦 永豐銀行（新莊副都心）</h4>
-        <div class="row"><span>銀行代碼</span><b>807</b></div>
-        <div class="row"><span>帳號</span><b>132-01-80110-2656</b></div>
-        <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
-      </div>
-      <div class="ab g"><h4>📮 郵政劃撥</h4>
-        <div class="row"><span>劃撥帳號</span><b>50485386</b></div>
-        <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
-      </div>
-    </div>
-
-    <form class="form" id="f">
-      <div class="two">
-        <div class="fg"><label>姓名 <span class="req">*</span></label>
-          <input type="text" name="name" required placeholder="請填真實姓名，方便對帳"></div>
-        <div class="fg"><label>公司／單位</label>
-          <input type="text" name="company" placeholder="個人贊助可留空"></div>
-      </div>
-      <div class="two">
-        <div class="fg"><label>行動電話 <span class="req">*</span></label>
-          <input type="tel" name="phone" required placeholder="09xxxxxxxx"></div>
-        <div class="fg"><label>Email</label>
-          <input type="email" name="email" placeholder="收據與進度回報會寄到這裡"></div>
-      </div>
-
-      <div class="fg">
-        <label>贊助金額 <span class="req">*</span></label>
-        <div class="amt">
-          <button type="button" data-v="1000">1,000</button>
-          <button type="button" data-v="3000">3,000</button>
-          <button type="button" data-v="5000">5,000</button>
-          <button type="button" data-v="10000">10,000</button>
-          <button type="button" data-v="30000">30,000</button>
-        </div>
-        <input type="number" name="amount" id="amount" required min="100" step="100" placeholder="也可以自己填，單位：元">
-      </div>
-
-      <div class="fg"><label>匯款帳號末五碼 <span class="req">*</span></label>
-        <input type="text" name="transferCode" required maxlength="5" placeholder="例如 12345">
-        <div class="hint">財務會用這五碼核對入帳。核對通過後，進度條就會往前跑。</div>
-      </div>
-
-      <div class="two">
-        <div class="fg"><label>芳名要怎麼呈現 <span class="req">*</span></label>
-          <select name="display" id="display" required>
-            <option value="">請選擇</option>
-            <option value="公開姓名">公開我的姓名</option>
-            <option value="公開公司名">公開公司／品牌名稱</option>
-            <option value="匿名">匿名（顯示為「善心人士」）</option>
-          </select></div>
-        <div class="fg"><label>公開時要顯示的名稱</label>
-          <input type="text" name="displayName" id="displayName" placeholder="例：王小明　或　○○汽車商行">
-          <div class="hint">選匿名可留空。</div></div>
-      </div>
-
-      <div class="fg"><label>想對協會、教會或山上長輩說的話</label>
-        <textarea name="message" placeholder="會公開在芳名錄，也會轉達給教會（選填）"></textarea></div>
-
-      <div class="two">
-        <div class="fg"><label>需要收據嗎</label>
-          <select name="receipt">
-            <option value="需要（個人）">需要（個人）</option>
-            <option value="需要（公司）">需要（公司）</option>
-            <option value="不需要">不需要</option>
-          </select></div>
-        <div class="fg"><label>收據抬頭</label>
-          <input type="text" name="receiptTitle" placeholder="公司抬頭或個人姓名"></div>
-      </div>
-      <div class="two">
-        <div class="fg"><label>身分證字號／統一編號</label>
-          <input type="text" name="taxId" id="taxId" maxlength="10" placeholder="個人收據填身分證字號，公司收據填統一編號">
-          <div class="hint" id="taxHint">開立收據需要：個人 → 身分證字號；公司 → 統一編號（8 碼）。</div></div>
-        <div class="fg"><label>備註</label>
-          <input type="text" name="note" placeholder="其他想告訴我們的事"></div>
-      </div>
-
-      <button class="btn primary" type="submit" id="sb" style="width:100%">送出贊助資料</button>
-      <div class="ok" id="ok"></div>
-    </form>
-  </section>
 
   </div><!-- /.main -->
+
+  <button type="button" id="readmore">▾　繼續閱讀專案說明</button>
 
   <aside class="side">
     <div class="side-card acts-card" style="padding:14px;margin-bottom:14px">
@@ -391,6 +323,94 @@ footer a{color:var(--muted)}
       </div>
     </div>
   </aside>
+  <div class="form-sec">
+    <section id="form">
+      <h2>贊助這個專案</h2>
+      <p class="lead">先匯款，再填下面這張表，讓我們對得到帳。財務核對無誤後，你的贊助就會計入上面的進度條。</p>
+  
+      <div class="acct">
+        <div class="ab"><h4>🏦 永豐銀行（新莊副都心）</h4>
+          <div class="row"><span>銀行代碼</span><b>807</b></div>
+          <div class="row"><span>帳號</span><b>132-01-80110-2656</b></div>
+          <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
+        </div>
+        <div class="ab g"><h4>📮 郵政劃撥</h4>
+          <div class="row"><span>劃撥帳號</span><b>50485386</b></div>
+          <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
+        </div>
+      </div>
+  
+      <form class="form" id="f">
+        <div class="two">
+          <div class="fg"><label>姓名 <span class="req">*</span></label>
+            <input type="text" name="name" required placeholder="請填真實姓名，方便對帳"></div>
+          <div class="fg"><label>公司／單位</label>
+            <input type="text" name="company" placeholder="個人贊助可留空"></div>
+        </div>
+        <div class="two">
+          <div class="fg"><label>行動電話 <span class="req">*</span></label>
+            <input type="tel" name="phone" required placeholder="09xxxxxxxx"></div>
+          <div class="fg"><label>Email</label>
+            <input type="email" name="email" placeholder="收據與進度回報會寄到這裡"></div>
+        </div>
+  
+        <div class="fg">
+          <label>贊助金額 <span class="req">*</span></label>
+          <div class="amt">
+            <button type="button" data-v="1000">1,000</button>
+            <button type="button" data-v="3000">3,000</button>
+            <button type="button" data-v="5000">5,000</button>
+            <button type="button" data-v="10000">10,000</button>
+            <button type="button" data-v="30000">30,000</button>
+          </div>
+          <input type="number" name="amount" id="amount" required min="100" step="100" placeholder="也可以自己填，單位：元">
+        </div>
+  
+        <div class="fg"><label>匯款帳號末五碼 <span class="req">*</span></label>
+          <input type="text" name="transferCode" required maxlength="5" placeholder="例如 12345">
+          <div class="hint">財務會用這五碼核對入帳。核對通過後，進度條就會往前跑。</div>
+        </div>
+  
+        <div class="two">
+          <div class="fg"><label>芳名要怎麼呈現 <span class="req">*</span></label>
+            <select name="display" id="display" required>
+              <option value="">請選擇</option>
+              <option value="公開姓名">公開我的姓名</option>
+              <option value="公開公司名">公開公司／品牌名稱</option>
+              <option value="匿名">匿名（顯示為「善心人士」）</option>
+            </select></div>
+          <div class="fg"><label>公開時要顯示的名稱</label>
+            <input type="text" name="displayName" id="displayName" placeholder="例：王小明　或　○○汽車商行">
+            <div class="hint">選匿名可留空。</div></div>
+        </div>
+  
+        <div class="fg"><label>想對協會、教會或山上長輩說的話</label>
+          <textarea name="message" placeholder="會公開在芳名錄，也會轉達給教會（選填）"></textarea></div>
+  
+        <div class="two">
+          <div class="fg"><label>需要收據嗎</label>
+            <select name="receipt">
+              <option value="需要（個人）">需要（個人）</option>
+              <option value="需要（公司）">需要（公司）</option>
+              <option value="不需要">不需要</option>
+            </select></div>
+          <div class="fg"><label>收據抬頭</label>
+            <input type="text" name="receiptTitle" placeholder="公司抬頭或個人姓名"></div>
+        </div>
+        <div class="two">
+          <div class="fg"><label>身分證字號／統一編號</label>
+            <input type="text" name="taxId" id="taxId" maxlength="10" placeholder="個人收據填身分證字號，公司收據填統一編號">
+            <div class="hint" id="taxHint">開立收據需要：個人 → 身分證字號；公司 → 統一編號（8 碼）。</div></div>
+          <div class="fg"><label>備註</label>
+            <input type="text" name="note" placeholder="其他想告訴我們的事"></div>
+        </div>
+  
+        <button class="btn primary" type="submit" id="sb" style="width:100%">送出贊助資料</button>
+        <div class="ok" id="ok"></div>
+      </form>
+    </section>
+  </div>
+
   </div><!-- /.layout -->
 
   <footer>
@@ -422,6 +442,18 @@ document.getElementById('display').addEventListener('change', e => {
   if (e.target.value === '匿名') { dn.value = ''; dn.disabled = true; }
   else { dn.disabled = false; }
 });
+
+// 手機版：內文收合／展開
+(function () {
+  const btn = document.getElementById('readmore');
+  const main = document.querySelector('.main');
+  if (!btn || !main) return;
+  btn.addEventListener('click', () => {
+    const open = main.classList.toggle('open');
+    btn.textContent = open ? '▴　收合專案說明' : '▾　繼續閱讀專案說明';
+    if (!open) main.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
 
 // 收據類型 → 切換欄位提示
 (function () {
