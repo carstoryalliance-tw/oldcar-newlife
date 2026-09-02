@@ -560,19 +560,27 @@ function bump(id) {
 })();
 
 function ago(ts) {
+  // 兩種來源：Apps Script 的 zh-TW 字串，或 Sheets 存成日期型別後轉出的英文格式
+  let t = null;
   const m = String(ts || '').match(/(\d+)\/(\d+)\/(\d+)\s*(上午|下午)?\s*(\d+):(\d+)/);
-  if (!m) return '';
-  let h = +m[5];
-  if (m[4] === '下午' && h < 12) h += 12;
-  if (m[4] === '上午' && h === 12) h = 0;
-  const t = new Date(+m[1], +m[2] - 1, +m[3], h, +m[6]);
+  if (m) {
+    let h = +m[5];
+    if (m[4] === '下午' && h < 12) h += 12;
+    if (m[4] === '上午' && h === 12) h = 0;
+    t = new Date(+m[1], +m[2] - 1, +m[3], h, +m[6]);
+  } else if (ts) {
+    const d2 = new Date(ts);
+    if (!isNaN(d2.getTime())) t = d2;
+  }
+  if (!t) return '';
   const diff = (Date.now() - t.getTime()) / 1000;
   if (isNaN(diff)) return '';
   if (diff < 90) return '剛剛';
   if (diff < 3600) return Math.round(diff / 60) + ' 分鐘前';
   if (diff < 86400) return Math.round(diff / 3600) + ' 小時前';
   if (diff < 86400 * 7) return Math.round(diff / 86400) + ' 天前';
-  return m[1] + '.' + String(m[2]).padStart(2, '0') + '.' + String(m[3]).padStart(2, '0');
+  return t.getFullYear() + '.' + String(t.getMonth() + 1).padStart(2, '0')
+       + '.' + String(t.getDate()).padStart(2, '0');
 }
 function esc(s) {
   return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
