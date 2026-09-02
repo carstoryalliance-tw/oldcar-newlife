@@ -523,12 +523,30 @@ function bump(id) {
   if (bCheer && done.cheer) { bCheer.classList.add('done'); bCheer.querySelector('span').textContent = '已集氣'; }
 
   if (bShare) bShare.addEventListener('click', async () => {
-    const data = { title: '教會送物資．四驅車專案', text: '山路上不去，物資就送不進去。幫南投神國教會找一台能上山的車。', url: location.origin + location.pathname };
+    const url = location.origin + location.pathname;
+    const data = { title: '教會送物資．四驅車專案',
+      text: '山路上不去，物資就送不進去。幫南投神國教會找一台能上山的車。', url: url };
+    const flash = (t) => {
+      bShare.querySelector('span').textContent = t;
+      setTimeout(() => { bShare.querySelector('span').textContent = '分享'; }, 2200);
+    };
     let ok = false;
     try {
-      if (navigator.share) { await navigator.share(data); ok = true; }
-      else { await navigator.clipboard.writeText(data.url); ok = true; bShare.querySelector('span').textContent = '已複製連結'; setTimeout(() => { bShare.querySelector('span').textContent = '分享'; }, 2200); }
-    } catch (e) { ok = false; }
+      if (!navigator.share) throw new Error('no-share');
+      await navigator.share(data);
+      ok = true;
+    } catch (e) {
+      // 使用者自己按取消 → 不算一次分享
+      if (e && e.name === 'AbortError') return;
+      // 沒有系統分享或叫不起來 → 退回複製連結
+      try {
+        await navigator.clipboard.writeText(url);
+        ok = true; flash('已複製連結');
+      } catch (e2) {
+        window.prompt('複製這個連結分享給朋友：', url);
+        ok = true;
+      }
+    }
     if (ok) { sendAct('share'); bump('cnt-share'); }
   });
 
