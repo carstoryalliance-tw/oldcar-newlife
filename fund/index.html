@@ -110,6 +110,21 @@ textarea{min-height:78px;resize:vertical}
 .ab .row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:4px 0;color:var(--muted)}
 .ab .row b{color:var(--text);font-weight:700}
 
+/* 動作按鈕（贊助／分享／集氣）*/
+.acts{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+.act{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 14px 13px 20px;border:0;border-radius:11px;cursor:pointer;text-decoration:none;
+  font-family:inherit;font-size:16px;font-weight:900;letter-spacing:2px;color:#fff;
+  transition:filter .15s,transform .1s}
+.act:hover{filter:brightness(1.06)} .act:active{transform:translateY(1px)}
+.act i{font-style:normal;background:#fff;border-radius:7px;min-width:52px;padding:5px 9px;
+  text-align:center;font-size:15px;font-variant-numeric:tabular-nums}
+.act.give{background:var(--gold2)} .act.give i{color:var(--gold2)}
+.act.share{background:var(--green)} .act.share i{color:#2f7d4f}
+.act.cheer{background:#c0392b} .act.cheer i{color:#c0392b}
+.act.done{opacity:.72;cursor:default}
+@media(min-width:720px){.acts{flex-direction:row}.acts .act{flex:1}}
+
 /* 兩欄版面 */
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:30px;align-items:start;margin-top:34px}
 .side{position:sticky;top:16px}
@@ -174,8 +189,12 @@ footer a{color:var(--muted)}
     </div>
     <div id="over" style="display:none;margin-top:12px;background:#eefaf1;border:1px solid #bfe6cb;
       border-radius:10px;padding:11px 15px;font-size:13.5px;line-height:1.8;color:#256b3f;"></div>
-    <div class="btn-row">
-      <a class="btn primary" href="#form">我要贊助這個專案</a>
+    <div class="acts">
+      <a class="act give" href="#form"><span>贊助</span><i id="cnt-give">0</i></a>
+      <button class="act share" id="btn-share" type="button"><span>分享</span><i id="cnt-share">0</i></button>
+      <button class="act cheer" id="btn-cheer" type="button"><span>集氣</span><i id="cnt-cheer">0</i></button>
+    </div>
+    <div class="btn-row" style="margin-top:10px">
       <a class="btn ghost" href="#use">看看錢會怎麼用</a>
     </div>
   </div>
@@ -350,7 +369,15 @@ footer a{color:var(--muted)}
 
   <aside class="side">
     <div class="side-card">
-      <div class="side-h"><b>最近的支持</b><span id="side-count"></span></div>
+      <div class="side-h">
+        <b>最近的支持</b>
+        <select id="sortSel" style="font-family:inherit;font-size:12px;padding:5px 8px;border:1px solid var(--border);
+          border-radius:8px;background:#fff;color:var(--muted);width:auto">
+          <option value="recent">最新</option>
+          <option value="top">金額最高</option>
+        </select>
+      </div>
+      <div style="padding:8px 18px 0;font-size:11.5px;color:var(--dim)" id="side-count"></div>
       <div class="names" id="names">
         <div class="empty">載入中…</div>
       </div>
@@ -436,28 +463,82 @@ async function loadStats() {
         + '——這筆錢會直接用在把車況升級，不會留著。';
     }
 
-    const box = document.getElementById('names');
-    const cnt = document.getElementById('side-count');
-    if (!d.list || !d.list.length) {
-      box.innerHTML = '<div class="empty">還沒有已完成核對的贊助紀錄。<br>你可以是第一個。</div>';
-      if (cnt) cnt.textContent = '';
-    } else {
-      if (cnt) cnt.textContent = d.donors + ' 筆';
-      box.innerHTML = d.list.map(x =>
-        '<div class="nm">'
-        + '<div class="nm-top"><div class="who">' + esc(x.name) + '</div>'
-        + '<div class="amt2">' + nf(x.amount) + '</div></div>'
-        + '<div class="ago">' + esc(ago(x.ts)) + '</div>'
-        + (x.msg ? '<div class="msg">「' + esc(x.msg) + '」</div>' : '')
-        + '</div>'
-      ).join('');
-    }
+    LIST = d.list || [];
+    document.getElementById('cnt-give').textContent = d.donors || 0;
+    document.getElementById('cnt-share').textContent = d.shares || 0;
+    document.getElementById('cnt-cheer').textContent = d.cheers || 0;
+    renderList();
   } catch (err) {
     document.getElementById('stamp').textContent = '進度資料載入失敗，請稍後重新整理';
     document.getElementById('names').innerHTML =
       '<div class="empty">芳名錄暫時讀取不到，請稍後再試。</div>';
   }
 }
+let LIST = [];
+function renderList() {
+  const box = document.getElementById('names');
+  const cnt = document.getElementById('side-count');
+  const mode = (document.getElementById('sortSel') || {}).value || 'recent';
+  if (!LIST.length) {
+    box.innerHTML = '<div class="empty">還沒有已完成核對的贊助紀錄。<br>你可以是第一個。</div>';
+    if (cnt) cnt.textContent = '';
+    return;
+  }
+  const rows = LIST.slice();
+  if (mode === 'top') rows.sort((a, b) => (b.amount || 0) - (a.amount || 0));
+  if (cnt) cnt.textContent = '共 ' + rows.length + ' 筆' + (mode === 'top' ? '，依金額排序' : '，依時間排序');
+  box.innerHTML = rows.map(x =>
+    '<div class="nm">'
+    + '<div class="nm-top"><div class="who">' + esc(x.name) + '</div>'
+    + '<div class="amt2">' + nf(x.amount) + '</div></div>'
+    + '<div class="ago">' + esc(ago(x.ts)) + '</div>'
+    + (x.msg ? '<div class="msg">「' + esc(x.msg) + '」</div>' : '')
+    + '</div>'
+  ).join('');
+}
+
+// 分享／集氣
+function sendAct(act) {
+  try {
+    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: 'fundact', act: act, from: location.href }) });
+  } catch (e) { /* 計數失敗不影響使用者 */ }
+}
+function bump(id) {
+  const el = document.getElementById(id);
+  el.textContent = (parseInt(el.textContent, 10) || 0) + 1;
+}
+(function () {
+  const KEY = 'fund_acts_v1';
+  let done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} };
+
+  const bShare = document.getElementById('btn-share');
+  const bCheer = document.getElementById('btn-cheer');
+  const sel = document.getElementById('sortSel');
+  if (sel) sel.addEventListener('change', renderList);
+
+  if (bCheer && done.cheer) { bCheer.classList.add('done'); bCheer.querySelector('span').textContent = '已集氣'; }
+
+  if (bShare) bShare.addEventListener('click', async () => {
+    const data = { title: '教會送物資．四驅車專案', text: '山路上不去，物資就送不進去。幫南投神國教會找一台能上山的車。', url: location.origin + location.pathname };
+    let ok = false;
+    try {
+      if (navigator.share) { await navigator.share(data); ok = true; }
+      else { await navigator.clipboard.writeText(data.url); ok = true; bShare.querySelector('span').textContent = '已複製連結'; setTimeout(() => { bShare.querySelector('span').textContent = '分享'; }, 2200); }
+    } catch (e) { ok = false; }
+    if (ok) { sendAct('share'); bump('cnt-share'); }
+  });
+
+  if (bCheer) bCheer.addEventListener('click', () => {
+    if (done.cheer) return;
+    done.cheer = 1; save();
+    bCheer.classList.add('done');
+    bCheer.querySelector('span').textContent = '已集氣';
+    sendAct('cheer'); bump('cnt-cheer');
+  });
+})();
+
 function ago(ts) {
   const m = String(ts || '').match(/(\d+)\/(\d+)\/(\d+)\s*(上午|下午)?\s*(\d+):(\d+)/);
   if (!m) return '';

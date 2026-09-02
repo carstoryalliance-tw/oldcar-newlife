@@ -10,7 +10,8 @@ const AID_SHEET = '公益申請';      // 公益申請專用分頁（自動建�
 const MEETING_SHEET = '例會報名';   // 例會出席報名（自動建立）
 const FUND_SHEET = '孤兒院募資';    // 孤兒院用車整理專案募資（自動建立）
 const FUND_GOAL = 150000;          // 募資目標金額
-const FUND_OK = '已通過';           // 審核狀態填這三個字，進度條才會計入
+const FUND_OK = '已通過';
+const FUND_ACT_SHEET = '募資互動';   // 分享／集氣次數（自動建立）           // 審核狀態填這三個字，進度條才會計入
 
 // 照片/影片上傳存放位置。留空 = 自動在雲端根目錄建立同名資料夾。
 const AID_FOLDER_ID = '';
@@ -121,6 +122,15 @@ function doPost(e) {
         data.note || '', '待審核'
       ]);
 
+    } else if (data.type === 'fundact') {
+      // 募資頁的「分享 / 集氣」按鈕計數
+      const act = String(data.act || '').trim();
+      if (act === 'share' || act === 'cheer') {
+        const sheet = ss.getSheetByName(FUND_ACT_SHEET) || ss.insertSheet(FUND_ACT_SHEET);
+        if (sheet.getLastRow() === 0) sheet.appendRow(['時間戳記', '動作', '來源']);
+        sheet.appendRow([timestamp, act, data.from || '']);
+      }
+
     } else if (data.type === 'aid') {
       // 人車故事公益計畫申請（維修/保養/翻新/送車）— 專用分頁，自動建立
       const sheet = ss.getSheetByName(AID_SHEET) || ss.insertSheet(AID_SHEET);
@@ -230,14 +240,26 @@ function fundStats_() {
       const way = String(v[r][iWay] || '');
       const anon = way.indexOf('匿名') >= 0;
       list.push({
-        name: anon ? '善心人士' : (String(v[r][iName] || '').trim() || '善心人士'),
+        // 匿名者只隱藏姓名，金額、留言與時間照常公開
+        name: anon ? '匿名者' : (String(v[r][iName] || '').trim() || '匿名者'),
         amount: amt,
-        msg: anon ? '' : String(v[r][iMsg] || '').trim(),
+        msg: String(v[r][iMsg] || '').trim(),
         ts: String(v[r][iTs] || '')
       });
     }
-    return jsonOut_({ goal: FUND_GOAL, raised: raised, donors: donors, list: list.reverse().slice(0, 40) });
+    let shares = 0, cheers = 0;
+    const ash = ss.getSheetByName(FUND_ACT_SHEET);
+    if (ash && ash.getLastRow() > 1) {
+      const av = ash.getRange(2, 2, ash.getLastRow() - 1, 1).getValues();
+      for (let i = 0; i < av.length; i++) {
+        const a = String(av[i][0] || '').trim();
+        if (a === 'share') shares++;
+        else if (a === 'cheer') cheers++;
+      }
+    }
+    return jsonOut_({ goal: FUND_GOAL, raised: raised, donors: donors,
+                      shares: shares, cheers: cheers, list: list.reverse().slice(0, 60) });
   } catch (err) {
-    return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, list: [], error: String(err) });
+    return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, shares: 0, cheers: 0, list: [], error: String(err) });
   }
 }
