@@ -9,7 +9,7 @@ const BEACH_SHEET = '淨灘活動報名';
 const AID_SHEET = '公益申請';      // 公益申請專用分頁（自動建立，與入會/捐款分開）
 const MEETING_SHEET = '例會報名';   // 例會出席報名（自動建立）
 const FUND_SHEET = '孤兒院募資';    // 孤兒院用車整理專案募資（自動建立）
-const FUND_GOAL = 150000;          // 募資目標金額
+const FUND_GOAL = 200000;          // 募資目標金額
 const FUND_OK = '已通過';
 const FUND_ACT_SHEET = '募資互動';   // 分享／集氣次數（自動建立）           // 審核狀態填這三個字，進度條才會計入
 
@@ -232,6 +232,7 @@ function fundStats_() {
   try {
     const ss = SpreadsheetApp.openById(SHEET_ID);
     const sh = ss.getSheetByName(FUND_SHEET);
+    if (sh) { try { ensureFundHeader_(sh); } catch (e) {} }
     if (!sh || sh.getLastRow() < 2) {
       return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, list: [] });
     }
