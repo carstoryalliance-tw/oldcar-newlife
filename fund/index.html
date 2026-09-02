@@ -124,6 +124,8 @@ textarea{min-height:78px;resize:vertical}
 .act.cheer{background:#c0392b} .act.cheer i{color:#c0392b}
 .act.done{opacity:.72;cursor:default}
 @media(min-width:720px){.acts{flex-direction:row}.acts .act{flex:1}}
+.side .acts{flex-direction:column !important}
+.side .act{flex:none !important;font-size:15px;padding:12px 12px 12px 18px}
 
 /* 兩欄版面 */
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:30px;align-items:start;margin-top:34px}
@@ -189,12 +191,8 @@ footer a{color:var(--muted)}
     </div>
     <div id="over" style="display:none;margin-top:12px;background:#eefaf1;border:1px solid #bfe6cb;
       border-radius:10px;padding:11px 15px;font-size:13.5px;line-height:1.8;color:#256b3f;"></div>
-    <div class="acts">
-      <a class="act give" href="#form"><span>贊助</span><i id="cnt-give">0</i></a>
-      <button class="act share" id="btn-share" type="button"><span>分享</span><i id="cnt-share">0</i></button>
-      <button class="act cheer" id="btn-cheer" type="button"><span>集氣</span><i id="cnt-cheer">0</i></button>
-    </div>
-    <div class="btn-row" style="margin-top:10px">
+    <div class="btn-row">
+      <a class="btn primary" href="#form">我要贊助這個專案</a>
       <a class="btn ghost" href="#use">看看錢會怎麼用</a>
     </div>
   </div>
@@ -368,6 +366,13 @@ footer a{color:var(--muted)}
   </div><!-- /.main -->
 
   <aside class="side">
+    <div class="side-card" style="padding:14px;margin-bottom:14px">
+      <div class="acts" style="margin-top:0">
+        <a class="act give" href="#form"><span>贊助</span><i id="cnt-give">0</i></a>
+        <button class="act share" id="btn-share" type="button"><span>分享</span><i id="cnt-share">0</i></button>
+        <button class="act cheer" id="btn-cheer" type="button"><span>集氣</span><i id="cnt-cheer">0</i></button>
+      </div>
+    </div>
     <div class="side-card">
       <div class="side-h">
         <b>最近的支持</b>
@@ -380,9 +385,6 @@ footer a{color:var(--muted)}
       <div style="padding:8px 18px 0;font-size:11.5px;color:var(--dim)" id="side-count"></div>
       <div class="names" id="names">
         <div class="empty">載入中…</div>
-      </div>
-      <div class="side-foot">
-        <a class="btn primary" href="#form">我也要贊助</a>
       </div>
     </div>
   </aside>
