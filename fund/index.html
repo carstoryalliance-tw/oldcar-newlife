@@ -127,6 +127,8 @@ textarea{min-height:78px;resize:vertical}
 .side .acts{flex-direction:column !important}
 .side .act{flex:none !important;font-size:15px;padding:12px 12px 12px 18px}
 
+#readmore{display:none}
+
 /* 兩欄版面 */
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:30px;align-items:start;margin-top:34px}
 .main{grid-column:1;grid-row:1}
@@ -156,11 +158,10 @@ textarea{min-height:78px;resize:vertical}
   .main::after{content:'';position:absolute;left:0;right:0;bottom:0;height:120px;pointer-events:none;
     background:linear-gradient(transparent,var(--bg) 82%)}
   .main.open::after{display:none}
-  #readmore{display:block;width:100%;margin-top:12px;padding:12px;border:1.5px solid var(--border);
+  #readmore{display:block !important;width:100%;margin-top:12px;padding:12px;border:1.5px solid var(--border);
     border-radius:11px;background:#fff;color:var(--gold2);font-family:inherit;font-size:14.5px;
     font-weight:900;letter-spacing:1px;cursor:pointer;order:0}
 }
-#readmore{display:none}
 
 /* 芳名 */
 .names{background:transparent;padding:4px 0;max-height:560px;overflow-y:auto;overscroll-behavior:contain}
