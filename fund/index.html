@@ -140,8 +140,11 @@ textarea{min-height:78px;resize:vertical}
 .side-foot .btn{display:block;width:100%;font-size:14.5px;padding:12px}
 @media(max-width:1023px){
   .layout{grid-template-columns:1fr;gap:0}
-  .side{position:static;margin-top:34px}
-  .names{max-height:none !important}
+  .side{display:contents}            /* 讓兩張卡各自成為 grid item 才能排序 */
+  .acts-card{order:-1;margin:20px 0 0 !important}
+  .main{order:0}
+  .list-card{order:1;margin-top:34px}
+  .names{max-height:420px !important}   /* 固定視窗，內部獨立捲動 */
 }
 
 /* 芳名 */
@@ -366,14 +369,14 @@ footer a{color:var(--muted)}
   </div><!-- /.main -->
 
   <aside class="side">
-    <div class="side-card" style="padding:14px;margin-bottom:14px">
+    <div class="side-card acts-card" style="padding:14px;margin-bottom:14px">
       <div class="acts" style="margin-top:0">
         <a class="act give" href="#form"><span>贊助</span><i id="cnt-give">0</i></a>
         <button class="act share" id="btn-share" type="button"><span>分享</span><i id="cnt-share">0</i></button>
         <button class="act cheer" id="btn-cheer" type="button"><span>集氣</span><i id="cnt-cheer">0</i></button>
       </div>
     </div>
-    <div class="side-card">
+    <div class="side-card list-card">
       <div class="side-h">
         <b>最近的支持</b>
         <select id="sortSel" style="font-family:inherit;font-size:12px;padding:5px 8px;border:1px solid var(--border);
