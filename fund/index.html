@@ -45,9 +45,13 @@ img{max-width:100%;display:block}
   font-variant-numeric:tabular-nums}
 .goal{text-align:right;font-size:13px;color:var(--muted);line-height:1.9}
 .goal b{color:var(--text);font-size:16px}
-.bar{margin-top:16px;height:16px;border-radius:10px;background:#eceef2;overflow:hidden}
-.bar i{display:block;height:100%;width:0;border-radius:10px;
+.bar{position:relative;margin-top:16px;height:16px;border-radius:10px;background:#eceef2;overflow:hidden}
+.bar u{position:absolute;top:0;left:0;height:100%;width:0;border-radius:10px;text-decoration:none;
+  background:#d5d8de;transition:width 1.1s cubic-bezier(.2,.7,.3,1)}
+.bar i{position:absolute;top:0;left:0;height:100%;width:0;border-radius:10px;z-index:2;
   background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1.1s cubic-bezier(.2,.7,.3,1)}
+.pend{color:#8a8e96}
+.pend b{color:#6f737b}
 .prog-foot{margin-top:12px;display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);flex-wrap:wrap;gap:8px}
 .prog-foot .pct{color:var(--gold2);font-weight:900;font-size:14px}
 .btn-row{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
@@ -206,9 +210,9 @@ footer a{color:var(--muted)}
       <div class="raised">目前募得<b id="raised">NT$ 0</b></div>
       <div class="goal">募資目標<br><b id="goal">NT$ 200,000</b></div>
     </div>
-    <div class="bar"><i id="bar"></i></div>
+    <div class="bar"><u id="barPend"></u><i id="bar"></i></div>
     <div class="prog-foot">
-      <div>已完成 <span class="pct" id="pct">0%</span>　·　<span id="donors">0</span> 位善心夥伴</div>
+      <div>已完成 <span class="pct" id="pct">0%</span>　·　<span id="donors">0</span> 位善心夥伴<span class="pend" id="pendTxt"></span></div>
       <div id="stamp">進度以財務審核通過的款項為準</div>
     </div>
     <div id="over" style="display:none;margin-top:12px;background:#eefaf1;border:1px solid #bfe6cb;
@@ -494,7 +498,18 @@ async function loadStats() {
     document.getElementById('donors').textContent = d.donors || 0;
     document.getElementById('pct').textContent = realPct + '%';
     const bar = document.getElementById('bar');
-    setTimeout(() => { bar.style.width = barPct + '%'; }, 260);
+    const pending = d.pending || 0;
+    const pendPct = Math.min(100, Math.round((raised + pending) / goal * 1000) / 10);
+    setTimeout(() => {
+      bar.style.width = barPct + '%';
+      document.getElementById('barPend').style.width = pendPct + '%';
+    }, 260);
+    const pt = document.getElementById('pendTxt');
+    if (pending > 0) {
+      pt.innerHTML = '　·　待審核 <b>' + nf(pending) + '</b>'
+        + (d.pendingDonors ? '（' + d.pendingDonors + ' 筆）' : '');
+      pt.title = '已收到但財務還沒核對完成的款項，核對通過後會轉成橘色';
+    } else { pt.textContent = ''; }
     if (raised > goal) {
       bar.style.background = 'linear-gradient(90deg,#2f9e5f,#4aab6a)';
       document.getElementById('pct').style.color = '#2f7d4f';

@@ -234,17 +234,26 @@ function fundStats_() {
     const sh = ss.getSheetByName(FUND_SHEET);
     if (sh) { try { ensureFundHeader_(sh); } catch (e) {} }
     if (!sh || sh.getLastRow() < 2) {
-      return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, list: [] });
+      return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, pending: 0, pendingDonors: 0, shares: 0, cheers: 0, list: [] });
     }
     const v = sh.getDataRange().getValues();
     const h = v[0];
     const iAmt = h.indexOf('捐款金額'), iSt = h.indexOf('審核狀態');
     const iWay = h.indexOf('芳名公開方式'), iName = h.indexOf('公開顯示名稱');
     const iMsg = h.indexOf('想說的話'), iTs = h.indexOf('時間戳記');
-    let raised = 0, donors = 0;
+    let raised = 0, donors = 0, pending = 0, pendingDonors = 0;
     const list = [];
+    const DEAD = ['作廢', '退回', '取消', '無效'];   // 這些不列入待審核
     for (let r = 1; r < v.length; r++) {
-      if (String(v[r][iSt] || '').trim() !== FUND_OK) continue;
+      const st = String(v[r][iSt] || '').trim();
+      if (st !== FUND_OK) {
+        // 尚未審核通過的：計入待審核（灰色段）
+        const pa = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+        let dead = false;
+        for (let k = 0; k < DEAD.length; k++) if (st.indexOf(DEAD[k]) >= 0) dead = true;
+        if (pa > 0 && !dead) { pending += pa; pendingDonors++; }
+        continue;
+      }
       const amt = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
       raised += amt; donors++;
       const way = String(v[r][iWay] || '');
@@ -268,8 +277,9 @@ function fundStats_() {
       }
     }
     return jsonOut_({ goal: FUND_GOAL, raised: raised, donors: donors,
+                      pending: pending, pendingDonors: pendingDonors,
                       shares: shares, cheers: cheers, list: list.reverse().slice(0, 60) });
   } catch (err) {
-    return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, shares: 0, cheers: 0, list: [], error: String(err) });
+    return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, pending: 0, pendingDonors: 0, shares: 0, cheers: 0, list: [], error: String(err) });
   }
 }
