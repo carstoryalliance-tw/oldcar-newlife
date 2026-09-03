@@ -15,7 +15,7 @@ const FUND_ACT_SHEET = '募資互動';   // 分享／集氣次數（自動建立
 
 const MAIL_FROM = '社團法人台灣人車公益協會 <no-reply@oldcarnewlife.org.tw>';
 const MAIL_FROM_FALLBACK = '社團法人台灣人車公益協會';   // 用 Gmail 寄時只能改顯示名稱
-const MAIL_ADMIN = ['carstory.alliance@gmail.com'];      // 收通知的信箱，可多個
+const MAIL_ADMIN = ['carstory.alliance@gmail.com', 'soulbreakin@gmail.com'];   // 收通知的信箱，可多個
 const MAIL_REPLY_TO = 'carstory.alliance@gmail.com';
            // 審核狀態填這三個字，進度條才會計入
 
@@ -342,6 +342,23 @@ function fundMails_(data, amount, timestamp) {
     sendMail_(MAIL_ADMIN, '【待審核】四驅車專案收到贊助 ' + money + '　' + (data.name || ''),
       mailShell_('有一筆新的贊助待核對', body, '審核狀態改成「已通過」後，募資頁進度條就會計入。'));
   }
+}
+
+/* ── 測試用：在編輯器選這個函式按「執行」，會跳授權視窗，允許後立刻寄一封測試信 ──
+ * 新增寄信功能後一定要跑這一次，否則 Web App 沒有寄信權限，信會靜默寄不出去。
+ */
+function testMail() {
+  const to = 'soulbreakin@gmail.com';
+  const body =
+    '<p>這是一封測試信。</p>' +
+    '<p>如果你看得到這封信，代表 Apps Script 的寄信權限已經開通，' +
+    '募資表單送出後就會自動寄「收到你的贊助資料了」給贊助者、' +
+    '並通知協會有一筆待核對。</p>' +
+    '<p><a href="https://oldcarnewlife.org.tw/fund/" style="display:inline-block;background:#d97b1e;' +
+    'color:#fff;text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
+  sendMail_(to, '【測試】協會寄信功能已開通', mailShell_('寄信功能測試', body, '這封信由 Apps Script 手動執行寄出。'));
+  const key = PropertiesService.getScriptProperties().getProperty('RESEND_API_KEY');
+  Logger.log('已送出，寄送方式：' + (key ? 'Resend' : 'Gmail（MailApp）'));
 }
 
 function getAidFolder_() {
