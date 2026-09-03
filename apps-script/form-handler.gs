@@ -529,6 +529,67 @@ function onFundApproved(e) {
   }
 }
 
+/** 手動執行：把目前募資進度與已入帳名單，寄給理監事＋財務＋協會 */
+function mailProgressToAll() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sh = ss.getSheetByName(FUND_SHEET);
+  if (!sh || sh.getLastRow() < 2) { Logger.log('沒有資料'); return; }
+  const v = sh.getDataRange().getValues();
+  const h = v[0];
+  const iTs = h.indexOf('時間戳記'), iNm = h.indexOf('姓名'), iAmt = h.indexOf('捐款金額');
+  const iSt = h.indexOf('審核狀態'), iWay = h.indexOf('芳名公開方式'), iShow = h.indexOf('公開顯示名稱');
+  const iMsg = h.indexOf('想說的話');
+  const skip = function (n) { n = String(n || ''); return n.indexOf('測試') >= 0 || n.indexOf('請刪除') >= 0; };
+  const nf = function (n) { return 'NT$ ' + Number(n).toLocaleString('en-US'); };
+
+  let raised = 0, pending = 0, pcount = 0;
+  const rows = [];
+  for (let r = 1; r < v.length; r++) {
+    if (skip(v[r][iNm])) continue;
+    const amt = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+    if (amt <= 0) continue;
+    const st = String(v[r][iSt] || '').trim();
+    if (st !== FUND_OK) { pending += amt; pcount++; continue; }
+    raised += amt;
+    const anon = String(v[r][iWay] || '').indexOf('匿名') >= 0;
+    const who = anon ? '匿名者' : (String(v[r][iShow] || '').trim() || String(v[r][iNm] || ''));
+    const ts = v[r][iTs];
+    const tsTxt = (ts instanceof Date) ? Utilities.formatDate(ts, 'Asia/Taipei', 'MM/dd') : String(ts).slice(0, 10);
+    const msg = String(v[r][iMsg] || '').trim();
+    rows.push(
+      '<tr><td style="padding:9px 12px;border-top:1px solid #f2f3f5;font-size:13px;color:#8a8e96;white-space:nowrap;">' + tsTxt + '</td>' +
+      '<td style="padding:9px 12px;border-top:1px solid #f2f3f5;font-size:13px;">' + who +
+      (msg ? '<br><span style="color:#8a8e96;font-size:11.5px;">「' + msg + '」</span>' : '') + '</td>' +
+      '<td style="padding:9px 12px;border-top:1px solid #f2f3f5;font-size:13px;text-align:right;font-weight:900;color:#d97b1e;white-space:nowrap;">' +
+      nf(amt) + '</td></tr>');
+  }
+  const pct = Math.round(raised / FUND_GOAL * 1000) / 10;
+  const left = Math.max(0, FUND_GOAL - raised);
+  const barW = Math.min(100, pct);
+
+  const body =
+    '<div style="background:#fdf7ef;border:1px solid #f0dcc0;border-radius:12px;padding:16px 18px;margin-bottom:16px;">' +
+    '<div style="font-size:13px;color:#8b7d6b;">目前募得</div>' +
+    '<div style="font-size:30px;font-weight:900;color:#d97b1e;margin:4px 0 8px;">' + nf(raised) +
+    ' <span style="font-size:14px;color:#8b7d6b;font-weight:400;">/ ' + nf(FUND_GOAL) + '</span></div>' +
+    '<div style="height:12px;background:#eceef2;border-radius:8px;overflow:hidden;">' +
+    '<div style="height:12px;width:' + barW + '%;background:#d97b1e;border-radius:8px;"></div></div>' +
+    '<div style="margin-top:8px;font-size:13px;color:#4a4d54;">已完成 <b>' + pct + '%</b>　·　共 ' + rows.length + ' 筆' +
+    (left > 0 ? '　·　還差 <b>' + nf(left) + '</b>' : '　·　<b>已達標</b>') +
+    (pending > 0 ? '<br><span style="color:#8a8e96;">另有 ' + pcount + ' 筆待核對，' + nf(pending) + '</span>' : '') +
+    '</div></div>' +
+    '<p><b>已入帳名單</b></p>' +
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:8px 0 14px;' +
+    'border:1px solid #eef0f3;border-radius:10px;">' + rows.join('') + '</table>' +
+    '<p><a href="https://oldcarnewlife.org.tw/fund/" style="display:inline-block;background:#d97b1e;color:#fff;' +
+    'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
+
+  const to = BOARD_EMAIL.concat(FINANCE_EMAIL).concat(BOARD_CC);
+  sendMail_(to, '【四驅車專案】目前募得 ' + nf(raised) + '（' + pct + '%）',
+    mailShell_('募資進度回報', body, '由協會表單系統整理發出，測試資料已排除。'));
+  Logger.log('已寄給：' + to.join(', '));
+}
+
 function getAidFolder_() {
   if (AID_FOLDER_ID) return DriveApp.getFolderById(AID_FOLDER_ID);
   const it = DriveApp.getFoldersByName(AID_FOLDER_NAME);
