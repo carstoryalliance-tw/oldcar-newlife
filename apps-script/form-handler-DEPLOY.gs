@@ -448,8 +448,8 @@ function mailPendingToFinance() {
  * ⚠️ 要先執行一次 setupTriggers() 安裝觸發器，這個功能才會運作。
  */
 const BOARD_EMAIL = [
-  'kevin@kwax.tw',            // ← 理事長 曾聖凱（請確認正確信箱）
-  'renewucar@gmail.com'       // ← 常務理事 吳建勳（阿勳）
+  'ho2010@kwax.tw',           // 理事長 曾聖凱（Kevin）
+  'renewucar@gmail.com'       // 常務理事 吳建勳（阿勳）
 ];
 const BOARD_CC = ['soulbreakin@gmail.com', 'carstory.alliance@gmail.com'];
 
