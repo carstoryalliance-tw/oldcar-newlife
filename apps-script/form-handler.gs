@@ -388,7 +388,7 @@ function mailPendingToFinance() {
     for (let k = 0; k < DEAD.length; k++) if (st.indexOf(DEAD[k]) >= 0) dead = true;
     if (dead) continue;
     const nm = String(v[r][iName] || '');
-    if (nm.indexOf('測試') >= 0) continue;              // 略過測試資料
+    if (nm.indexOf('測試') >= 0 || nm.indexOf('請刪除') >= 0) continue;   // 略過測試資料
     const amt = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
     if (amt <= 0) continue;
     total += amt;
@@ -478,7 +478,7 @@ function onFundApproved(e) {
     const row = sh.getRange(e.range.getRow(), 1, 1, sh.getLastColumn()).getValues()[0];
     const g = function (name) { const i = h.indexOf(name); return i < 0 ? '' : row[i]; };
     const name = String(g('姓名') || '');
-    if (name.indexOf('測試') >= 0) return;                          // 測試資料不通知
+    if (name.indexOf('測試') >= 0 || name.indexOf('請刪除') >= 0) return;   // 測試資料不通知
 
     const amt = Number(String(g('捐款金額') || '').replace(/[^0-9.]/g, '')) || 0;
     const anon = String(g('芳名公開方式') || '').indexOf('匿名') >= 0;
@@ -491,7 +491,8 @@ function onFundApproved(e) {
     let raised = 0, count = 0;
     for (let r = 1; r < v.length; r++) {
       if (String(v[r][iSt] || '').trim() !== FUND_OK) continue;
-      if (String(v[r][iNm] || '').indexOf('測試') >= 0) continue;
+      const nmR = String(v[r][iNm] || '');
+      if (nmR.indexOf('測試') >= 0 || nmR.indexOf('請刪除') >= 0) continue;
       raised += Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
       count++;
     }
