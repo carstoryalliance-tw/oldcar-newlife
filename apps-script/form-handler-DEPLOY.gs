@@ -302,7 +302,7 @@ function fundMails_(data, amount, timestamp) {
   if (data.email) {
     const body =
       '<p>' + name + ' 你好，</p>' +
-      '<p>我們收到你的贊助資料了，謝謝你願意幫南投神國教會找一台能上山的車。</p>' +
+      '<p>我們收到你的贊助資料了，謝謝你願意幫魚池神國教會找一台能上山的車。</p>' +
       '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:14px 0;' +
       'border:1px solid #eef0f3;border-radius:10px;">' +
       '<tr><td style="padding:10px 14px;color:#8a8e96;font-size:13px;">贊助金額</td>' +
@@ -316,7 +316,7 @@ function fundMails_(data, amount, timestamp) {
       '需要收據的話，我們會另外跟你聯絡。</p>' +
       '<p><a href="https://oldcarnewlife.org.tw/fund/" style="display:inline-block;background:#d97b1e;color:#fff;' +
       'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看目前募資進度</a></p>';
-    sendMail_(data.email, '謝謝你的贊助——四驅車專案已收到你的資料',
+    sendMail_(data.email, '謝謝你的贊助——魚池神國教會專案已收到你的資料',
       mailShell_('我們收到你的贊助資料了', body, '這封信由系統自動發送，回信可直接聯絡協會。'));
   }
 
@@ -339,7 +339,7 @@ function fundMails_(data, amount, timestamp) {
       '<p><a href="https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit" ' +
       'style="display:inline-block;background:#1a1a2e;color:#fff;text-decoration:none;padding:11px 22px;' +
       'border-radius:9px;font-weight:900;">開啟試算表核對</a></p>';
-    sendMail_(MAIL_ADMIN, '【待審核】四驅車專案收到贊助 ' + money + '　' + (data.name || ''),
+    sendMail_(MAIL_ADMIN, '【待審核】魚池神國教會專案收到贊助 ' + money + '　' + (data.name || ''),
       mailShell_('有一筆新的贊助待核對', body, '審核狀態改成「已通過」後，募資頁進度條就會計入。'));
   }
 }
@@ -417,7 +417,7 @@ function mailPendingToFinance() {
 
   const body =
     '<p>Kimi 你好，</p>' +
-    '<p>四驅車專案目前有 <b>' + rows.length + ' 筆</b>贊助等待核對入帳，合計 ' +
+    '<p>魚池神國教會專案目前有 <b>' + rows.length + ' 筆</b>贊助等待核對入帳，合計 ' +
     '<b style="color:#d97b1e;">NT$ ' + total.toLocaleString('en-US') + '</b>。</p>' +
     '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:14px 0;' +
     'border:1px solid #eef0f3;border-radius:10px;border-collapse:separate;">' +
@@ -436,10 +436,10 @@ function mailPendingToFinance() {
     '<a href="https://oldcarnewlife.org.tw/fund/" style="display:inline-block;background:#d97b1e;color:#fff;' +
     'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
 
-  const html = mailShell_('四驅車專案：' + rows.length + ' 筆贊助待核對',
+  const html = mailShell_('魚池神國教會專案：' + rows.length + ' 筆贊助待核對',
     body, '這封信由協會表單系統整理發出，測試資料已自動排除。');
   sendMail_(FINANCE_EMAIL.concat(FINANCE_CC),
-    '【待核對】四驅車專案　' + rows.length + ' 筆　NT$ ' + total.toLocaleString('en-US'), html);
+    '【待核對】魚池神國教會專案　' + rows.length + ' 筆　NT$ ' + total.toLocaleString('en-US'), html);
   Logger.log('已寄出：' + rows.length + ' 筆，合計 ' + total);
 }
 
@@ -501,7 +501,7 @@ function onFundApproved(e) {
     const nf = function (n) { return 'NT$ ' + Number(n).toLocaleString('en-US'); };
 
     const body =
-      '<p>四驅車專案有一筆贊助<b>確認入帳</b>了。</p>' +
+      '<p>魚池神國教會專案有一筆贊助<b>確認入帳</b>了。</p>' +
       '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:12px 0;' +
       'border:1px solid #eef0f3;border-radius:10px;">' +
       '<tr><td style="padding:10px 14px;color:#8a8e96;font-size:13px;">贊助者</td>' +
@@ -522,7 +522,7 @@ function onFundApproved(e) {
       'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
 
     sendMail_(BOARD_EMAIL.concat(BOARD_CC),
-      '【入帳】四驅車專案　' + nf(amt) + '　累計 ' + nf(raised) + '（' + pct + '%）',
+      '【入帳】魚池神國教會專案　' + nf(amt) + '　累計 ' + nf(raised) + '（' + pct + '%）',
       mailShell_('有一筆贊助確認入帳', body, '審核狀態改成「已通過」時自動發出，募資頁進度條已同步更新。'));
   } catch (err) {
     console.warn('[onFundApproved] ' + err);
@@ -585,7 +585,7 @@ function mailProgressToAll() {
     'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
 
   const to = BOARD_EMAIL.concat(FINANCE_EMAIL).concat(BOARD_CC);
-  sendMail_(to, '【四驅車專案】目前募得 ' + nf(raised) + '（' + pct + '%）',
+  sendMail_(to, '【魚池神國教會專案】目前募得 ' + nf(raised) + '（' + pct + '%）',
     mailShell_('募資進度回報', body, '由協會表單系統整理發出，測試資料已排除。'));
   Logger.log('已寄給：' + to.join(', '));
 }
