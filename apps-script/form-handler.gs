@@ -281,13 +281,16 @@ function mailShell_(title, bodyHtml, footNote) {
   '<div style="background:#f4f5f7;padding:24px 12px;font-family:\'Noto Sans TC\',\'Microsoft JhengHei\',sans-serif;">' +
   '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;' +
   'background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e3e5ea;">' +
-  '<tr><td style="background:#d97b1e;padding:18px 24px;color:#fff;font-size:15px;font-weight:900;letter-spacing:1px;">' +
-  '社團法人台灣人車公益協會</td></tr>' +
+  '<tr><td style="padding:0;line-height:0;">' +
+  '<img src="https://oldcarnewlife.org.tw/assets/mail-banner.jpg" width="560" ' +
+  'alt="社團法人台灣人車公益協會" style="display:block;width:100%;max-width:560px;height:auto;border:0;">' +
+  '</td></tr>' +
   '<tr><td style="padding:26px 24px 8px;font-size:19px;font-weight:900;color:#1a1a2e;">' + title + '</td></tr>' +
   '<tr><td style="padding:0 24px 22px;font-size:14px;line-height:1.9;color:#4a4d54;">' + bodyHtml + '</td></tr>' +
   '<tr><td style="padding:16px 24px;background:#fafbfc;border-top:1px solid #eef0f3;font-size:11.5px;line-height:1.8;color:#8a8e96;">' +
   (footNote || '') +
-  '<br>OLD CAR × NEW LIFE　·　oldcarnewlife.org.tw' +
+  '<br>社團法人台灣人車公益協會　·　OLD CAR × NEW LIFE' +
+  '<br>內政部核准立案 台內團字第 1140047990 號　·　oldcarnewlife.org.tw' +
   '</td></tr></table></div>';
 }
 
