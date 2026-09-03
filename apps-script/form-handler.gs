@@ -11,7 +11,13 @@ const MEETING_SHEET = '例會報名';   // 例會出席報名（自動建立）
 const FUND_SHEET = '孤兒院募資';    // 孤兒院用車整理專案募資（自動建立）
 const FUND_GOAL = 200000;          // 募資目標金額
 const FUND_OK = '已通過';
-const FUND_ACT_SHEET = '募資互動';   // 分享／集氣次數（自動建立）           // 審核狀態填這三個字，進度條才會計入
+const FUND_ACT_SHEET = '募資互動';   // 分享／集氣次數（自動建立）
+
+const MAIL_FROM = '社團法人台灣人車公益協會 <no-reply@oldcarnewlife.org.tw>';
+const MAIL_FROM_FALLBACK = '社團法人台灣人車公益協會';   // 用 Gmail 寄時只能改顯示名稱
+const MAIL_ADMIN = ['carstory.alliance@gmail.com'];      // 收通知的信箱，可多個
+const MAIL_REPLY_TO = 'carstory.alliance@gmail.com';
+           // 審核狀態填這三個字，進度條才會計入
 
 // 照片/影片上傳存放位置。留空 = 自動在雲端根目錄建立同名資料夾。
 const AID_FOLDER_ID = '';
@@ -114,6 +120,7 @@ function doPost(e) {
         data.receipt || '', data.receiptTitle || '', data.taxId || '',
         data.note || '', '待審核'
       ]);
+      try { fundMails_(data, amount, timestamp); } catch (e) { console.warn('[mail] ' + e); }
 
     } else if (data.type === 'fundact') {
       // 募資頁的「分享 / 集氣」按鈕計數
@@ -207,6 +214,131 @@ function ensureFundHeader_(sheet) {
   const cur = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), HEAD.length)).getValues()[0];
   const i = cur.indexOf('統一編號');
   if (i >= 0) sheet.getRange(1, i + 1).setValue('身分證字號／統一編號');
+}
+
+/* ═══════════════ 寄信 ═══════════════
+ * 優先走 Resend（寄件人可用協會網域，信譽較好），
+ * 沒設定 RESEND_API_KEY 就退回 Gmail（MailApp），完全不設定也不會讓表單失敗。
+ * 金鑰放在「專案設定 → 指令碼屬性」，鍵名 RESEND_API_KEY。
+ */
+function sendMail_(to, subject, html) {
+  if (!to) return;
+  const plain = mailToPlain_(html);
+  const key = PropertiesService.getScriptProperties().getProperty('RESEND_API_KEY');
+
+  if (key) {
+    try {
+      const res = UrlFetchApp.fetch('https://api.resend.com/emails', {
+        method: 'post',
+        contentType: 'application/json',
+        headers: { Authorization: 'Bearer ' + key },
+        payload: JSON.stringify({
+          from: MAIL_FROM,
+          to: Array.isArray(to) ? to : [to],
+          subject: subject,
+          html: html,
+          text: plain,
+          reply_to: MAIL_REPLY_TO
+        }),
+        muteHttpExceptions: true
+      });
+      if (res.getResponseCode() < 300) return;
+      console.warn('[mail] Resend 失敗，改用 Gmail：' + res.getContentText());
+    } catch (e) {
+      console.warn('[mail] Resend 例外，改用 Gmail：' + e);
+    }
+  }
+
+  // 後備：用試算表擁有者的 Gmail 寄（每日約 100 封額度）
+  try {
+    MailApp.sendEmail({
+      to: Array.isArray(to) ? to.join(',') : to,
+      subject: subject,
+      htmlBody: html,
+      body: plain,
+      name: MAIL_FROM_FALLBACK,
+      replyTo: MAIL_REPLY_TO
+    });
+  } catch (e) {
+    console.warn('[mail] 寄信失敗（不影響表單寫入）：' + e);
+  }
+}
+
+function mailToPlain_(html) {
+  return String(html)
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<a [^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi, '$2（$1）')
+    .replace(/<\/(p|div|h1|h2|tr|li)>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&')
+    .replace(/\n{3,}/g, '\n\n').trim();
+}
+
+/** 信件外框：協會橘 + 白底，用 table 排版才不會在各家信箱跑版 */
+function mailShell_(title, bodyHtml, footNote) {
+  return '' +
+  '<div style="background:#f4f5f7;padding:24px 12px;font-family:\'Noto Sans TC\',\'Microsoft JhengHei\',sans-serif;">' +
+  '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;' +
+  'background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e3e5ea;">' +
+  '<tr><td style="background:#d97b1e;padding:18px 24px;color:#fff;font-size:15px;font-weight:900;letter-spacing:1px;">' +
+  '社團法人台灣人車公益協會</td></tr>' +
+  '<tr><td style="padding:26px 24px 8px;font-size:19px;font-weight:900;color:#1a1a2e;">' + title + '</td></tr>' +
+  '<tr><td style="padding:0 24px 22px;font-size:14px;line-height:1.9;color:#4a4d54;">' + bodyHtml + '</td></tr>' +
+  '<tr><td style="padding:16px 24px;background:#fafbfc;border-top:1px solid #eef0f3;font-size:11.5px;line-height:1.8;color:#8a8e96;">' +
+  (footNote || '') +
+  '<br>OLD CAR × NEW LIFE　·　oldcarnewlife.org.tw' +
+  '</td></tr></table></div>';
+}
+
+/** 有人送出募資表單：回信給贊助者、通知協會 */
+function fundMails_(data, amount, timestamp) {
+  const name = data.name || '朋友';
+  const money = 'NT$ ' + Number(amount || 0).toLocaleString('en-US');
+
+  if (data.email) {
+    const body =
+      '<p>' + name + ' 你好，</p>' +
+      '<p>我們收到你的贊助資料了，謝謝你願意幫南投神國教會找一台能上山的車。</p>' +
+      '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:14px 0;' +
+      'border:1px solid #eef0f3;border-radius:10px;">' +
+      '<tr><td style="padding:10px 14px;color:#8a8e96;font-size:13px;">贊助金額</td>' +
+      '<td style="padding:10px 14px;text-align:right;font-weight:900;color:#d97b1e;">' + money + '</td></tr>' +
+      '<tr><td style="padding:10px 14px;color:#8a8e96;font-size:13px;border-top:1px solid #f2f3f5;">匯款末五碼</td>' +
+      '<td style="padding:10px 14px;text-align:right;border-top:1px solid #f2f3f5;">' + (data.transferCode || '—') + '</td></tr>' +
+      '<tr><td style="padding:10px 14px;color:#8a8e96;font-size:13px;border-top:1px solid #f2f3f5;">送出時間</td>' +
+      '<td style="padding:10px 14px;text-align:right;border-top:1px solid #f2f3f5;">' + timestamp + '</td></tr>' +
+      '</table>' +
+      '<p>接下來由協會財務核對入帳，<b>核對完成後你的贊助就會出現在募資頁的進度條與芳名錄</b>。' +
+      '需要收據的話，我們會另外跟你聯絡。</p>' +
+      '<p><a href="https://oldcarnewlife.org.tw/fund/" style="display:inline-block;background:#d97b1e;color:#fff;' +
+      'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看目前募資進度</a></p>';
+    sendMail_(data.email, '謝謝你的贊助——四驅車專案已收到你的資料',
+      mailShell_('我們收到你的贊助資料了', body, '這封信由系統自動發送，回信可直接聯絡協會。'));
+  }
+
+  if (MAIL_ADMIN.length) {
+    const rows = [
+      ['姓名', data.name], ['公司／單位', data.company], ['電話', data.phone],
+      ['Email', data.email], ['金額', money], ['匯款末五碼', data.transferCode],
+      ['芳名方式', data.display], ['公開名稱', data.displayName],
+      ['留言', data.message], ['收據', data.receipt], ['抬頭', data.receiptTitle],
+      ['身分證／統編', data.taxId], ['備註', data.note]
+    ].filter(function (r) { return r[1]; })
+     .map(function (r) {
+       return '<tr><td style="padding:7px 12px;color:#8a8e96;font-size:13px;white-space:nowrap;">' + r[0] +
+              '</td><td style="padding:7px 12px;font-size:13px;">' + r[1] + '</td></tr>';
+     }).join('');
+    const body =
+      '<p>募資頁有一筆新的贊助資料，<b>狀態是「待審核」</b>，請核對入帳後把試算表的審核狀態改成「已通過」。</p>' +
+      '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:12px 0;' +
+      'border:1px solid #eef0f3;border-radius:10px;">' + rows + '</table>' +
+      '<p><a href="https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit" ' +
+      'style="display:inline-block;background:#1a1a2e;color:#fff;text-decoration:none;padding:11px 22px;' +
+      'border-radius:9px;font-weight:900;">開啟試算表核對</a></p>';
+    sendMail_(MAIL_ADMIN, '【待審核】四驅車專案收到贊助 ' + money + '　' + (data.name || ''),
+      mailShell_('有一筆新的贊助待核對', body, '審核狀態改成「已通過」後，募資頁進度條就會計入。'));
+  }
 }
 
 function getAidFolder_() {
