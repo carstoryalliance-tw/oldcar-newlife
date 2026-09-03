@@ -361,6 +361,88 @@ function testMail() {
   Logger.log('已送出，寄送方式：' + (key ? 'Resend' : 'Gmail（MailApp）'));
 }
 
+/* ── 把目前「待審核」的贊助整理成一封信寄給財務 ──
+ * 在編輯器選 mailPendingToFinance 按執行即可；名稱含「測試」的列會自動略過。
+ */
+const FINANCE_EMAIL = ['0814kimi@gmail.com'];      // 財務長 吳宗圍
+const FINANCE_CC = ['soulbreakin@gmail.com'];      // 一併知會
+
+function mailPendingToFinance() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sh = ss.getSheetByName(FUND_SHEET);
+  if (!sh || sh.getLastRow() < 2) { Logger.log('沒有資料'); return; }
+
+  const v = sh.getDataRange().getValues();
+  const h = v[0];
+  const iTs = h.indexOf('時間戳記'), iName = h.indexOf('姓名'), iComp = h.indexOf('公司/單位');
+  const iAmt = h.indexOf('捐款金額'), iCode = h.indexOf('匯款末五碼'), iSt = h.indexOf('審核狀態');
+  const iPhone = h.indexOf('電話'), iMail = h.indexOf('Email'), iRcpt = h.indexOf('收據需求');
+
+  const DEAD = ['作廢', '退回', '取消', '無效'];
+  let total = 0;
+  const rows = [];
+  for (let r = 1; r < v.length; r++) {
+    const st = String(v[r][iSt] || '').trim();
+    if (st === FUND_OK) continue;
+    let dead = false;
+    for (let k = 0; k < DEAD.length; k++) if (st.indexOf(DEAD[k]) >= 0) dead = true;
+    if (dead) continue;
+    const nm = String(v[r][iName] || '');
+    if (nm.indexOf('測試') >= 0) continue;              // 略過測試資料
+    const amt = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+    if (amt <= 0) continue;
+    total += amt;
+    const ts = v[r][iTs];
+    const tsTxt = (ts instanceof Date)
+      ? Utilities.formatDate(ts, 'Asia/Taipei', 'MM/dd HH:mm')
+      : String(ts).replace(/:\d\d$/, '');
+    rows.push(
+      '<tr>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:13px;white-space:nowrap;">' + tsTxt + '</td>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:13px;">' + nm +
+        (v[r][iComp] ? '<br><span style="color:#8a8e96;font-size:11.5px;">' + v[r][iComp] + '</span>' : '') + '</td>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:13px;text-align:right;font-weight:900;color:#d97b1e;white-space:nowrap;">' +
+        'NT$ ' + amt.toLocaleString('en-US') + '</td>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:13px;text-align:center;letter-spacing:1px;">' +
+        (v[r][iCode] || '—') + '</td>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:11.5px;color:#8a8e96;">' +
+        (v[r][iRcpt] || '') + '<br>' + (v[r][iPhone] || '') + '</td>' +
+      '</tr>');
+  }
+
+  if (!rows.length) {
+    Logger.log('目前沒有待審核的贊助');
+    return;
+  }
+
+  const body =
+    '<p>Kimi 你好，</p>' +
+    '<p>四驅車專案目前有 <b>' + rows.length + ' 筆</b>贊助等待核對入帳，合計 ' +
+    '<b style="color:#d97b1e;">NT$ ' + total.toLocaleString('en-US') + '</b>。</p>' +
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:14px 0;' +
+    'border:1px solid #eef0f3;border-radius:10px;border-collapse:separate;">' +
+    '<tr style="background:#fafbfc;">' +
+    '<th style="padding:9px 10px;text-align:left;font-size:11.5px;color:#8a8e96;">時間</th>' +
+    '<th style="padding:9px 10px;text-align:left;font-size:11.5px;color:#8a8e96;">贊助者</th>' +
+    '<th style="padding:9px 10px;text-align:right;font-size:11.5px;color:#8a8e96;">金額</th>' +
+    '<th style="padding:9px 10px;text-align:center;font-size:11.5px;color:#8a8e96;">末五碼</th>' +
+    '<th style="padding:9px 10px;text-align:left;font-size:11.5px;color:#8a8e96;">收據／電話</th></tr>' +
+    rows.join('') + '</table>' +
+    '<p><b>核對方式：</b>比對永豐帳戶入帳的末五碼與金額，確認無誤後把試算表「孤兒院募資」分頁' +
+    '最後一欄「審核狀態」改成 <b>已通過</b>（要一字不差），募資頁的進度條就會把它從灰色轉成橘色。</p>' +
+    '<p><a href="https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit" ' +
+    'style="display:inline-block;background:#1a1a2e;color:#fff;text-decoration:none;padding:11px 22px;' +
+    'border-radius:9px;font-weight:900;">開啟試算表核對</a>　' +
+    '<a href="https://oldcarnewlife.org.tw/fund/" style="display:inline-block;background:#d97b1e;color:#fff;' +
+    'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
+
+  const html = mailShell_('四驅車專案：' + rows.length + ' 筆贊助待核對',
+    body, '這封信由協會表單系統整理發出，測試資料已自動排除。');
+  sendMail_(FINANCE_EMAIL.concat(FINANCE_CC),
+    '【待核對】四驅車專案　' + rows.length + ' 筆　NT$ ' + total.toLocaleString('en-US'), html);
+  Logger.log('已寄出：' + rows.length + ' 筆，合計 ' + total);
+}
+
 function getAidFolder_() {
   if (AID_FOLDER_ID) return DriveApp.getFolderById(AID_FOLDER_ID);
   const it = DriveApp.getFoldersByName(AID_FOLDER_NAME);
