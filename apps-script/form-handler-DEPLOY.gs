@@ -443,6 +443,91 @@ function mailPendingToFinance() {
   Logger.log('已寄出：' + rows.length + ' 筆，合計 ' + total);
 }
 
+/* ── 審核通過自動通知理監事 ──
+ * 在試算表把「審核狀態」改成「已通過」時，自動寄信給理事長與常務理事。
+ * ⚠️ 要先執行一次 setupTriggers() 安裝觸發器，這個功能才會運作。
+ */
+const BOARD_EMAIL = [
+  'kevin@kwax.tw',            // ← 理事長 曾聖凱（請確認正確信箱）
+  'renewucar@gmail.com'       // ← 常務理事 吳建勳（阿勳）
+];
+const BOARD_CC = ['soulbreakin@gmail.com', 'carstory.alliance@gmail.com'];
+
+/** 安裝觸發器：整個專案只需要執行這一次 */
+function setupTriggers() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'onFundApproved') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('onFundApproved').forSpreadsheet(ss).onEdit().create();
+  Logger.log('觸發器已安裝：改「審核狀態」為「已通過」時會自動通知理監事');
+}
+
+function onFundApproved(e) {
+  try {
+    if (!e || !e.range) return;
+    const sh = e.range.getSheet();
+    if (sh.getName() !== FUND_SHEET) return;
+    if (String(e.value || '').trim() !== FUND_OK) return;          // 只在改成「已通過」時
+    if (String(e.oldValue || '').trim() === FUND_OK) return;       // 本來就通過就不重複寄
+
+    const h = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+    const col = e.range.getColumn();
+    if (h[col - 1] !== '審核狀態') return;                          // 只認審核狀態那一欄
+
+    const row = sh.getRange(e.range.getRow(), 1, 1, sh.getLastColumn()).getValues()[0];
+    const g = function (name) { const i = h.indexOf(name); return i < 0 ? '' : row[i]; };
+    const name = String(g('姓名') || '');
+    if (name.indexOf('測試') >= 0) return;                          // 測試資料不通知
+
+    const amt = Number(String(g('捐款金額') || '').replace(/[^0-9.]/g, '')) || 0;
+    const anon = String(g('芳名公開方式') || '').indexOf('匿名') >= 0;
+    const shown = anon ? '匿名者' : (String(g('公開顯示名稱') || '').trim() || name);
+    const msg = String(g('想說的話') || '').trim();
+
+    // 目前累計
+    const v = sh.getDataRange().getValues();
+    const iAmt = h.indexOf('捐款金額'), iSt = h.indexOf('審核狀態'), iNm = h.indexOf('姓名');
+    let raised = 0, count = 0;
+    for (let r = 1; r < v.length; r++) {
+      if (String(v[r][iSt] || '').trim() !== FUND_OK) continue;
+      if (String(v[r][iNm] || '').indexOf('測試') >= 0) continue;
+      raised += Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+      count++;
+    }
+    const pct = Math.round(raised / FUND_GOAL * 1000) / 10;
+    const left = Math.max(0, FUND_GOAL - raised);
+    const nf = function (n) { return 'NT$ ' + Number(n).toLocaleString('en-US'); };
+
+    const body =
+      '<p>四驅車專案有一筆贊助<b>確認入帳</b>了。</p>' +
+      '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:12px 0;' +
+      'border:1px solid #eef0f3;border-radius:10px;">' +
+      '<tr><td style="padding:10px 14px;color:#8a8e96;font-size:13px;">贊助者</td>' +
+      '<td style="padding:10px 14px;text-align:right;font-weight:700;">' + shown + '</td></tr>' +
+      '<tr><td style="padding:10px 14px;color:#8a8e96;font-size:13px;border-top:1px solid #f2f3f5;">金額</td>' +
+      '<td style="padding:10px 14px;text-align:right;border-top:1px solid #f2f3f5;font-weight:900;color:#d97b1e;">' +
+        nf(amt) + '</td></tr>' +
+      (msg ? '<tr><td style="padding:10px 14px;color:#8a8e96;font-size:13px;border-top:1px solid #f2f3f5;">留言</td>' +
+             '<td style="padding:10px 14px;text-align:right;border-top:1px solid #f2f3f5;font-size:13px;">「' + msg + '」</td></tr>' : '') +
+      '</table>' +
+      '<div style="background:#fdf7ef;border:1px solid #f0dcc0;border-radius:10px;padding:14px 16px;margin:14px 0;">' +
+      '<div style="font-size:13px;color:#8b7d6b;">目前累計</div>' +
+      '<div style="font-size:26px;font-weight:900;color:#d97b1e;margin:4px 0;">' + nf(raised) +
+      ' <span style="font-size:14px;color:#8b7d6b;font-weight:400;">/ ' + nf(FUND_GOAL) + '（' + pct + '%）</span></div>' +
+      '<div style="font-size:13px;color:#4a4d54;">共 ' + count + ' 筆贊助' +
+      (left > 0 ? '　·　距離目標還差 <b>' + nf(left) + '</b>' : '　·　<b>已達標</b>') + '</div></div>' +
+      '<p><a href="https://oldcarnewlife.org.tw/fund/" style="display:inline-block;background:#d97b1e;color:#fff;' +
+      'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
+
+    sendMail_(BOARD_EMAIL.concat(BOARD_CC),
+      '【入帳】四驅車專案　' + nf(amt) + '　累計 ' + nf(raised) + '（' + pct + '%）',
+      mailShell_('有一筆贊助確認入帳', body, '審核狀態改成「已通過」時自動發出，募資頁進度條已同步更新。'));
+  } catch (err) {
+    console.warn('[onFundApproved] ' + err);
+  }
+}
+
 function getAidFolder_() {
   if (AID_FOLDER_ID) return DriveApp.getFolderById(AID_FOLDER_ID);
   const it = DriveApp.getFoldersByName(AID_FOLDER_NAME);
