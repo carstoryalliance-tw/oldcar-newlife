@@ -116,6 +116,12 @@ textarea{min-height:78px;resize:vertical}
 .ab h4{font-size:14px;margin-bottom:9px}
 .ab .row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:4px 0;color:var(--muted)}
 .ab .row b{color:var(--text);font-weight:700}
+.acct{grid-template-columns:repeat(auto-fit,minmax(230px,320px));justify-content:start}
+.ab h4{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ab .tag{background:#e9f6ee;color:#2f6b47;border:1px solid #bfe0cc;border-radius:6px;
+  font-size:11px;font-weight:900;letter-spacing:.5px;padding:2px 7px}
+.acctnote{margin-top:10px;font-size:12.5px;color:var(--dim);line-height:1.9}
+.acctnote b{color:var(--muted)}
 
 /* 動作按鈕（贊助／分享／集氣）*/
 .acts{margin-top:18px;display:flex;flex-direction:column;gap:9px}
@@ -343,16 +349,15 @@ footer a{color:var(--muted)}
       <p class="lead">先匯款，再填下面這張表，讓我們對得到帳。財務核對無誤後，你的贊助就會計入上面的進度條。</p>
   
       <div class="acct">
-        <div class="ab"><h4>🏦 永豐銀行（新莊副都心）</h4>
+        <div class="ab"><h4>🏦 永豐銀行（新莊副都心）<span class="tag">勸募專戶</span></h4>
           <div class="row"><span>銀行代碼</span><b>807</b></div>
           <div class="row"><span>帳號</span><b>132-01-80110-2656</b></div>
           <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
         </div>
-        <div class="ab g"><h4>📮 郵政劃撥</h4>
-          <div class="row"><span>劃撥帳號</span><b>50485386</b></div>
-          <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
-        </div>
       </div>
+      <p class="acctnote">
+        ＊ 依公益勸募條例，本專案所募款項<b>全部進這一個專戶、專款專用</b>，不收其他管道的款項——<b>請勿使用郵政劃撥或其他帳戶</b>，以免無法計入本專案。
+      </p>
   
       <form class="form" id="f">
         <div class="two">
