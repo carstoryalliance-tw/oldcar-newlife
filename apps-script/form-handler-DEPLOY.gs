@@ -51,6 +51,9 @@ const V1_ACT_SHEET = '募資互動';     // 舊的分享／集氣
 const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
+// 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
+const SCRIPT_VERSION = '2026-09-24-d';
+
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
 /* 勸募文宣要載明勸募團體的名稱、地址與聯絡方式，信件也算文宣 */
@@ -530,7 +533,7 @@ function doGet(e) {
   const p = (e && e.parameter) || {};
   if (p.stat === 'fund') return fundStats_();       // 舊分頁，保留供對帳
   if (p.stat === 'fund2') return fund2Stats_();     // 現行募資頁讀這個（含勸募期間狀態）
-  return jsonOut_({ status: 'ok', message: '人車故事公益協會 Form API' });
+  return jsonOut_({ status: 'ok', message: '人車故事公益協會 Form API', version: SCRIPT_VERSION });
 }
 
 function jsonOut_(obj) {
@@ -838,7 +841,7 @@ function fund2Step1Mail_(data, pledgeId) {
       'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:700;">回去把資料填完</a></p>' +
       '<p style="font-size:12.5px;color:#8a8e96;">＊ 依公益勸募條例，本專案只收這一個專戶的款項，' +
       '請勿使用郵政劃撥或其他帳戶，以免無法計入本專案。</p>',
-      '這封信是系統自動發送，有問題直接回覆即可。'));
+      '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。'));
 }
 
 /** 步驟②完成：回信給贊助者、通知協會 */
@@ -855,7 +858,7 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
         '<b>登記編號</b>　' + pledgeId + '</p>' +
         '<p>財務會用末五碼跟銀行帳目核對，核對完成後，你的贊助就會出現在募資頁的進度條與芳名錄上。</p>' +
         '<p>需要收據的話我們會另外跟你聯絡。真的很謝謝你。</p>',
-        '這封信是系統自動發送，有問題直接回覆即可。'));
+        '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。'));
   }
 
   sendMail_(MAIL_ADMIN, '新的募資登記：' + name + '　' + money,
@@ -972,7 +975,7 @@ function notifyApproved_(sh, h, row, rowNum) {
         '<p>找車、驗車與整理的進度會更新在募資頁上，歡迎隨時回來看。</p>' +
         '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
         'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:700;">看專案進度</a></p>',
-        '這封信是系統自動發送，有問題直接回覆即可。'));
+        '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。'));
   }
 
   // ── 2. 給理監事 ──
