@@ -52,7 +52,7 @@ const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 // 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
-const SCRIPT_VERSION = '2026-09-24-d';
+const SCRIPT_VERSION = '2026-09-24-e';
 
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
@@ -437,7 +437,7 @@ function mailToPlain_(html) {
 }
 
 /** 信件外框：協會橘 + 白底，用 table 排版才不會在各家信箱跑版 */
-function mailShell_(title, bodyHtml, footNote) {
+function mailShell_(title, bodyHtml, footNote, footReplace) {
   return '' +
   '<div style="background:#f4f5f7;padding:24px 12px;font-family:\'Noto Sans TC\',\'Microsoft JhengHei\',sans-serif;">' +
   '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;' +
@@ -449,9 +449,11 @@ function mailShell_(title, bodyHtml, footNote) {
   '<tr><td style="padding:26px 24px 8px;font-size:19px;font-weight:900;color:#1a1a2e;">' + title + '</td></tr>' +
   '<tr><td style="padding:0 24px 22px;font-size:14px;line-height:1.9;color:#4a4d54;">' + bodyHtml + '</td></tr>' +
   '<tr><td style="padding:16px 24px;background:#fafbfc;border-top:1px solid #eef0f3;font-size:11.5px;line-height:1.8;color:#8a8e96;">' +
-  (footNote || '') +
-  '<br>社團法人台灣人車公益協會　·　OLD CAR × NEW LIFE' +
-  '<br>內政部核准立案 台內團字第 1140047990 號　·　oldcarnewlife.org.tw' +
+  (footReplace
+    ? (footNote || '')
+    : (footNote || '') +
+      '<br>社團法人台灣人車公益協會　·　OLD CAR × NEW LIFE' +
+      '<br>內政部核准立案 台內團字第 1140047990 號　·　oldcarnewlife.org.tw') +
   '</td></tr></table></div>';
 }
 
@@ -607,13 +609,22 @@ function fundStats_() {
  * ═══════════════════════════════════════════════════════ */
 
 /** 募資相關的信件外框：在通用外框的頁腳補上勸募許可字號 */
-function mailShellFund_(title, bodyHtml, footNote) {
-  return mailShell_(title, bodyHtml,
+/**
+ * 募資信的外框。頁腳壓成 5 行並帶入登記編號 ——
+ * Gmail 會把「跟前一封一模一樣」的頁腳當成簽名檔摺疊起來（顯示成「⋯」），
+ * 法定必載的地址與勸募字號就被藏起來了。帶個每封都不同的編號就不會。
+ */
+function mailShellFund_(title, bodyHtml, footNote, pledgeId) {
+  const foot =
     (footNote ? footNote + '<br>' : '') +
-    ORG_ADDR + '<br>' +
+    '社團法人台灣人車公益協會　·　' + ORG_ADDR + '<br>' +
     '<a href="mailto:' + MAIL_REPLY_TO + '" style="color:#8a8e96;">' + MAIL_REPLY_TO + '</a>' +
-    '　·　<a href="' + ORG_FB + '" style="color:#8a8e96;">Facebook 粉絲團</a><br>' +
-    FUND_PERMIT);
+    '　·　<a href="' + ORG_FB + '" style="color:#8a8e96;">Facebook 粉絲團</a>' +
+    '　·　<a href="https://oldcarnewlife.org.tw" style="color:#8a8e96;">oldcarnewlife.org.tw</a><br>' +
+    '內政部立案 台內團字第 1140047990 號　·　社團法人登記證 115 證社字第 7 號<br>' +
+    FUND_PERMIT +
+    (pledgeId ? '　·　登記編號 ' + pledgeId : '');
+  return mailShell_(title, bodyHtml, foot, true);
 }
 
 /* 理監事／財務的收件名單。
@@ -841,7 +852,7 @@ function fund2Step1Mail_(data, pledgeId) {
       'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:700;">回去把資料填完</a></p>' +
       '<p style="font-size:12.5px;color:#8a8e96;">＊ 依公益勸募條例，本專案只收這一個專戶的款項，' +
       '請勿使用郵政劃撥或其他帳戶，以免無法計入本專案。</p>',
-      '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。'));
+      '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。', pledgeId));
 }
 
 /** 步驟②完成：回信給贊助者、通知協會 */
@@ -858,7 +869,7 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
         '<b>登記編號</b>　' + pledgeId + '</p>' +
         '<p>財務會用末五碼跟銀行帳目核對，核對完成後，你的贊助就會出現在募資頁的進度條與芳名錄上。</p>' +
         '<p>需要收據的話我們會另外跟你聯絡。真的很謝謝你。</p>',
-        '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。'));
+        '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。', pledgeId));
   }
 
   sendMail_(MAIL_ADMIN, '新的募資登記：' + name + '　' + money,
@@ -975,7 +986,7 @@ function notifyApproved_(sh, h, row, rowNum) {
         '<p>找車、驗車與整理的進度會更新在募資頁上，歡迎隨時回來看。</p>' +
         '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
         'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:700;">看專案進度</a></p>',
-        '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。'));
+        '這封信由系統自動發送。有任何問題，請用下面的信箱或粉絲團與我們聯絡。', pledgeId));
   }
 
   // ── 2. 給理監事 ──
