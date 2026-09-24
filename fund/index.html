@@ -592,50 +592,100 @@ async function fetchStats() {
   } finally { clearTimeout(timer); }
 }
 
+/* 上次看到的數字先存起來，下次進來立刻畫出來，不用對著 NT$ 0 等 Apps Script。
+ * Apps Script 冷啟動實測要 2.5～18 秒，那段空白會讓人以為頁面壞了。 */
+const STATS_CACHE = 'oncl_fund_stats';
+
+function saveStatsCache(d) {
+  try {
+    localStorage.setItem(STATS_CACHE, JSON.stringify({ at: Date.now(), d: d }));
+  } catch (e) {}
+}
+
+function readStatsCache() {
+  try {
+    const c = JSON.parse(localStorage.getItem(STATS_CACHE) || 'null');
+    if (c && c.d && typeof c.d.raised === 'number') return c;
+  } catch (e) {}
+  return null;
+}
+
+function agoText(ms) {
+  const m = Math.round((Date.now() - ms) / 60000);
+  if (m < 1) return '剛剛';
+  if (m < 60) return m + ' 分鐘前';
+  const h = Math.round(m / 60);
+  if (h < 24) return h + ' 小時前';
+  return Math.round(h / 24) + ' 天前';
+}
+
+/** 把一份統計資料畫到畫面上 */
+function renderStats(d, animate) {
+  const goal = GOAL, raised = d.raised || 0;
+  const realPct = Math.round(raised / goal * 1000) / 10;      // 真實百分比（可超過 100）
+  const barPct = Math.min(100, realPct);                       // 條寬最多滿格
+  document.getElementById('raised').textContent = nf(raised);
+  document.getElementById('goal').textContent = nf(goal);
+  document.getElementById('donors').textContent = d.donors || 0;
+  document.getElementById('pct').textContent = realPct + '%';
+  const bar = document.getElementById('bar');
+  const pending = d.pending || 0;
+  const pendPct = Math.min(100, Math.round((raised + pending) / goal * 1000) / 10);
+  const paint = () => {
+    bar.style.width = barPct + '%';
+    document.getElementById('barPend').style.width = pendPct + '%';
+  };
+  if (animate) setTimeout(paint, 260); else paint();
+
+  const pt = document.getElementById('pendTxt');
+  if (pending > 0) {
+    pt.innerHTML = '　·　待審核 <b>' + nf(pending) + '</b>'
+      + (d.pendingDonors ? '（' + d.pendingDonors + ' 筆）' : '');
+    pt.title = '已收到但財務還沒核對完成的款項，核對通過後會轉成橘色';
+  } else { pt.textContent = ''; }
+
+  if (raised > goal) {
+    bar.style.background = 'linear-gradient(90deg,#2f9e5f,#4aab6a)';
+    document.getElementById('pct').style.color = '#2f7d4f';
+    const ov = document.getElementById('over');
+    ov.style.display = 'block';
+    ov.innerHTML = '🎉 已達標，超出 <b>' + nf(raised - goal) + '</b>'
+      + '——這筆錢會直接用在把車況升級，不會留著。';
+  }
+
+  applyPeriod(d.period, d.periodEnd);
+
+  LIST = d.list || [];
+  document.getElementById('cnt-give').textContent = d.donors || 0;
+  document.getElementById('cnt-share').textContent = d.shares || 0;
+  document.getElementById('cnt-cheer').textContent = d.cheers || 0;
+  renderList();
+}
+
 async function loadStats(attempt) {
   attempt = attempt || 1;
   const stamp = document.getElementById('stamp');
-  try {
-    stamp.textContent = attempt === 1
-      ? '進度資料載入中…'
-      : '進度資料載入中…（重試 ' + (attempt - 1) + '/' + (STAT_TRIES - 1) + '）';
-    const d = await fetchStats();
-    const goal = GOAL, raised = d.raised || 0;
-    const realPct = Math.round(raised / goal * 1000) / 10;      // 真實百分比（可超過 100）
-    const barPct = Math.min(100, realPct);                       // 條寬最多滿格
-    document.getElementById('raised').textContent = nf(raised);
-    document.getElementById('goal').textContent = nf(goal);
-    document.getElementById('donors').textContent = d.donors || 0;
-    document.getElementById('pct').textContent = realPct + '%';
-    const bar = document.getElementById('bar');
-    const pending = d.pending || 0;
-    const pendPct = Math.min(100, Math.round((raised + pending) / goal * 1000) / 10);
-    setTimeout(() => {
-      bar.style.width = barPct + '%';
-      document.getElementById('barPend').style.width = pendPct + '%';
-    }, 260);
-    const pt = document.getElementById('pendTxt');
-    if (pending > 0) {
-      pt.innerHTML = '　·　待審核 <b>' + nf(pending) + '</b>'
-        + (d.pendingDonors ? '（' + d.pendingDonors + ' 筆）' : '');
-      pt.title = '已收到但財務還沒核對完成的款項，核對通過後會轉成橘色';
-    } else { pt.textContent = ''; }
-    if (raised > goal) {
-      bar.style.background = 'linear-gradient(90deg,#2f9e5f,#4aab6a)';
-      document.getElementById('pct').style.color = '#2f7d4f';
-      const ov = document.getElementById('over');
-      ov.style.display = 'block';
-      ov.innerHTML = '🎉 已達標，超出 <b>' + nf(raised - goal) + '</b>'
-        + '——這筆錢會直接用在把車況升級，不會留著。';
+
+  // 第一次進來先把上次的數字畫出來，畫面不會空著等
+  let hadCache = false;
+  if (attempt === 1) {
+    const c = readStatsCache();
+    if (c) {
+      hadCache = true;
+      renderStats(c.d, true);
+      stamp.textContent = '顯示 ' + agoText(c.at) + '的紀錄，更新中…';
     }
+  }
 
-    applyPeriod(d.period, d.periodEnd);
-
-    LIST = d.list || [];
-    document.getElementById('cnt-give').textContent = d.donors || 0;
-    document.getElementById('cnt-share').textContent = d.shares || 0;
-    document.getElementById('cnt-cheer').textContent = d.cheers || 0;
-    renderList();
+  try {
+    if (!hadCache) {
+      stamp.textContent = attempt === 1
+        ? '進度資料載入中…'
+        : '進度資料載入中…（重試 ' + (attempt - 1) + '/' + (STAT_TRIES - 1) + '）';
+    }
+    const d = await fetchStats();
+    renderStats(d, !hadCache);
+    saveStatsCache(d);
     stamp.textContent = STAMP_OK;
   } catch (err) {
     // 還有次數就退避重試（1.5s → 3s）
@@ -643,12 +693,19 @@ async function loadStats(attempt) {
       await new Promise(res => setTimeout(res, attempt * 1500));
       return loadStats(attempt + 1);
     }
-    stamp.innerHTML = '進度資料暫時讀不到 '
-      + '<button type="button" id="statRetry" class="retry">重試</button>';
+    // 全部失敗：有快取就留著舊數字，只說明它是舊的
+    const c = readStatsCache();
+    if (c) {
+      stamp.innerHTML = '顯示 ' + agoText(c.at) + '的紀錄（更新失敗）'
+        + ' <button type="button" id="statRetry" class="retry">重試</button>';
+    } else {
+      stamp.innerHTML = '進度資料暫時讀不到 '
+        + '<button type="button" id="statRetry" class="retry">重試</button>';
+      document.getElementById('names').innerHTML =
+        '<div class="empty">芳名錄暫時讀取不到，請稍後再試。</div>';
+    }
     const rb = document.getElementById('statRetry');
     if (rb) rb.addEventListener('click', () => loadStats(1));
-    document.getElementById('names').innerHTML =
-      '<div class="empty">芳名錄暫時讀取不到，請稍後再試。</div>';
   }
 }
 let LIST = [];

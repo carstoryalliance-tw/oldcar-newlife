@@ -52,7 +52,7 @@ const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 // 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
-const SCRIPT_VERSION = '2026-09-24-f';
+const SCRIPT_VERSION = '2026-09-24-g';
 
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
@@ -706,6 +706,8 @@ function fund2Step1_(sheet, data, timestamp) {
     sheet.appendRow(row);
   }
 
+  clearStatsCache_();
+
   // 把帳號寄給他，離開了也能回來把資料填完
   try { fund2Step1Mail_(data, pledgeId); }
   catch (e) { console.warn('[mail] step1 ' + e); }
@@ -763,13 +765,44 @@ function fund2Step2_(sheet, data, timestamp) {
     if (data.email) set('Email', data.email);
   }
 
+  clearStatsCache_();   // 有新資料，讓下一次請求算最新的
+
   try { fund2Mails_(data, amount, timestamp, pledgeId); }
   catch (e) { console.warn('[mail] ' + e); }
 
   return { status: 'ok', pledgeId: pledgeId, step: 2 };
 }
 
+/* 募資統計的快取。
+ * fund2Stats_ 每次都要把整張試算表讀進來再算，冷啟動實測 2.5～18 秒。
+ * 用 Apps Script 內建的 CacheService 存 90 秒，多數請求就不必重算。
+ * 有新資料寫入或審核通過時會主動清掉，不會讓人看到過期的數字。 */
+const STATS_CACHE_KEY = 'fund2stats';
+const STATS_CACHE_SEC = 90;
+
+function clearStatsCache_() {
+  try { CacheService.getScriptCache().remove(STATS_CACHE_KEY); } catch (e) {}
+}
+
 function fund2Stats_() {
+  let cache = null;
+  try {
+    cache = CacheService.getScriptCache();
+    const hit = cache.get(STATS_CACHE_KEY);
+    if (hit) {
+      return ContentService.createTextOutput(hit)
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+  } catch (e) { cache = null; }
+
+  const out = fund2StatsFresh_();
+  try {
+    if (cache) cache.put(STATS_CACHE_KEY, out.getContent(), STATS_CACHE_SEC);
+  } catch (e) {}
+  return out;
+}
+
+function fund2StatsFresh_() {
   try {
     const ss = SpreadsheetApp.openById(SHEET_ID);
     const sh = ss.getSheetByName(FUND2_SHEET);
@@ -1013,6 +1046,7 @@ function notifyApproved_(sh, h, row, rowNum) {
       '審核狀態改成「已通過」時自動發出，募資頁進度條已同步更新。'));
 
   stampNotified_(sh, rowNum);
+  clearStatsCache_();   // 進度條要立刻反映這筆入帳
 }
 
 /** 在「通知時間」欄蓋章；欄位不存在就自動補一欄 */
