@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>魚池神國教會專案 · 募資 — 社團法人台灣人車公益協會</title>
+<meta name="robots" content="noindex, nofollow">
+<title>【測試】兩步驟募資表單 · 魚池神國教會專案 — 社團法人台灣人車公益協會</title>
 <meta name="description" content="山路上不去，物資就送不進去。台灣人車公益協會為基督教魚池神國復興教會募集一台四輪傳動車，並整理到能安全上山，目標 20 萬元；找車、驗車與施工的技術和工時由協會成員無償投入。">
 <meta property="og:title" content="魚池神國教會專案 · 募資｜台灣人車公益協會">
 <meta property="og:description" content="目標 20 萬元。技術我們出，車和零件需要你。">
@@ -124,6 +125,31 @@ textarea{min-height:78px;resize:vertical}
 .ab .tag{background:#e9f6ee;color:#2f6b47;border:1px solid #bfe0cc;border-radius:6px;
   font-size:11px;font-weight:900;letter-spacing:.5px;padding:2px 7px}
 .acctnote{margin-top:10px;font-size:12.5px;color:var(--dim);line-height:1.9}
+/* 測試橫幅 */
+.testbar{position:sticky;top:0;z-index:50;background:#8a2be2;color:#fff;text-align:center;
+  padding:7px 12px;font-size:12.5px;font-weight:700;letter-spacing:.5px}
+/* 步驟指示 */
+.steps{display:flex;align-items:center;gap:10px;margin-top:16px}
+.step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--dim)}
+.step i{width:24px;height:24px;border-radius:50%;background:#e6e8ec;color:#8a8e96;font-style:normal;
+  font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step.on{color:var(--text)}
+.step.on i{background:var(--gold2);color:#fff}
+.step.done i{background:var(--green);color:#fff}
+.stepline{flex:1;height:2px;background:#e6e8ec;border-radius:2px;min-width:20px}
+/* 登記編號 */
+.pledge{margin-top:16px;background:#f4f7f5;border:1px solid #d8e3db;border-radius:12px;
+  padding:13px 16px;font-size:13.5px;color:#3d5548;line-height:1.8}
+.pledge b{font-size:16px;font-weight:900;color:#2f6b47;letter-spacing:1px}
+.pledge-sub{margin-top:4px;font-size:12px;color:#6b7f73}
+/* 複製帳號 */
+.copyacct{margin-top:11px;width:100%;padding:9px;border:1.5px solid var(--border);background:#fff;
+  border-radius:9px;font-family:inherit;font-size:13px;font-weight:700;color:var(--gold2);cursor:pointer}
+.copyacct:hover{background:#fdf7ef}
+.copyacct.done{color:var(--green);border-color:#bfe0cc;background:#f2faf5}
+/* 回上一步 */
+.backstep{margin-top:12px;width:100%;padding:10px;border:0;background:none;
+  font-family:inherit;font-size:13px;color:var(--dim);cursor:pointer;text-decoration:underline}
 .acctnote b{color:var(--muted)}
 
 /* 動作按鈕（贊助／分享／集氣）*/
@@ -201,6 +227,7 @@ footer a{color:var(--muted)}
 </style>
 </head>
 <body>
+<div class="testbar">⚠️ 這是測試頁，資料寫進「募資V2」分頁，不影響正式募資頁</div>
 
 <div class="hero">
   <div class="backlink wrap"><a href="../">← 返回協會首頁</a></div>
@@ -350,20 +377,19 @@ footer a{color:var(--muted)}
   <div class="form-sec">
     <section id="form">
       <h2>贊助這個專案</h2>
-      <p class="lead">先匯款，再填下面這張表，讓我們對得到帳。財務核對無誤後，你的贊助就會計入上面的進度條。</p>
-  
-      <div class="acct">
-        <div class="ab"><h4>🏦 永豐銀行（新莊副都心）<span class="tag">勸募專戶</span></h4>
-          <div class="row"><span>銀行代碼</span><b>807</b></div>
-          <div class="row"><span>帳號</span><b>132-01-80110-2656</b></div>
-          <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
-        </div>
+
+      <div class="steps">
+        <div class="step on" id="tab1"><i>1</i> 留下聯絡方式</div>
+        <div class="stepline"></div>
+        <div class="step" id="tab2"><i>2</i> 匯款並填資料</div>
       </div>
-      <p class="acctnote">
-        ＊ 依公益勸募條例，本專案所募款項<b>全部進這一個專戶、專款專用</b>，不收其他管道的款項——<b>請勿使用郵政劃撥或其他帳戶</b>，以免無法計入本專案。
-      </p>
-  
-      <form class="form" id="f">
+
+      <!-- ── 步驟一：聯絡方式 ── -->
+      <form class="form" id="f1">
+        <p class="lead" style="margin-top:0;font-size:14px">
+          先留下聯絡方式，下一步才會給你匯款帳號。<br>
+          <b>這一步很重要</b>——匯進來卻對不到人的款項，沒辦法計入你的名下，也開不了收據。
+        </p>
         <div class="two">
           <div class="fg"><label>姓名 <span class="req">*</span></label>
             <input type="text" name="name" required placeholder="請填真實姓名，方便對帳"></div>
@@ -374,65 +400,96 @@ footer a{color:var(--muted)}
           <div class="fg"><label>行動電話 <span class="req">*</span></label>
             <input type="tel" name="phone" required placeholder="09xxxxxxxx"></div>
           <div class="fg"><label>Email <span class="req">*</span></label>
-            <input type="email" name="email" required placeholder="收據與進度回報會寄到這裡"></div>
+            <input type="email" name="email" required placeholder="匯款帳號與收據會寄到這裡"></div>
         </div>
-  
-        <div class="fg">
-          <label>贊助金額 <span class="req">*</span></label>
-          <div class="amt">
-            <button type="button" data-v="200">200</button>
-            <button type="button" data-v="500">500</button>
-            <button type="button" data-v="1000">1,000</button>
-            <button type="button" data-v="2000">2,000</button>
-            <button type="button" data-v="5000">5,000</button>
-            <button type="button" data-v="10000">10,000</button>
-            <button type="button" data-v="30000">30,000</button>
-          </div>
-          <input type="number" name="amount" id="amount" required min="200" step="100" placeholder="也可以自己填，最低 200 元">
+        <button class="btn primary" type="submit" id="sb1" style="width:100%">下一步：取得匯款帳號　→</button>
+        <div class="hint" style="text-align:center;margin-top:10px">
+          這些資料只用來核對你的匯款、寄收據與進度回報，不會外流或另作他用。
         </div>
-  
-        <div class="fg"><label>匯款帳號末五碼 <span class="req">*</span></label>
-          <input type="text" name="transferCode" required maxlength="5" placeholder="例如 12345">
-          <div class="hint">財務會用這五碼核對入帳。核對通過後，進度條就會往前跑。</div>
-        </div>
-  
-        <div class="two">
-          <div class="fg"><label>芳名要怎麼呈現 <span class="req">*</span></label>
-            <select name="display" id="display" required>
-              <option value="">請選擇</option>
-              <option value="公開姓名">公開我的姓名</option>
-              <option value="公開公司名">公開公司／品牌名稱</option>
-              <option value="匿名">匿名（顯示為「善心人士」）</option>
-            </select></div>
-          <div class="fg"><label>公開時要顯示的名稱</label>
-            <input type="text" name="displayName" id="displayName" placeholder="例：王小明　或　○○汽車商行">
-            <div class="hint">選匿名可留空。</div></div>
-        </div>
-  
-        <div class="fg"><label>想對協會、教會或山上長輩說的話</label>
-          <textarea name="message" placeholder="會公開在芳名錄，也會轉達給教會（選填）"></textarea></div>
-  
-        <div class="two">
-          <div class="fg"><label>需要收據嗎</label>
-            <select name="receipt" id="receipt">
-              <option value="需要（個人）">需要（個人）</option>
-              <option value="需要（公司）">需要（公司）</option>
-              <option value="不需要">不需要</option>
-            </select></div>
-          <div class="fg"><label>收據抬頭 <span class="req" id="reqTitle">*</span></label>
-            <input type="text" name="receiptTitle" id="receiptTitle" placeholder="公司抬頭或個人姓名"></div>
-        </div>
-        <div class="two">
-          <div class="fg"><label>身分證字號／統一編號 <span class="req" id="reqTax">*</span></label>
-            <input type="text" name="taxId" id="taxId" maxlength="10" placeholder="個人收據填身分證字號，公司收據填統一編號">
-            <div class="hint" id="taxHint">開立收據需要：個人 → 身分證字號；公司 → 統一編號（8 碼）。</div></div>
-          <div class="fg"><label>備註</label>
-            <input type="text" name="note" placeholder="其他想告訴我們的事"></div>
-        </div>
-  
-        <button class="btn primary" type="submit" id="sb" style="width:100%">送出贊助資料</button>
-        <div class="ok" id="ok"></div>
+        <div class="ok" id="ok1"></div>
       </form>
+
+      <!-- ── 步驟二：匯款 + 其餘資料 ── -->
+      <div id="step2" style="display:none">
+        <div class="pledge">
+          <div>你的登記編號　<b id="pidShow">—</b></div>
+          <div class="pledge-sub">帳號也寄到你信箱了，現在不方便匯款可以先關掉，信裡有連結能回來繼續填。</div>
+        </div>
+
+        <div class="acct">
+          <div class="ab"><h4>🏦 永豐銀行（新莊副都心）<span class="tag">勸募專戶</span></h4>
+            <div class="row"><span>銀行代碼</span><b>807</b></div>
+            <div class="row"><span>帳號</span><b id="acctNo">132-01-80110-2656</b></div>
+            <div class="row"><span>戶名</span><b>社團法人台灣人車公益協會</b></div>
+            <button type="button" class="copyacct" id="copyAcct">複製帳號</button>
+          </div>
+        </div>
+        <p class="acctnote">
+          ＊ 依公益勸募條例，本專案所募款項<b>全部進這一個專戶、專款專用</b>，不收其他管道的款項——<b>請勿使用郵政劃撥或其他帳戶</b>，以免無法計入本專案。
+        </p>
+
+        <form class="form" id="f">
+          <p class="lead" style="margin-top:0;font-size:14px">匯完款回到這裡，把下面填完，財務才對得到帳。</p>
+
+          <div class="fg">
+            <label>贊助金額 <span class="req">*</span></label>
+            <div class="amt">
+              <button type="button" data-v="200">200</button>
+              <button type="button" data-v="500">500</button>
+              <button type="button" data-v="1000">1,000</button>
+              <button type="button" data-v="2000">2,000</button>
+              <button type="button" data-v="5000">5,000</button>
+              <button type="button" data-v="10000">10,000</button>
+              <button type="button" data-v="30000">30,000</button>
+            </div>
+            <input type="number" name="amount" id="amount" required min="200" step="100" placeholder="也可以自己填，最低 200 元">
+          </div>
+
+          <div class="fg"><label>匯款帳號末五碼 <span class="req">*</span></label>
+            <input type="text" name="transferCode" required maxlength="5" placeholder="例如 12345">
+            <div class="hint">你匯款那個帳戶的末五碼。財務會用這五碼核對入帳，核對通過後進度條就會往前跑。</div>
+          </div>
+
+          <div class="two">
+            <div class="fg"><label>芳名要怎麼呈現 <span class="req">*</span></label>
+              <select name="display" id="display" required>
+                <option value="">請選擇</option>
+                <option value="公開姓名">公開我的姓名</option>
+                <option value="公開公司名">公開公司／品牌名稱</option>
+                <option value="匿名">匿名（顯示為「善心人士」）</option>
+              </select></div>
+            <div class="fg"><label>公開時要顯示的名稱</label>
+              <input type="text" name="displayName" id="displayName" placeholder="例：王小明　或　○○汽車商行">
+              <div class="hint">選匿名可留空。</div></div>
+          </div>
+
+          <div class="fg"><label>想對協會、教會或山上長輩說的話</label>
+            <textarea name="message" placeholder="會公開在芳名錄，也會轉達給教會（選填）"></textarea></div>
+
+          <div class="two">
+            <div class="fg"><label>需要收據嗎</label>
+              <select name="receipt" id="receipt">
+                <option value="需要（個人）">需要（個人）</option>
+                <option value="需要（公司）">需要（公司）</option>
+                <option value="不需要">不需要</option>
+              </select></div>
+            <div class="fg"><label>收據抬頭 <span class="req" id="reqTitle">*</span></label>
+              <input type="text" name="receiptTitle" id="receiptTitle" placeholder="公司抬頭或個人姓名"></div>
+          </div>
+          <div class="two">
+            <div class="fg"><label>身分證字號／統一編號 <span class="req" id="reqTax">*</span></label>
+              <input type="text" name="taxId" id="taxId" maxlength="10" placeholder="個人收據填身分證字號，公司收據填統一編號">
+              <div class="hint" id="taxHint">開立收據需要：個人 → 身分證字號；公司 → 統一編號（8 碼）。</div></div>
+            <div class="fg"><label>備註</label>
+              <input type="text" name="note" placeholder="其他想告訴我們的事"></div>
+          </div>
+
+          <button class="btn primary" type="submit" id="sb" style="width:100%">送出贊助資料</button>
+        </form>
+        <button type="button" class="backstep" id="backStep1">←　改一下聯絡方式</button>
+      </div>
+
+      <div class="ok" id="ok"></div>
     </section>
   </div>
 
@@ -447,7 +504,8 @@ footer a{color:var(--muted)}
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Fx1--3AnuZKBQ33OmN50jNqOlZUvSy-PVQmIwjBRijIgnJ9i7_BF-3mnqSY87tND/exec';
+// ⚠️ 部署 fund-v2-DEPLOY.gs 後，把下面這串換成新專案的 /exec 網址
+const SCRIPT_URL = 'PASTE_V2_EXEC_URL_HERE';
 const GOAL = 200000;
 const nf = n => 'NT$ ' + Number(n || 0).toLocaleString('en-US');
 
@@ -521,7 +579,7 @@ async function fetchStats() {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), STAT_TIMEOUT);
   try {
-    const r = await fetch(SCRIPT_URL + '?stat=fund', { cache: 'no-store', signal: ctrl.signal });
+    const r = await fetch(SCRIPT_URL + '?stat=fund2', { cache: 'no-store', signal: ctrl.signal });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return await r.json();
   } finally { clearTimeout(timer); }
@@ -610,7 +668,7 @@ function renderList() {
 // 分享／集氣
 function sendAct(act) {
   try {
-    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: 'fundact', act: act, from: location.href }) });
+    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ type: 'fund2act', act: act, from: location.href }) });
   } catch (e) { /* 計數失敗不影響使用者 */ }
 }
 function bump(id) {
@@ -696,12 +754,108 @@ function esc(s) {
 loadStats();
 
 // 送出
+/* ══════════ 兩步驟表單 ══════════ */
+
+const PKEY = 'oncl_fund_pledge';   // 瀏覽器記住登記編號，回訪能續填
+
+function newPledgeId() {
+  const d = new Date();
+  const p = n => String(n).padStart(2, '0');
+  const rnd = Math.random().toString(36).slice(2, 6).toUpperCase();
+  return 'F' + String(d.getFullYear()).slice(2) + p(d.getMonth() + 1) + p(d.getDate()) + rnd;
+}
+
+let PLEDGE = null;     // 目前的登記編號
+let STEP1 = {};        // 步驟一填的聯絡方式，送步驟二時一起帶上
+
+function showStep(n) {
+  const f1 = document.getElementById('f1');
+  const s2 = document.getElementById('step2');
+  const t1 = document.getElementById('tab1');
+  const t2 = document.getElementById('tab2');
+  if (n === 2) {
+    f1.style.display = 'none'; s2.style.display = '';
+    t1.className = 'step done'; t2.className = 'step on';
+    document.getElementById('pidShow').textContent = PLEDGE || '—';
+  } else {
+    f1.style.display = ''; s2.style.display = 'none';
+    t1.className = 'step on'; t2.className = 'step';
+  }
+}
+
+// 回訪：網址帶 ?p=編號，或瀏覽器記得上次的，就直接跳步驟二
+(function restore() {
+  const q = new URLSearchParams(location.search).get('p');
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(PKEY) || 'null'); } catch (e) {}
+  if (q) {
+    PLEDGE = q;
+    if (saved && saved.pledgeId === q) STEP1 = saved.data || {};
+    showStep(2);
+  } else if (saved && saved.pledgeId) {
+    PLEDGE = saved.pledgeId; STEP1 = saved.data || {};
+    // 幫使用者把步驟一填回去，讓他知道我們記得
+    const f1 = document.getElementById('f1');
+    Object.keys(STEP1).forEach(k => {
+      const el = f1.querySelector('[name="' + k + '"]');
+      if (el) el.value = STEP1[k];
+    });
+    showStep(2);
+  }
+})();
+
+// ── 步驟一：留下聯絡方式 ──
+document.getElementById('f1').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = document.getElementById('sb1');
+  btn.disabled = true; btn.textContent = '處理中…';
+  const data = Object.fromEntries(new FormData(e.target));
+  PLEDGE = PLEDGE || newPledgeId();
+  STEP1 = data;
+  try { localStorage.setItem(PKEY, JSON.stringify({ pledgeId: PLEDGE, data: data })); } catch (err) {}
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(Object.assign({}, data, { type: 'fund2', step: 1, pledgeId: PLEDGE }))
+    });
+  } catch (err) {
+    // 寫不進去也讓他繼續匯款，步驟二會把整筆補上
+    console.warn('step1 寫入失敗，改由步驟二補齊', err);
+  }
+  btn.disabled = false; btn.textContent = '下一步：取得匯款帳號　→';
+  showStep(2);
+  document.getElementById('step2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// 回上一步
+document.getElementById('backStep1').addEventListener('click', () => {
+  showStep(1);
+  document.getElementById('f1').scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+// 複製帳號
+document.getElementById('copyAcct').addEventListener('click', async e => {
+  const no = document.getElementById('acctNo').textContent.trim();
+  try {
+    await navigator.clipboard.writeText(no.replace(/-/g, ''));
+    e.target.textContent = '✓ 已複製：' + no.replace(/-/g, '');
+    e.target.classList.add('done');
+  } catch (err) {
+    e.target.textContent = '請手動複製：' + no;
+  }
+});
+
+// ── 步驟二：匯款資料 ──
 document.getElementById('f').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = document.getElementById('sb');
   btn.disabled = true; btn.textContent = '送出中…';
-  const data = Object.fromEntries(new FormData(e.target));
-  data.type = 'fund';
+  const data = Object.assign({}, STEP1, Object.fromEntries(new FormData(e.target)));
+  data.type = 'fund2';
+  data.step = 2;
+  data.pledgeId = PLEDGE || newPledgeId();
+
   // 收據號碼格式提醒（個人：身分證字號 10 碼／公司：統編 8 碼）
   const rc = (data.receipt || ''), tx = (data.taxId || '').trim().toUpperCase();
   if (rc.indexOf('不需要') < 0 && tx) {
@@ -714,12 +868,16 @@ document.getElementById('f').addEventListener('submit', async e => {
     }
   }
   data.taxId = tx;
+
   try {
     await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
-    e.target.style.display = 'none';
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('tab2').className = 'step done';
+    try { localStorage.removeItem(PKEY); } catch (err) {}
     const ok = document.getElementById('ok');
     ok.style.display = 'block';
     ok.innerHTML = '✅ <b>收到了，謝謝你。</b><br>' +
+      '登記編號 <b>' + data.pledgeId + '</b><br>' +
       '財務會用你填的末五碼核對入帳，核對完成後，你的贊助就會出現在上面的進度條與芳名錄。<br>' +
       '需要收據的話，我們會另外跟你聯絡。';
     ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
