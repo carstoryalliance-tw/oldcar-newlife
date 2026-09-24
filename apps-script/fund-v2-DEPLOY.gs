@@ -1,16 +1,13 @@
-/*  募資表單 V2（兩步驟）— 測試用獨立 Apps Script
+/*  募資表單 V2（兩步驟）— 正式版 Apps Script
  *  ─────────────────────────────────────────────────────────
  *  這支是「另一個專案」，跟現行的 form-handler 完全分開：
  *    · 現行 Web App 一行都不用改，線上 /fund/ 不受影響
  *    · 寫進「同一份試算表」的新分頁，不碰任何既有分頁
  *
- *  部署步驟（Jay 手動做一次）：
- *    1. script.google.com → 新增專案，命名「募資V2（測試）」
- *    2. 把這整份貼進 Code.gs，存檔
- *    3. 部署 → 新增部署作業 → 類型「網頁應用程式」
- *       執行身分：我　／　存取權：所有人
- *    4. 複製那串 /exec 網址，填進 fund-test/index.html 的 SCRIPT_URL
- *    5.（選用）專案設定 → 指令碼屬性 → 加 RESEND_API_KEY，沒加就用 Gmail 寄
+ *  更新方式：把這整份貼回同一個 Apps Script 專案，存檔後
+ *    「管理部署作業 → 編輯（鉛筆）→ 版本：新版本 → 部署」
+ *    ⚠️ 一定要走「編輯現有部署」，網址才不會變。按「新增部署作業」會拿到新網址，
+ *       線上 /fund/ 就連不到了。
  *
  *  兩步驟流程：
  *    步驟①  姓名 / 公司 / 電話 / Email      → 立刻寫一列，進度「① 只留聯絡方式」
@@ -32,11 +29,11 @@ const MAIL_FROM_FALLBACK = '社團法人台灣人車公益協會';
 const MAIL_ADMIN = ['carstory.alliance@gmail.com', 'soulbreakin@gmail.com'];
 const MAIL_REPLY_TO = 'carstory.alliance@gmail.com';
 
-// 測試期間信件標題加註記，正式轉換時把這行改成 ''
-const MAIL_TAG = '【V2測試】';
+// 正式上線，信件標題不再加註記
+const MAIL_TAG = '';
 
-// 步驟①確認信裡「回來繼續填」的連結，正式轉換時改成 /fund/
-const FORM_URL = 'https://oldcarnewlife.org.tw/fund-test/';
+// 步驟①確認信裡「回來繼續填」的連結
+const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 
@@ -395,6 +392,166 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
       '<b>留言</b>　' + (data.message || '—') + '</p>' +
       '<p><a href="https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit">打開試算表核對</a></p>',
       '送出時間 ' + timestamp));
+}
+
+/* ═══════════════ 舊分頁搬遷 ═══════════════ */
+
+const V1_SHEET = '孤兒院募資';   // 舊版募資分頁（名稱是早期專案留下的）
+
+/** 搬遷用指紋：時間＋姓名＋金額。時間欄可能是字串也可能是 Date，統一正規化。 */
+function fp_(ts, name, amt) {
+  let t = '';
+  if (ts instanceof Date) {
+    t = Utilities.formatDate(ts, 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss');
+  } else {
+    t = String(ts || '').trim();
+    // 舊資料若被 Sheets 轉成日期再讀回字串，格式可能不同，能轉就統一
+    const d = new Date(t);
+    if (!isNaN(d.getTime()) && t.length > 10) {
+      t = Utilities.formatDate(d, 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss');
+    }
+  }
+  const a = Number(String(amt || '').replace(/[^0-9.]/g, '')) || 0;
+  return t + '|' + String(name || '').trim() + '|' + a;
+}
+
+/**
+ * 把舊分頁的捐款人搬進「募資V2」。
+ * ★ 可以重複執行 —— 已經搬過的會跳過，不會變成兩筆。
+ *   判斷方式：登記編號用 'V1-<舊分頁的列號>'，搬之前先檢查在不在。
+ *
+ * 執行前建議先跑 previewMigrate()（唯讀）看會搬幾筆。
+ */
+function migrateFromV1() {
+  const r = migrate_(false);
+  console.log('搬遷完成：新增 ' + r.moved + ' 筆，略過（已搬過）' + r.skipped + ' 筆，空白列 ' + r.blank + ' 列');
+  return r;
+}
+
+/** 唯讀預演：只印出會搬什麼，不動任何資料 */
+function previewMigrate() {
+  const r = migrate_(true);
+  console.log('【預演】會搬 ' + r.moved + ' 筆，略過 ' + r.skipped + ' 筆，空白 ' + r.blank + ' 列');
+  console.log(r.rows.join(String.fromCharCode(10)));
+  return r;
+}
+
+function migrate_(dryRun) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const src = ss.getSheetByName(V1_SHEET);
+  if (!src) throw new Error('找不到舊分頁「' + V1_SHEET + '」');
+  const dst = getFund2Sheet_(ss);
+
+  const v = src.getDataRange().getValues();
+  if (v.length < 2) return { moved: 0, skipped: 0, blank: 0, rows: [] };
+  const h = v[0];
+  const col = function (title) { return h.indexOf(title); };
+
+  const iTs = col('時間戳記'), iName = col('姓名'), iComp = col('公司/單位');
+  const iPhone = col('電話'), iMail = col('Email'), iAmt = col('捐款金額');
+  const iCode = col('匯款末五碼'), iWay = col('芳名公開方式'), iDisp = col('公開顯示名稱');
+  const iMsg = col('想說的話'), iRcpt = col('收據需求'), iTitle = col('收據抬頭');
+  const iTax = col('身分證字號／統一編號'), iNote = col('備註'), iSt = col('審核狀態');
+
+  // 目的分頁已經有的資料，用「時間＋姓名＋金額」指紋判斷有沒有搬過。
+  // 刻意不用列號 —— 你在舊分頁刪一列或排序一次，列號就全位移了，
+  // 那樣重跑會把同一個人搬成兩筆。
+  const have = {};
+  if (dst.getLastRow() > 1) {
+    const dv = dst.getDataRange().getValues();
+    const dh = dv[0];
+    const dTs = dh.indexOf('時間戳記'), dName = dh.indexOf('姓名'), dAmt = dh.indexOf('捐款金額');
+    for (let k = 1; k < dv.length; k++) {
+      have[fp_(dv[k][dTs], dv[k][dName], dv[k][dAmt])] = true;
+    }
+  }
+
+  let moved = 0, skipped = 0, blank = 0;
+  const rows = [];
+  const out = [];
+
+  for (let r = 1; r < v.length; r++) {
+    const name = iName >= 0 ? String(v[r][iName] || '').trim() : '';
+    const amt = iAmt >= 0 ? (Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0) : 0;
+    if (!name && !amt) { blank++; continue; }        // 整列空的就跳過
+
+    if (have[fp_(v[r][iTs], name, amt)]) { skipped++; continue; }
+    const pledgeId = 'V1-' + (r + 1);                // r+1 = 舊分頁當下的列號，僅供人工對照
+
+    const pick = function (i) { return i >= 0 ? (v[r][i] || '') : ''; };
+    const phone = String(pick(iPhone)).trim();
+    const code = String(pick(iCode)).trim();
+
+    out.push([
+      pledgeId, pick(iTs), name, pick(iComp),
+      phone ? "'" + phone : '',
+      pick(iMail), amt,
+      code ? "'" + code : '',
+      pick(iWay), pick(iDisp), pick(iMsg),
+      pick(iRcpt), pick(iTitle), pick(iTax), pick(iNote),
+      String(pick(iSt) || '').trim(),   // 審核狀態原樣保留，已通過的搬過去還是已通過
+      STEP2_LABEL,                      // 舊表的人本來就填完整了
+      pick(iTs)
+    ]);
+    rows.push(pledgeId + '　' + name + '　' + amt + '　' + String(pick(iSt)).trim());
+    moved++;
+  }
+
+  if (!dryRun && out.length) {
+    dst.getRange(dst.getLastRow() + 1, 1, out.length, out[0].length).setValues(out);
+  }
+  return { moved: moved, skipped: skipped, blank: blank, rows: rows };
+}
+
+/**
+ * 盯搬遷期間有沒有人又填了舊表單。
+ * 列出舊分頁裡「還沒搬進新分頁」的資料 —— 正常情況下搬完就該是 0 筆。
+ * 不是 0 就再跑一次 migrateFromV1()（可以重複執行，不會重複搬）。
+ */
+function checkV1Leftover() {
+  const r = migrate_(true);   // 唯讀預演
+  if (r.moved === 0) {
+    console.log('✅ 舊分頁沒有漏掉的資料，全部都在新分頁了');
+  } else {
+    console.log('⚠️ 舊分頁還有 ' + r.moved + ' 筆沒搬過來：');
+    console.log(r.rows.join(String.fromCharCode(10)));
+    console.log('→ 跑一次 migrateFromV1() 就會補進去');
+  }
+  return r;
+}
+
+/** 搬完對一下：兩邊的金額與筆數應該一致 */
+function compareV1V2() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sum = function (sheetName) {
+    const sh = ss.getSheetByName(sheetName);
+    if (!sh || sh.getLastRow() < 2) return { rows: 0, total: 0, ok: 0, okTotal: 0 };
+    const v = sh.getDataRange().getValues(), h = v[0];
+    const iAmt = h.indexOf('捐款金額'), iSt = h.indexOf('審核狀態');
+    let rows = 0, total = 0, ok = 0, okTotal = 0;
+    for (let r = 1; r < v.length; r++) {
+      const a = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+      if (!a) continue;
+      rows++; total += a;
+      if (String(v[r][iSt] || '').trim() === FUND_OK) { ok++; okTotal += a; }
+    }
+    let last = '';
+    if (v.length > 1) {
+      const iTs = h.indexOf('時間戳記');
+      const lv = v[v.length - 1][iTs];
+      last = (lv instanceof Date)
+        ? Utilities.formatDate(lv, 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss')
+        : String(lv || '');
+    }
+    return { rows: rows, total: total, ok: ok, okTotal: okTotal, last: last };
+  };
+  const a = sum(V1_SHEET), b = sum(FUND2_SHEET);
+  console.log('舊分頁「' + V1_SHEET + '」：' + a.rows + ' 筆 / 共 ' + a.total +
+              '（已通過 ' + a.ok + ' 筆 / ' + a.okTotal + '）　最後一筆 ' + a.last);
+  console.log('新分頁「' + FUND2_SHEET + '」：' + b.rows + ' 筆 / 共 ' + b.total +
+              '（已通過 ' + b.ok + ' 筆 / ' + b.okTotal + '）　最後一筆 ' + b.last);
+  console.log(b.okTotal >= a.okTotal ? '✅ 新分頁的已通過金額沒有短少' : '⚠️ 新分頁比舊分頁少，請檢查');
+  return { v1: a, v2: b };
 }
 
 /* ═══════════════ 對帳小工具 ═══════════════ */
