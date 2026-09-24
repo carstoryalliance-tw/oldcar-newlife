@@ -29,6 +29,19 @@ const MAIL_FROM_FALLBACK = '社團法人台灣人車公益協會';
 const MAIL_ADMIN = ['carstory.alliance@gmail.com', 'soulbreakin@gmail.com'];
 const MAIL_REPLY_TO = 'carstory.alliance@gmail.com';
 
+/* 理監事／財務的收件名單。
+ * ⚠️ 這個 repo 是公開的（GitHub Pages），不要把私人信箱寫在這裡。
+ *    在「專案設定 → 指令碼屬性」新增一列：
+ *      鍵　BOARD_EMAILS
+ *      值　aaa@gmail.com,bbb@gmail.com,ccc@gmail.com   ← 逗號分隔
+ *    沒設定就退回寄給 MAIL_ADMIN，不會讓通知整個消失。 */
+function boardEmails_() {
+  const raw = PropertiesService.getScriptProperties().getProperty('BOARD_EMAILS');
+  if (!raw) return MAIL_ADMIN;
+  const list = raw.split(',').map(function (x) { return x.trim(); }).filter(function (x) { return x; });
+  return list.length ? list : MAIL_ADMIN;
+}
+
 // 正式上線，信件標題不再加註記
 const MAIL_TAG = '';
 
@@ -392,6 +405,123 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
       '<b>留言</b>　' + (data.message || '—') + '</p>' +
       '<p><a href="https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit">打開試算表核對</a></p>',
       '送出時間 ' + timestamp));
+}
+
+/* ═══════════════ 審核通過通知 ═══════════════ */
+
+/**
+ * 安裝觸發器 —— ⚠️ 這支只要執行一次。
+ * 裝好之後，把「募資V2」的審核狀態改成「已通過」，就會自動發兩封信：
+ *   · 給捐款者：你的款項確認收到了
+ *   · 給理監事：有一筆入帳，附目前累計進度
+ */
+function setupTriggersV2() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'onFundApprovedV2') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('onFundApprovedV2').forSpreadsheet(ss).onEdit().create();
+  console.log('✅ 觸發器已安裝：把「' + FUND2_SHEET + '」的審核狀態改成「' + FUND_OK + '」時，會通知捐款者與理監事');
+}
+
+function onFundApprovedV2(e) {
+  try {
+    if (!e || !e.range) return;
+    const sh = e.range.getSheet();
+    if (sh.getName() !== FUND2_SHEET) return;
+    if (String(e.value || '').trim() !== FUND_OK) return;        // 只在改成「已通過」時
+    if (String(e.oldValue || '').trim() === FUND_OK) return;     // 本來就通過，不重複寄
+
+    const h = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+    if (h[e.range.getColumn() - 1] !== '審核狀態') return;        // 只認審核狀態那一欄
+
+    const row = sh.getRange(e.range.getRow(), 1, 1, sh.getLastColumn()).getValues()[0];
+    const g = function (name) { const i = h.indexOf(name); return i < 0 ? '' : row[i]; };
+
+    const name = String(g('姓名') || '');
+    if (isTestRow_(name)) return;                                 // 測試資料不發信
+
+    const amt = Number(String(g('捐款金額') || '').replace(/[^0-9.]/g, '')) || 0;
+    const anon = String(g('芳名公開方式') || '').indexOf('匿名') >= 0;
+    const shown = anon ? '匿名者' : (String(g('公開顯示名稱') || '').trim() || name);
+    const msg = String(g('想說的話') || '').trim();
+    const email = String(g('Email') || '').trim();
+    const receipt = String(g('收據需求') || '').trim();
+    const pledgeId = String(g('登記編號') || '').trim();
+
+    const st = fundTotals_(sh, h);
+    const nf = function (n) { return 'NT$ ' + Number(n).toLocaleString('en-US'); };
+
+    // ── 1. 給捐款者 ──
+    if (email) {
+      const needReceipt = receipt.indexOf('不需要') < 0 && receipt !== '';
+      sendMail_(email, '你的贊助已確認入帳　·　魚池神國教會專案',
+        mailShell_((name || '朋友') + '，款項我們確認收到了',
+          '<p>謝謝你。你的贊助已經由財務核對完成，<b>正式計入這個專案</b>。</p>' +
+          '<p><b>金額</b>　' + nf(amt) + '<br>' +
+          '<b>登記編號</b>　' + pledgeId + '<br>' +
+          '<b>芳名錄顯示</b>　' + shown + '</p>' +
+          '<div style="background:#f2faf5;border:1px solid #bfe0cc;border-radius:10px;padding:14px 16px;margin:14px 0;">' +
+          '<div style="font-size:13px;color:#4a7a5c;">這個專案目前累計</div>' +
+          '<div style="font-size:24px;font-weight:900;color:#2f6b47;margin:4px 0;">' + nf(st.raised) +
+          ' <span style="font-size:13px;color:#4a7a5c;font-weight:400;">/ ' + nf(FUND_GOAL) + '（' + st.pct + '%）</span></div>' +
+          '<div style="font-size:13px;color:#4a5a50;">共 ' + st.count + ' 筆贊助' +
+          (st.left > 0 ? '　·　距離目標還差 ' + nf(st.left) : '　·　<b>已達標</b>') + '</div></div>' +
+          (needReceipt
+            ? '<p>你勾選了需要收據，我們會另外跟你聯絡確認寄送方式。</p>'
+            : '') +
+          '<p>找車、驗車與整理的進度會更新在募資頁上，歡迎隨時回來看。</p>' +
+          '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
+          'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:700;">看專案進度</a></p>',
+          '這封信是系統自動發送，有問題直接回覆即可。'));
+    }
+
+    // ── 2. 給理監事 ──
+    sendMail_(boardEmails_(),
+      '【入帳】魚池神國教會專案　' + nf(amt) + '　累計 ' + nf(st.raised) + '（' + st.pct + '%）',
+      mailShell_('有一筆贊助確認入帳',
+        '<p>魚池神國教會專案有一筆贊助<b>確認入帳</b>了。</p>' +
+        '<p><b>贊助者</b>　' + shown + '<br>' +
+        '<b>金額</b>　' + nf(amt) + '<br>' +
+        '<b>登記編號</b>　' + pledgeId +
+        (msg ? '<br><b>留言</b>　「' + msg + '」' : '') + '</p>' +
+        '<div style="background:#fdf7ef;border:1px solid #f0dcc0;border-radius:10px;padding:14px 16px;margin:14px 0;">' +
+        '<div style="font-size:13px;color:#8b7d6b;">目前累計</div>' +
+        '<div style="font-size:26px;font-weight:900;color:#d97b1e;margin:4px 0;">' + nf(st.raised) +
+        ' <span style="font-size:14px;color:#8b7d6b;font-weight:400;">/ ' + nf(FUND_GOAL) + '（' + st.pct + '%）</span></div>' +
+        '<div style="font-size:13px;color:#4a4d54;">共 ' + st.count + ' 筆贊助' +
+        (st.left > 0 ? '　·　距離目標還差 <b>' + nf(st.left) + '</b>' : '　·　<b>已達標</b>') + '</div></div>' +
+        '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
+        'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>',
+        '審核狀態改成「已通過」時自動發出，募資頁進度條已同步更新。'));
+
+  } catch (err) {
+    console.warn('[onFundApprovedV2] ' + err);
+  }
+}
+
+/** 測試資料判斷，統一一個地方 */
+function isTestRow_(name) {
+  const n = String(name || '');
+  return n.indexOf('測試') >= 0 || n.indexOf('請刪除') >= 0 || n.indexOf('檢查') >= 0;
+}
+
+/** 已通過的累計金額／筆數／百分比（排除測試列） */
+function fundTotals_(sh, h) {
+  const v = sh.getDataRange().getValues();
+  const iAmt = h.indexOf('捐款金額'), iSt = h.indexOf('審核狀態'), iNm = h.indexOf('姓名');
+  let raised = 0, count = 0;
+  for (let r = 1; r < v.length; r++) {
+    if (String(v[r][iSt] || '').trim() !== FUND_OK) continue;
+    if (isTestRow_(v[r][iNm])) continue;
+    raised += Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+    count++;
+  }
+  return {
+    raised: raised, count: count,
+    pct: Math.round(raised / FUND_GOAL * 1000) / 10,
+    left: Math.max(0, FUND_GOAL - raised)
+  };
 }
 
 /* ═══════════════ 舊分頁搬遷 ═══════════════ */
