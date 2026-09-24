@@ -66,6 +66,80 @@ const STEP2_LABEL = '② 已填匯款資料';
  *   FINANCE_EMAILS  逗號分隔
  * 沒設定就退回 MAIL_ADMIN，通知不會整個消失。 */
 
+/* ═══════════════════════════════════════════════════
+ *  手動執行的健檢工具 —— 放在最前面，
+ *  是為了讓它們出現在編輯器函式下拉選單的最上方。
+ * ═══════════════════════════════════════════════════ */
+
+/**
+ * 一次列出所有分頁的筆數與最後一筆時間。
+ *
+ * 用途：懷疑某段時間表單壞掉、資料沒寫進來時，
+ * 拿「最後一筆時間」跟那段時間對一下就知道有沒有缺。
+ * 純讀取，不會動到任何資料。
+ */
+function auditAllSheets() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const names = [JOIN_SHEET, DONATE_SHEET, BEACH_SHEET, MEETING_SHEET, AID_SHEET,
+                 FUND2_SHEET, FUND2_ACT_SHEET, V1_SHEET, V1_ACT_SHEET];
+  const out = [];
+  for (let i = 0; i < names.length; i++) {
+    const sh = ss.getSheetByName(names[i]);
+    if (!sh) { out.push(pad_(names[i]) + '（分頁不存在）'); continue; }
+    const last = sh.getLastRow();
+    if (last < 2) { out.push(pad_(names[i]) + '0 筆'); continue; }
+
+    // 找時間欄，沒有就用第一欄
+    const head = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+    let c = head.indexOf('時間戳記');
+    if (c < 0) c = head.indexOf('時間戳記 ');
+    if (c < 0) c = 1;   // 募資V2 第一欄是登記編號，時間在第二欄
+    const v = sh.getRange(last, c + 1).getValue();
+    const t = (v instanceof Date)
+      ? Utilities.formatDate(v, 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss')
+      : String(v || '');
+    out.push(pad_(names[i]) + (last - 1) + ' 筆　最後一筆 ' + t);
+  }
+  console.log('各分頁現況（' +
+    Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss') + ' 查詢）');
+  console.log(out.join(String.fromCharCode(10)));
+  return out;
+}
+
+/**
+ * 五種表單的收件測試 —— 確認 doPost 每個分支都還在。
+ * 不會寫入任何資料：送一個不存在的 type，只看程式有沒有正常回應。
+ */
+function selfTest() {
+  const types = ['join', 'donate', 'beach', 'meeting', 'aid', 'fund2', 'fund2act'];
+  const missing = [];
+  const src = String(doPost);
+  for (let i = 0; i < types.length; i++) {
+    if (src.indexOf("'" + types[i] + "'") < 0) missing.push(types[i]);
+  }
+  if (missing.length) {
+    console.log('⚠️ doPost 少了這些分支：' + missing.join('、') + ' —— 程式碼可能貼錯或貼到舊版');
+  } else {
+    console.log('✅ doPost 七個分支都在：' + types.join('、'));
+  }
+  const need = ['fund2Step1_', 'fund2Step2_', 'onFundApprovedV2', 'migrateFromV1',
+                'mailPendingToFinance', 'mailProgressToAll', 'fundStats_', 'fund2Stats_'];
+  const lost = [];
+  for (let k = 0; k < need.length; k++) {
+    if (typeof this[need[k]] !== 'function') lost.push(need[k]);
+  }
+  console.log(lost.length ? ('⚠️ 找不到這些函式：' + lost.join('、')) : '✅ 募資 V2 的函式都在');
+  return { missing: missing, lost: lost };
+}
+
+function pad_(s) {
+  let t = String(s);
+  while (t.length < 8) t += '　';
+  return t + '　';
+}
+
+/* ═══════════════ 表單收件 ═══════════════ */
+
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
@@ -1318,69 +1392,4 @@ function listUnfinished() {
 
 /* ═══════════════ 健檢 ═══════════════ */
 
-/**
- * 一次列出所有分頁的筆數與最後一筆時間。
- *
- * 用途：懷疑某段時間表單壞掉、資料沒寫進來時，
- * 拿「最後一筆時間」跟那段時間對一下就知道有沒有缺。
- * 純讀取，不會動到任何資料。
- */
-function auditAllSheets() {
-  const ss = SpreadsheetApp.openById(SHEET_ID);
-  const names = [JOIN_SHEET, DONATE_SHEET, BEACH_SHEET, MEETING_SHEET, AID_SHEET,
-                 FUND2_SHEET, FUND2_ACT_SHEET, V1_SHEET, V1_ACT_SHEET];
-  const out = [];
-  for (let i = 0; i < names.length; i++) {
-    const sh = ss.getSheetByName(names[i]);
-    if (!sh) { out.push(pad_(names[i]) + '（分頁不存在）'); continue; }
-    const last = sh.getLastRow();
-    if (last < 2) { out.push(pad_(names[i]) + '0 筆'); continue; }
 
-    // 找時間欄，沒有就用第一欄
-    const head = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
-    let c = head.indexOf('時間戳記');
-    if (c < 0) c = head.indexOf('時間戳記 ');
-    if (c < 0) c = 1;   // 募資V2 第一欄是登記編號，時間在第二欄
-    const v = sh.getRange(last, c + 1).getValue();
-    const t = (v instanceof Date)
-      ? Utilities.formatDate(v, 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss')
-      : String(v || '');
-    out.push(pad_(names[i]) + (last - 1) + ' 筆　最後一筆 ' + t);
-  }
-  console.log('各分頁現況（' +
-    Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss') + ' 查詢）');
-  console.log(out.join(String.fromCharCode(10)));
-  return out;
-}
-
-function pad_(s) {
-  let t = String(s);
-  while (t.length < 8) t += '　';
-  return t + '　';
-}
-
-/**
- * 五種表單的收件測試 —— 確認 doPost 每個分支都還在。
- * 不會寫入任何資料：送一個不存在的 type，只看程式有沒有正常回應。
- */
-function selfTest() {
-  const types = ['join', 'donate', 'beach', 'meeting', 'aid', 'fund2', 'fund2act'];
-  const missing = [];
-  const src = String(doPost);
-  for (let i = 0; i < types.length; i++) {
-    if (src.indexOf("'" + types[i] + "'") < 0) missing.push(types[i]);
-  }
-  if (missing.length) {
-    console.log('⚠️ doPost 少了這些分支：' + missing.join('、') + ' —— 程式碼可能貼錯或貼到舊版');
-  } else {
-    console.log('✅ doPost 七個分支都在：' + types.join('、'));
-  }
-  const need = ['fund2Step1_', 'fund2Step2_', 'onFundApprovedV2', 'migrateFromV1',
-                'mailPendingToFinance', 'mailProgressToAll', 'fundStats_', 'fund2Stats_'];
-  const lost = [];
-  for (let k = 0; k < need.length; k++) {
-    if (typeof this[need[k]] !== 'function') lost.push(need[k]);
-  }
-  console.log(lost.length ? ('⚠️ 找不到這些函式：' + lost.join('、')) : '✅ 募資 V2 的函式都在');
-  return { missing: missing, lost: lost };
-}
