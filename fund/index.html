@@ -10,7 +10,13 @@
 <meta property="og:image" content="https://oldcarnewlife.org.tw/uploads/church-sign.jpg">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 中文字體每個字重都是獨立的大檔案；頁面實際只用到 400/500/700/900，300 拿掉 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<!-- 首圖先排隊下載，它是 CSS 背景圖，不先 preload 會等 CSS 解析完才開始 -->
+<link rel="preload" as="image" href="../uploads/DSC08251-sm.webp" media="(max-width:767px)">
+<link rel="preload" as="image" href="../uploads/DSC08251.webp" media="(min-width:768px)">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--gold:#e8a020;--gold2:#d97b1e;--green:#4aab6a;--bg:#f8f9fa;--card:#fff;
@@ -23,8 +29,13 @@ img{max-width:100%;display:block}
 .narrow{max-width:820px}
 
 /* hero */
+/* 手機先給 900px 寬的小圖（93K），桌機才換上 1600px（221K）。
+   原本不分裝置都吃 338K 的 JPG，手機網路下就是那段「載入很久」。 */
 .hero{position:relative;min-height:380px;display:flex;align-items:flex-end;
-  background:#111 url('../uploads/DSC08251.jpg') center 38%/cover;color:#fff}
+  background:#111 url('../uploads/DSC08251-sm.webp') center 38%/cover;color:#fff}
+@media(min-width:768px){
+  .hero{background-image:url('../uploads/DSC08251.webp')}
+}
 .hero::after{content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(10,10,14,.62) 0%,rgba(10,10,14,.35) 40%,rgba(10,10,14,.92) 100%)}
 .hero .in{position:relative;z-index:2;width:100%;padding:34px 0 74px}
@@ -339,9 +350,9 @@ footer a{color:var(--muted)}
   <section>
     <h2>9 月 3 日，我們去了一趟魚池</h2>
     <div class="gal">
-      <figure><img src="../uploads/church-sign.jpg" alt="基督教魚池神國復興教會" loading="lazy"><figcaption>基督教魚池神國復興教會・南投縣魚池鄉</figcaption></figure>
-      <figure><img src="../uploads/church-talk.jpg" alt="協會與教會現場討論用車需求" loading="lazy"><figcaption>9/3 現勘：聽教會說這台車平常怎麼跑</figcaption></figure>
-      <figure><img src="../uploads/church-hands.jpg" alt="協會與教會握手" loading="lazy"><figcaption>談定了——技術我們出，車和零件靠大家</figcaption></figure>
+      <figure><img src="../uploads/church-sign.webp" alt="基督教魚池神國復興教會" loading="lazy" width="900" height="900" decoding="async"><figcaption>基督教魚池神國復興教會・南投縣魚池鄉</figcaption></figure>
+      <figure><img src="../uploads/church-talk.webp" alt="協會與教會現場討論用車需求" loading="lazy" width="900" height="900" decoding="async"><figcaption>9/3 現勘：聽教會說這台車平常怎麼跑</figcaption></figure>
+      <figure><img src="../uploads/church-hands.webp" alt="協會與教會握手" loading="lazy" width="900" height="900" decoding="async"><figcaption>談定了——技術我們出，車和零件靠大家</figcaption></figure>
     </div>
     <p class="photo-note">📷 這是 9/3 到魚池現場勘查的實拍。<b>依照我們一貫的原則，受助的長輩與住戶不會露臉</b>；車輛整理過程會持續在這裡更新。</p>
   </section>
