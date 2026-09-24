@@ -35,6 +35,13 @@ const MAIL_REPLY_TO = 'carstory.alliance@gmail.com';
  *      鍵　BOARD_EMAILS
  *      值　aaa@gmail.com,bbb@gmail.com,ccc@gmail.com   ← 逗號分隔
  *    沒設定就退回寄給 MAIL_ADMIN，不會讓通知整個消失。 */
+function financeEmails_() {
+  const raw = PropertiesService.getScriptProperties().getProperty('FINANCE_EMAILS');
+  if (!raw) return MAIL_ADMIN;
+  const list = raw.split(',').map(function (x) { return x.trim(); }).filter(function (x) { return x; });
+  return list.length ? list : MAIL_ADMIN;
+}
+
 function boardEmails_() {
   const raw = PropertiesService.getScriptProperties().getProperty('BOARD_EMAILS');
   if (!raw) return MAIL_ADMIN;
@@ -769,6 +776,193 @@ function compareV1V2() {
   console.log(moneyOk ? '✅ 新分頁的已通過金額沒有短少' : '⚠️ 金額比舊分頁少，請檢查');
   console.log(actOk ? '✅ 分享／集氣數字沒有短少' : '⚠️ 分享或集氣比舊分頁少，再跑一次 migrateFromV1()');
   return { v1: a, v2: b, v1acts: a2, v2acts: b2 };
+}
+
+/* ═══════════════ 手動寄信：財務／理監事 ═══════════════ */
+
+/** 時間欄可能是 Date 也可能是字串，統一格式化 */
+function tsText_(ts, fmt) {
+  if (ts instanceof Date) return Utilities.formatDate(ts, 'Asia/Taipei', fmt);
+  const t = String(ts || '');
+  return fmt === 'MM/dd' ? t.slice(5, 10) : t.slice(5).replace(/:\d\d$/, '');
+}
+
+function nf_(n) { return 'NT$ ' + Number(n || 0).toLocaleString('en-US'); }
+
+/**
+ * 手動執行：把待核對的贊助清單寄給財務。
+ * 收件人設在指令碼屬性 FINANCE_EMAILS（逗號分隔），沒設就寄給 MAIL_ADMIN。
+ */
+function mailPendingToFinance() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sh = ss.getSheetByName(FUND2_SHEET);
+  if (!sh || sh.getLastRow() < 2) { console.log('沒有資料'); return; }
+
+  const v = sh.getDataRange().getValues();
+  const h = v[0];
+  const iTs = h.indexOf('時間戳記'), iName = h.indexOf('姓名'), iComp = h.indexOf('公司/單位');
+  const iAmt = h.indexOf('捐款金額'), iCode = h.indexOf('匯款末五碼'), iSt = h.indexOf('審核狀態');
+  const iPhone = h.indexOf('電話'), iRcpt = h.indexOf('收據需求');
+  const iPid = h.indexOf('登記編號'), iProg = h.indexOf('填表進度');
+
+  const DEAD = ['作廢', '退回', '取消', '無效'];
+  let total = 0;
+  const rows = [];
+  const waiting = [];   // 只留了聯絡方式、還沒回來填匯款資料的人
+
+  for (let r = 1; r < v.length; r++) {
+    const nm = String(v[r][iName] || '');
+    if (isTestRow_(nm)) continue;
+
+    if (String(v[r][iProg] || '').trim() === STEP1_LABEL) {
+      waiting.push({ nm: nm, phone: v[r][iPhone] || '', ts: v[r][iTs] });
+      continue;
+    }
+
+    const st = String(v[r][iSt] || '').trim();
+    if (st === FUND_OK) continue;
+    let dead = false;
+    for (let k = 0; k < DEAD.length; k++) if (st.indexOf(DEAD[k]) >= 0) dead = true;
+    if (dead) continue;
+
+    const amt = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+    if (amt <= 0) continue;
+    total += amt;
+
+    rows.push(
+      '<tr>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:13px;white-space:nowrap;">' + tsText_(v[r][iTs], 'MM/dd HH:mm') + '</td>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:13px;">' + nm +
+        (v[r][iComp] ? '<br><span style="color:#8a8e96;font-size:11.5px;">' + v[r][iComp] + '</span>' : '') +
+        '<br><span style="color:#b0b3b8;font-size:11px;">' + (v[r][iPid] || '') + '</span></td>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:13px;text-align:right;font-weight:900;color:#d97b1e;white-space:nowrap;">' +
+        nf_(amt) + '</td>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:13px;text-align:center;letter-spacing:1px;">' +
+        (v[r][iCode] || '—') + '</td>' +
+      '<td style="padding:9px 10px;border-top:1px solid #f2f3f5;font-size:11.5px;color:#8a8e96;">' +
+        (v[r][iRcpt] || '') + '<br>' + (v[r][iPhone] || '') + '</td>' +
+      '</tr>');
+  }
+
+  if (!rows.length && !waiting.length) { console.log('目前沒有待核對的贊助'); return; }
+
+  let body = '';
+  if (rows.length) {
+    body +=
+      '<p>魚池神國教會專案目前有 <b>' + rows.length + ' 筆</b>贊助等待核對入帳，合計 ' +
+      '<b style="color:#d97b1e;">' + nf_(total) + '</b>。</p>' +
+      '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:14px 0;' +
+      'border:1px solid #eef0f3;border-radius:10px;border-collapse:separate;">' +
+      '<tr style="background:#fafbfc;">' +
+      '<th style="padding:9px 10px;text-align:left;font-size:11.5px;color:#8a8e96;">時間</th>' +
+      '<th style="padding:9px 10px;text-align:left;font-size:11.5px;color:#8a8e96;">贊助者／登記編號</th>' +
+      '<th style="padding:9px 10px;text-align:right;font-size:11.5px;color:#8a8e96;">金額</th>' +
+      '<th style="padding:9px 10px;text-align:center;font-size:11.5px;color:#8a8e96;">末五碼</th>' +
+      '<th style="padding:9px 10px;text-align:left;font-size:11.5px;color:#8a8e96;">收據／電話</th></tr>' +
+      rows.join('') + '</table>' +
+      '<p><b>核對方式：</b>比對永豐勸募專戶入帳的末五碼與金額，確認無誤後把試算表' +
+      '「<b>' + FUND2_SHEET + '</b>」分頁的「審核狀態」改成 <b>' + FUND_OK + '</b>（要一字不差）。' +
+      '改完系統會自動通知捐款人與理監事，募資頁進度條也會從灰色轉成橘色。</p>';
+  } else {
+    body += '<p>目前沒有待核對的贊助。</p>';
+  }
+
+  // ★ 帳上有不明入帳時，答案通常在這份名單裡
+  if (waiting.length) {
+    let wr = '';
+    for (let i = 0; i < waiting.length; i++) {
+      wr += '<tr><td style="padding:8px 10px;border-top:1px solid #f2f3f5;font-size:12.5px;white-space:nowrap;color:#8a8e96;">' +
+            tsText_(waiting[i].ts, 'MM/dd HH:mm') + '</td>' +
+            '<td style="padding:8px 10px;border-top:1px solid #f2f3f5;font-size:12.5px;">' + waiting[i].nm + '</td>' +
+            '<td style="padding:8px 10px;border-top:1px solid #f2f3f5;font-size:12.5px;">' + waiting[i].phone + '</td></tr>';
+    }
+    body +=
+      '<div style="background:#f7f8fa;border:1px solid #e3e5ea;border-radius:10px;padding:14px 16px;margin:18px 0 6px;">' +
+      '<div style="font-size:13.5px;font-weight:900;color:#1a1a2e;margin-bottom:4px;">' +
+      '另有 ' + waiting.length + ' 人留了聯絡方式，但還沒回來填匯款資料</div>' +
+      '<div style="font-size:12.5px;color:#8a8e96;line-height:1.8;">' +
+      '他們拿到帳號了，可能已經匯款但沒填表。<b>帳上如果有對不到人的入帳，答案通常就在這份名單裡</b>' +
+      ' —— 直接打電話問是最快的。</div>' +
+      '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin-top:10px;">' + wr + '</table>' +
+      '</div>';
+  }
+
+  body +=
+    '<p style="margin-top:16px;"><a href="https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit" ' +
+    'style="display:inline-block;background:#1a1a2e;color:#fff;text-decoration:none;padding:11px 22px;' +
+    'border-radius:9px;font-weight:900;">開啟試算表核對</a>　' +
+    '<a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
+    'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
+
+  const subj = rows.length
+    ? '【待核對】魚池神國教會專案　' + rows.length + ' 筆　' + nf_(total)
+    : '【待核對】魚池神國教會專案　有 ' + waiting.length + ' 人尚未完成登記';
+
+  sendMail_(financeEmails_(), subj,
+    mailShell_('魚池神國教會專案：待核對清單', body, '由協會表單系統整理發出，測試資料已自動排除。'));
+  console.log('已寄給財務：待核對 ' + rows.length + ' 筆 / ' + total +
+              '，未完成登記 ' + waiting.length + ' 人');
+}
+
+/** 手動執行：把目前募資進度與已入帳名單，寄給理監事＋財務 */
+function mailProgressToAll() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sh = ss.getSheetByName(FUND2_SHEET);
+  if (!sh || sh.getLastRow() < 2) { console.log('沒有資料'); return; }
+  const v = sh.getDataRange().getValues();
+  const h = v[0];
+  const iTs = h.indexOf('時間戳記'), iNm = h.indexOf('姓名'), iAmt = h.indexOf('捐款金額');
+  const iSt = h.indexOf('審核狀態'), iWay = h.indexOf('芳名公開方式'), iShow = h.indexOf('公開顯示名稱');
+  const iMsg = h.indexOf('想說的話'), iProg = h.indexOf('填表進度');
+
+  let raised = 0, pending = 0, pcount = 0, waiting = 0;
+  const rows = [];
+  for (let r = 1; r < v.length; r++) {
+    if (isTestRow_(v[r][iNm])) continue;
+    if (String(v[r][iProg] || '').trim() === STEP1_LABEL) { waiting++; continue; }
+    const amt = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
+    if (amt <= 0) continue;
+    const st = String(v[r][iSt] || '').trim();
+    if (st !== FUND_OK) { pending += amt; pcount++; continue; }
+    raised += amt;
+    const anon = String(v[r][iWay] || '').indexOf('匿名') >= 0;
+    const who = anon ? '匿名者' : (String(v[r][iShow] || '').trim() || String(v[r][iNm] || ''));
+    const msg = String(v[r][iMsg] || '').trim();
+    rows.push(
+      '<tr><td style="padding:9px 12px;border-top:1px solid #f2f3f5;font-size:13px;color:#8a8e96;white-space:nowrap;">' +
+      tsText_(v[r][iTs], 'MM/dd') + '</td>' +
+      '<td style="padding:9px 12px;border-top:1px solid #f2f3f5;font-size:13px;">' + who +
+      (msg ? '<br><span style="color:#8a8e96;font-size:11.5px;">「' + msg + '」</span>' : '') + '</td>' +
+      '<td style="padding:9px 12px;border-top:1px solid #f2f3f5;font-size:13px;text-align:right;font-weight:900;color:#d97b1e;white-space:nowrap;">' +
+      nf_(amt) + '</td></tr>');
+  }
+  const pct = Math.round(raised / FUND_GOAL * 1000) / 10;
+  const left = Math.max(0, FUND_GOAL - raised);
+  const barW = Math.min(100, pct);
+
+  const body =
+    '<div style="background:#fdf7ef;border:1px solid #f0dcc0;border-radius:12px;padding:16px 18px;margin-bottom:16px;">' +
+    '<div style="font-size:13px;color:#8b7d6b;">目前募得</div>' +
+    '<div style="font-size:30px;font-weight:900;color:#d97b1e;margin:4px 0 8px;">' + nf_(raised) +
+    ' <span style="font-size:14px;color:#8b7d6b;font-weight:400;">/ ' + nf_(FUND_GOAL) + '</span></div>' +
+    '<div style="height:12px;background:#eceef2;border-radius:8px;overflow:hidden;">' +
+    '<div style="height:12px;width:' + barW + '%;background:#d97b1e;border-radius:8px;"></div></div>' +
+    '<div style="margin-top:8px;font-size:13px;color:#4a4d54;">已完成 <b>' + pct + '%</b>　·　共 ' + rows.length + ' 筆' +
+    (left > 0 ? '　·　還差 <b>' + nf_(left) + '</b>' : '　·　<b>已達標</b>') +
+    (pending > 0 ? '<br><span style="color:#8a8e96;">另有 ' + pcount + ' 筆待核對，' + nf_(pending) + '</span>' : '') +
+    (waiting > 0 ? '<br><span style="color:#8a8e96;">' + waiting + ' 人留了聯絡方式但尚未完成登記</span>' : '') +
+    '</div></div>' +
+    '<p><b>已入帳名單</b></p>' +
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:8px 0 14px;' +
+    'border:1px solid #eef0f3;border-radius:10px;">' + rows.join('') + '</table>' +
+    '<p style="font-size:12px;color:#8a8e96;">勸募許可 衛部救字第 1151363585 號　·　期間 115.09.23–116.09.19</p>' +
+    '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
+    'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>';
+
+  const to = boardEmails_().concat(financeEmails_());
+  sendMail_(to, '【魚池神國教會專案】目前募得 ' + nf_(raised) + '（' + pct + '%）',
+    mailShell_('募資進度回報', body, '由協會表單系統整理發出，測試資料已排除。'));
+  console.log('已寄給：' + to.join(', '));
 }
 
 /* ═══════════════ 對帳小工具 ═══════════════ */
