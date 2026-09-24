@@ -48,11 +48,28 @@ const FUND2_ACT_SHEET = '募資V2互動';
 const V1_SHEET = '孤兒院募資';       // 舊募資分頁（僅供搬遷與對帳）
 const V1_ACT_SHEET = '募資互動';     // 舊的分享／集氣
 
+/**
+ * 找舊分頁 —— 容許它被改名封存。
+ *
+ * 搬完之後會把舊分頁改名成「孤兒院募資_已封存_20260924」之類再隱藏
+ * （不能刪，勸募結案要向衛福部申報收支，那是原始軌跡），
+ * 所以這裡先用原名找，找不到就找「開頭是原名」的分頁。
+ */
+function findLegacySheet_(ss, baseName) {
+  let sh = ss.getSheetByName(baseName);
+  if (sh) return sh;
+  const all = ss.getSheets();
+  for (let i = 0; i < all.length; i++) {
+    if (all[i].getName().indexOf(baseName) === 0) return all[i];
+  }
+  return null;
+}
+
 const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 // 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
-const SCRIPT_VERSION = '2026-09-24-g';
+const SCRIPT_VERSION = '2026-09-24-h';
 
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
@@ -113,8 +130,13 @@ function auditAllSheets() {
                  FUND2_SHEET, FUND2_ACT_SHEET, V1_SHEET, V1_ACT_SHEET];
   const out = [];
   for (let i = 0; i < names.length; i++) {
-    const sh = ss.getSheetByName(names[i]);
-    if (!sh) { out.push(pad_(names[i]) + '（分頁不存在）'); continue; }
+    let sh = ss.getSheetByName(names[i]);
+    if (!sh) {
+      const alt = findLegacySheet_(ss, names[i]);
+      if (!alt) { out.push(pad_(names[i]) + '（分頁不存在）'); continue; }
+      out.push(pad_(names[i]) + '→ 已改名為「' + alt.getName() + '」');
+      sh = alt;
+    }
     const last = sh.getLastRow();
     if (last < 2) { out.push(pad_(names[i]) + '0 筆'); continue; }
 
@@ -1178,6 +1200,10 @@ function fp_(ts, name, amt) {
  */
 function migrateFromV1() {
   const r = migrate_(false);
+  if (r.noSheet) {
+    console.log('找不到舊分頁「' + V1_SHEET + '」（已封存或移除），沒有東西要搬。');
+    return { fund: r, acts: { moved: 0, skipped: 0, shares: 0, cheers: 0 } };
+  }
   console.log('捐款資料：新增 ' + r.moved + ' 筆，略過（已搬過）' + r.skipped + ' 筆，空白列 ' + r.blank + ' 列');
   const a = migrateActs_(false);
   console.log('分享／集氣：新增 ' + a.moved + ' 筆，略過 ' + a.skipped + ' 筆' +
@@ -1198,8 +1224,8 @@ function previewMigrate() {
 
 function migrate_(dryRun) {
   const ss = SpreadsheetApp.openById(SHEET_ID);
-  const src = ss.getSheetByName(V1_SHEET);
-  if (!src) throw new Error('找不到舊分頁「' + V1_SHEET + '」');
+  const src = findLegacySheet_(ss, V1_SHEET);
+  if (!src) return { moved: 0, skipped: 0, blank: 0, rows: [], noSheet: true };
   const dst = getFund2Sheet_(ss);
 
   const v = src.getDataRange().getValues();
@@ -1273,7 +1299,7 @@ function migrate_(dryRun) {
  */
 function migrateActs_(dryRun) {
   const ss = SpreadsheetApp.openById(SHEET_ID);
-  const src = ss.getSheetByName(V1_ACT_SHEET);
+  const src = findLegacySheet_(ss, V1_ACT_SHEET);
   const out = { moved: 0, skipped: 0, shares: 0, cheers: 0 };
   if (!src || src.getLastRow() < 2) return out;
 
@@ -1326,6 +1352,10 @@ function migrateActs_(dryRun) {
 function checkV1Leftover() {
   const r = migrate_(true);     // 唯讀預演
   const a = migrateActs_(true);
+  if (r.noSheet) {
+    console.log('✅ 找不到舊分頁「' + V1_SHEET + '」（已封存或移除），沒有東西需要補搬。');
+    return { fund: r, acts: a };
+  }
   if (r.moved === 0 && a.moved === 0) {
     console.log('✅ 舊分頁沒有漏掉的資料，捐款與分享／集氣全部都在新分頁了');
   } else {
@@ -1345,7 +1375,7 @@ function checkV1Leftover() {
 function compareV1V2() {
   const ss = SpreadsheetApp.openById(SHEET_ID);
   const sum = function (sheetName) {
-    const sh = ss.getSheetByName(sheetName);
+    const sh = findLegacySheet_(ss, sheetName);
     if (!sh || sh.getLastRow() < 2) return { rows: 0, total: 0, ok: 0, okTotal: 0 };
     const v = sh.getDataRange().getValues(), h = v[0];
     const iAmt = h.indexOf('捐款金額'), iSt = h.indexOf('審核狀態');
@@ -1373,7 +1403,7 @@ function compareV1V2() {
               '（已通過 ' + b.ok + ' 筆 / ' + b.okTotal + '）　最後一筆 ' + b.last);
   // 分享／集氣也對一下
   const acts = function (sheetName) {
-    const sh = ss.getSheetByName(sheetName);
+    const sh = findLegacySheet_(ss, sheetName);
     if (!sh || sh.getLastRow() < 2) return { share: 0, cheer: 0 };
     const av = sh.getRange(2, 2, sh.getLastRow() - 1, 1).getValues();
     let share = 0, cheer = 0;
