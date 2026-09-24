@@ -7,7 +7,8 @@
 // 手動執行的工具：
 //   auditAllSheets()        各分頁筆數與最後一筆時間（懷疑掉單先跑這個）
 //   selfTest()              確認貼上的程式碼是完整版
-//   setupTriggersV2()       安裝「審核通過自動通知」觸發器（只需一次）
+//   setupTriggersV2()       安裝自動通知觸發器（只需一次，裝完財務改狀態就會自動發信）
+//   sendMissedApprovalNotices() 手動補發漏掉的通知（平常由觸發器自動跑，不用管）
 //   mailPendingToFinance()  待核對清單寄財務
 //   mailProgressToAll()     募資進度寄理監事＋財務
 //   previewMigrate() / migrateFromV1() / compareV1V2() / checkV1Leftover()
@@ -867,17 +868,32 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
 
 /**
  * 安裝觸發器 —— ⚠️ 這支只要執行一次。
- * 裝好之後，把「募資V2」的審核狀態改成「已通過」，就會自動發兩封信：
- *   · 給捐款者：你的款項確認收到了
- *   · 給理監事：有一筆入帳，附目前累計進度
+ *
+ * 裝兩個：
+ *   ① onEdit    改「已通過」當下立刻發信（單格編輯時）
+ *   ② 每 15 分鐘 掃一次有沒有漏掉的，補發
+ *
+ * 為什麼需要第二個：Google 的 onEdit 在「一次改多格」時（貼上、
+ * 往下拖曳填滿、整欄取代）拿不到 e.value，會靜默跳過那幾列。
+ * 財務核對完一次改三列是很正常的操作，而財務不會進 Apps Script
+ * 手動補跑 —— 所以這件事必須自動化，不能靠人記得。
+ *
+ * 有「通知時間」欄當蓋章，兩個觸發器不會把同一列寄兩次。
  */
 function setupTriggersV2() {
   const ss = SpreadsheetApp.openById(SHEET_ID);
+  const KEEP = ['onFundApprovedV2', 'sendMissedApprovalNotices'];
   ScriptApp.getProjectTriggers().forEach(function (t) {
-    if (t.getHandlerFunction() === 'onFundApprovedV2') ScriptApp.deleteTrigger(t);
+    if (KEEP.indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t);
   });
+
   ScriptApp.newTrigger('onFundApprovedV2').forSpreadsheet(ss).onEdit().create();
-  console.log('✅ 觸發器已安裝：把「' + FUND2_SHEET + '」的審核狀態改成「' + FUND_OK + '」時，會通知捐款者與理監事');
+  ScriptApp.newTrigger('sendMissedApprovalNotices').timeBased().everyMinutes(15).create();
+
+  console.log('✅ 觸發器已安裝：');
+  console.log('   · 改「審核狀態」為「' + FUND_OK + '」→ 立刻通知捐款人與理監事');
+  console.log('   · 每 15 分鐘自動補發漏掉的通知（一次改多格時 onEdit 會漏，靠這個接住）');
+  console.log('   財務只要在試算表改狀態就好，不用進來執行任何東西。');
 }
 
 /**
@@ -1013,9 +1029,8 @@ function sendMissedApprovalNotices() {
     notifyApproved_(sh, h, v[r], r + 1);
     sent.push(String(v[r][iNm] || ''));
   }
-  console.log(sent.length
-    ? ('已補發 ' + sent.length + ' 筆：' + sent.join('、'))
-    : '沒有遺漏，所有已通過的都通知過了');
+  // 這支每 15 分鐘被觸發器叫一次，沒事就不要在執行記錄洗版
+  if (sent.length) console.log('已補發 ' + sent.length + ' 筆：' + sent.join('、'));
   return sent;
 }
 
