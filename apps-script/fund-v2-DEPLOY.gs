@@ -102,7 +102,7 @@ function doPost(e) {
 function doGet(e) {
   const p = (e && e.parameter) || {};
   if (p.stat === 'fund2') return fund2Stats_();
-  return jsonOut_({ status: 'ok', message: '募資 V2（測試）API' });
+  return jsonOut_({ status: 'ok', message: '魚池神國教會專案 · 募資 API' });
 }
 
 function jsonOut_(obj) {
@@ -399,7 +399,7 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
   }
 
   sendMail_(MAIL_ADMIN, MAIL_TAG + '新的募資登記：' + name + '　' + money,
-    mailShell_('有人完成募資表單（V2）',
+    mailShell_('有人完成募資表單',
       '<p><b>登記編號</b>　' + pledgeId + '<br>' +
       '<b>姓名</b>　' + name + '<br>' +
       '<b>公司／單位</b>　' + (data.company || '—') + '<br>' +
