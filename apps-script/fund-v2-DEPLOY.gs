@@ -397,6 +397,7 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
 /* ═══════════════ 舊分頁搬遷 ═══════════════ */
 
 const V1_SHEET = '孤兒院募資';   // 舊版募資分頁（名稱是早期專案留下的）
+const V1_ACT_SHEET = '募資互動';   // 舊版的分享／集氣計數
 
 /** 搬遷用指紋：時間＋姓名＋金額。時間欄可能是字串也可能是 Date，統一正規化。 */
 function fp_(ts, name, amt) {
@@ -424,16 +425,22 @@ function fp_(ts, name, amt) {
  */
 function migrateFromV1() {
   const r = migrate_(false);
-  console.log('搬遷完成：新增 ' + r.moved + ' 筆，略過（已搬過）' + r.skipped + ' 筆，空白列 ' + r.blank + ' 列');
-  return r;
+  console.log('捐款資料：新增 ' + r.moved + ' 筆，略過（已搬過）' + r.skipped + ' 筆，空白列 ' + r.blank + ' 列');
+  const a = migrateActs_(false);
+  console.log('分享／集氣：新增 ' + a.moved + ' 筆，略過 ' + a.skipped + ' 筆' +
+              '（分享 ' + a.shares + '、集氣 ' + a.cheers + '）');
+  console.log('※ 頁面上的「贊助」數字是從捐款資料算出來的，搬完就會自己對。');
+  return { fund: r, acts: a };
 }
 
 /** 唯讀預演：只印出會搬什麼，不動任何資料 */
 function previewMigrate() {
   const r = migrate_(true);
-  console.log('【預演】會搬 ' + r.moved + ' 筆，略過 ' + r.skipped + ' 筆，空白 ' + r.blank + ' 列');
+  console.log('【預演】捐款資料會搬 ' + r.moved + ' 筆，略過 ' + r.skipped + ' 筆，空白 ' + r.blank + ' 列');
   console.log(r.rows.join(String.fromCharCode(10)));
-  return r;
+  const a = migrateActs_(true);
+  console.log('【預演】分享／集氣會搬 ' + a.moved + ' 筆（分享 ' + a.shares + '、集氣 ' + a.cheers + '），略過 ' + a.skipped + ' 筆');
+  return { fund: r, acts: a };
 }
 
 function migrate_(dryRun) {
@@ -504,20 +511,81 @@ function migrate_(dryRun) {
 }
 
 /**
+ * 搬分享／集氣計數（舊「募資互動」→ 新「募資V2互動」）。
+ * 同樣可以重複執行。
+ *
+ * ⚠️ 這裡不能只用指紋去重 —— 同一秒可能有兩個人都按了分享，
+ *    那兩筆的「時間＋動作＋來源」一模一樣，用指紋會被當成同一筆而少搬。
+ *    所以改成比對「每個指紋在兩邊各出現幾次」，只補差額。
+ */
+function migrateActs_(dryRun) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const src = ss.getSheetByName(V1_ACT_SHEET);
+  const out = { moved: 0, skipped: 0, shares: 0, cheers: 0 };
+  if (!src || src.getLastRow() < 2) return out;
+
+  let dst = ss.getSheetByName(FUND2_ACT_SHEET);
+  if (!dst) { dst = ss.insertSheet(FUND2_ACT_SHEET); dst.appendRow(['時間戳記', '動作', '來源']); }
+  if (dst.getLastRow() === 0) dst.appendRow(['時間戳記', '動作', '來源']);
+
+  const key = function (row) {
+    const t = (row[0] instanceof Date)
+      ? Utilities.formatDate(row[0], 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss')
+      : String(row[0] || '').trim();
+    return t + '|' + String(row[1] || '').trim() + '|' + String(row[2] || '').trim();
+  };
+
+  // 目的分頁每個指紋已經有幾筆
+  const dstCount = {};
+  if (dst.getLastRow() > 1) {
+    const dv = dst.getRange(2, 1, dst.getLastRow() - 1, 3).getValues();
+    for (let i = 0; i < dv.length; i++) {
+      const k = key(dv[i]);
+      dstCount[k] = (dstCount[k] || 0) + 1;
+    }
+  }
+
+  const sv = src.getRange(2, 1, src.getLastRow() - 1, 3).getValues();
+  const used = {};
+  const rows = [];
+  for (let i = 0; i < sv.length; i++) {
+    const act = String(sv[i][1] || '').trim();
+    if (act !== 'share' && act !== 'cheer') continue;
+    const k = key(sv[i]);
+    used[k] = (used[k] || 0) + 1;
+    if ((dstCount[k] || 0) >= used[k]) { out.skipped++; continue; }   // 這一筆已經搬過了
+    rows.push([sv[i][0], act, sv[i][2] || '']);
+    out.moved++;
+    if (act === 'share') out.shares++; else out.cheers++;
+  }
+
+  if (!dryRun && rows.length) {
+    dst.getRange(dst.getLastRow() + 1, 1, rows.length, 3).setValues(rows);
+  }
+  return out;
+}
+
+/**
  * 盯搬遷期間有沒有人又填了舊表單。
  * 列出舊分頁裡「還沒搬進新分頁」的資料 —— 正常情況下搬完就該是 0 筆。
  * 不是 0 就再跑一次 migrateFromV1()（可以重複執行，不會重複搬）。
  */
 function checkV1Leftover() {
-  const r = migrate_(true);   // 唯讀預演
-  if (r.moved === 0) {
-    console.log('✅ 舊分頁沒有漏掉的資料，全部都在新分頁了');
+  const r = migrate_(true);     // 唯讀預演
+  const a = migrateActs_(true);
+  if (r.moved === 0 && a.moved === 0) {
+    console.log('✅ 舊分頁沒有漏掉的資料，捐款與分享／集氣全部都在新分頁了');
   } else {
-    console.log('⚠️ 舊分頁還有 ' + r.moved + ' 筆沒搬過來：');
-    console.log(r.rows.join(String.fromCharCode(10)));
+    if (r.moved > 0) {
+      console.log('⚠️ 捐款資料還有 ' + r.moved + ' 筆沒搬過來：');
+      console.log(r.rows.join(String.fromCharCode(10)));
+    }
+    if (a.moved > 0) {
+      console.log('⚠️ 分享／集氣還有 ' + a.moved + ' 筆沒搬（分享 ' + a.shares + '、集氣 ' + a.cheers + '）');
+    }
     console.log('→ 跑一次 migrateFromV1() 就會補進去');
   }
-  return r;
+  return { fund: r, acts: a };
 }
 
 /** 搬完對一下：兩邊的金額與筆數應該一致 */
@@ -550,8 +618,27 @@ function compareV1V2() {
               '（已通過 ' + a.ok + ' 筆 / ' + a.okTotal + '）　最後一筆 ' + a.last);
   console.log('新分頁「' + FUND2_SHEET + '」：' + b.rows + ' 筆 / 共 ' + b.total +
               '（已通過 ' + b.ok + ' 筆 / ' + b.okTotal + '）　最後一筆 ' + b.last);
-  console.log(b.okTotal >= a.okTotal ? '✅ 新分頁的已通過金額沒有短少' : '⚠️ 新分頁比舊分頁少，請檢查');
-  return { v1: a, v2: b };
+  // 分享／集氣也對一下
+  const acts = function (sheetName) {
+    const sh = ss.getSheetByName(sheetName);
+    if (!sh || sh.getLastRow() < 2) return { share: 0, cheer: 0 };
+    const av = sh.getRange(2, 2, sh.getLastRow() - 1, 1).getValues();
+    let share = 0, cheer = 0;
+    for (let i = 0; i < av.length; i++) {
+      const x = String(av[i][0] || '').trim();
+      if (x === 'share') share++; else if (x === 'cheer') cheer++;
+    }
+    return { share: share, cheer: cheer };
+  };
+  const a2 = acts(V1_ACT_SHEET), b2 = acts(FUND2_ACT_SHEET);
+  console.log('分享／集氣　舊：' + a2.share + ' / ' + a2.cheer +
+              '　新：' + b2.share + ' / ' + b2.cheer);
+
+  const moneyOk = b.okTotal >= a.okTotal;
+  const actOk = (b2.share >= a2.share && b2.cheer >= a2.cheer);
+  console.log(moneyOk ? '✅ 新分頁的已通過金額沒有短少' : '⚠️ 金額比舊分頁少，請檢查');
+  console.log(actOk ? '✅ 分享／集氣數字沒有短少' : '⚠️ 分享或集氣比舊分頁少，再跑一次 migrateFromV1()');
+  return { v1: a, v2: b, v1acts: a2, v2acts: b2 };
 }
 
 /* ═══════════════ 對帳小工具 ═══════════════ */
