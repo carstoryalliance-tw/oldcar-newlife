@@ -124,6 +124,9 @@ textarea{min-height:78px;resize:vertical}
 .ab .tag{background:#e9f6ee;color:#2f6b47;border:1px solid #bfe0cc;border-radius:6px;
   font-size:11px;font-weight:900;letter-spacing:.5px;padding:2px 7px}
 .acctnote{margin-top:10px;font-size:12.5px;color:var(--dim);line-height:1.9}
+.closed{margin-top:16px;background:#fff;border:1px solid var(--border);border-left:4px solid #8a8e96;
+  border-radius:12px;padding:20px 22px;line-height:1.9;color:var(--muted);font-size:14.5px}
+.closed b{display:block;font-size:17px;color:var(--text);margin-bottom:8px}
 /* 步驟指示 */
 .steps{display:flex;align-items:center;gap:10px;margin-top:16px}
 .step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--dim)}
@@ -373,6 +376,8 @@ footer a{color:var(--muted)}
     <section id="form">
       <h2>贊助這個專案</h2>
 
+      <div class="closed" id="closedBox" style="display:none"></div>
+
       <div class="steps">
         <div class="step on" id="tab1"><i>1</i> 留下聯絡方式</div>
         <div class="stepline"></div>
@@ -617,6 +622,8 @@ async function loadStats(attempt) {
         + '——這筆錢會直接用在把車況升級，不會留著。';
     }
 
+    applyPeriod(d.period, d.periodEnd);
+
     LIST = d.list || [];
     document.getElementById('cnt-give').textContent = d.donors || 0;
     document.getElementById('cnt-share').textContent = d.shares || 0;
@@ -749,6 +756,43 @@ function esc(s) {
 loadStats();
 
 // 送出
+/* ══════════ 勸募期間 ══════════
+ * 許可期間外不得勸募。這裡只是把介面關掉；真正的把關在 Apps Script，
+ * 因為前端判斷可以被繞過（改電腦時間、直接打 API）。
+ */
+function applyPeriod(period, endDate) {
+  if (!period || period === 'open') return;
+  const box = document.getElementById('closedBox');
+  const steps = document.querySelector('.steps');
+  const f1 = document.getElementById('f1');
+  const s2 = document.getElementById('step2');
+
+  if (period === 'grace') {
+    // 期滿但保留補登記：不再發帳號，已匯款的人還能把資料填完
+    box.style.display = 'block';
+    box.innerHTML = '<b>勸募活動已結束</b>' +
+      '本次勸募活動已於 ' + (endDate || '116.09.19') + ' 屆滿，不再接受新的贊助。<br>' +
+      '如果你<b>在期限內已經完成匯款</b>但還沒登記，請從信件裡的連結回來把資料填完，' +
+      '或直接與協會聯絡。';
+    if (f1) f1.style.display = 'none';
+    if (steps) steps.style.display = 'none';
+    return;
+  }
+
+  // before / after：整個表單收起來
+  box.style.display = 'block';
+  box.innerHTML = period === 'before'
+    ? '<b>勸募活動尚未開始</b>本專案的勸募活動即將展開，開始後就能在這裡贊助。'
+    : '<b>勸募活動已結束</b>本次勸募活動已於 ' + (endDate || '116.09.19') +
+      ' 屆滿，感謝每一位支持的朋友。車輛整理與後續回訪的進度會繼續更新在這一頁。';
+  if (f1) f1.style.display = 'none';
+  if (s2) s2.style.display = 'none';
+  if (steps) steps.style.display = 'none';
+  document.querySelectorAll('.btn-row .btn.primary, .act.give').forEach(function (el) {
+    el.style.display = 'none';
+  });
+}
+
 /* ══════════ 兩步驟表單 ══════════ */
 
 const PKEY = 'oncl_fund_pledge';   // 瀏覽器記住登記編號，回訪能續填

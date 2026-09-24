@@ -52,6 +52,27 @@ const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
+/* 勸募活動期間（公益勸募條例：許可期間外不得勸募）。
+ * 期滿後前端會關閉表單，這裡是真正的把關 —— 不能只靠前端，
+ * 網址知道就打得開，前端判斷可以被繞過。 */
+const FUND_START = '2026-09-23';   // 民國 115.09.23
+const FUND_END   = '2027-09-19';   // 民國 116.09.19（含當天）
+const FUND_GRACE_DAYS = 30;        // 期滿後仍允許「補登記已匯款」的天數
+
+function today_() {
+  return Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy-MM-dd');
+}
+
+/** 'before'（還沒開始）／'open'（進行中）／'grace'（期滿但還能補登記）／'after'（已結束） */
+function fundPeriod_() {
+  const t = today_();
+  if (t < FUND_START) return 'before';
+  if (t <= FUND_END) return 'open';
+  const end = new Date(FUND_END + 'T00:00:00+08:00');
+  end.setDate(end.getDate() + FUND_GRACE_DAYS);
+  return t <= Utilities.formatDate(end, 'Asia/Taipei', 'yyyy-MM-dd') ? 'grace' : 'after';
+}
+
 const HEAD2 = ['登記編號', '時間戳記', '姓名', '公司/單位', '電話', 'Email',
   '捐款金額', '匯款末五碼', '芳名公開方式', '公開顯示名稱', '想說的話',
   '收據需求', '收據抬頭', '身分證字號／統一編號', '備註',
@@ -503,7 +524,7 @@ function getAidFolder_() {
 function doGet(e) {
   const p = (e && e.parameter) || {};
   if (p.stat === 'fund') return fundStats_();       // 舊分頁，保留供對帳
-  if (p.stat === 'fund2') return fund2Stats_();     // 現行募資頁讀這個
+  if (p.stat === 'fund2') return fund2Stats_();     // 現行募資頁讀這個（含勸募期間狀態）
   return jsonOut_({ status: 'ok', message: '人車故事公益協會 Form API' });
 }
 
@@ -641,6 +662,10 @@ function fund2Step1_(sheet, data, timestamp) {
   const pledgeId = String(data.pledgeId || '').trim();
   if (!pledgeId) return { status: 'error', message: '缺少登記編號' };
 
+  // 許可期間外不得勸募 —— 不發帳號、不收登記
+  const period = fund2PeriodGuard_();
+  if (period) return period;
+
   // 同一個編號重送（使用者重新整理）就更新，不要長出第二列
   const exist = findRowByPledge_(sheet, pledgeId);
   const row = [
@@ -667,6 +692,13 @@ function fund2Step1_(sheet, data, timestamp) {
 
 function fund2Step2_(sheet, data, timestamp) {
   const pledgeId = String(data.pledgeId || '').trim();
+
+  // 期滿後保留 FUND_GRACE_DAYS 天：期限內已經匯款的人要有機會把資料補齊，
+  // 一刀切會讓他錢匯了卻登記不了。
+  const st = fundPeriod_();
+  if (st === 'before' || st === 'after') {
+    return { status: 'error', code: st, message: fundPeriodMsg_(st) };
+  }
   const amount = Number(String(data.amount || '').replace(/[^0-9.]/g, '')) || 0;
   let row = findRowByPledge_(sheet, pledgeId);
 
@@ -719,7 +751,8 @@ function fund2Stats_() {
     const ss = SpreadsheetApp.openById(SHEET_ID);
     const sh = ss.getSheetByName(FUND2_SHEET);
     const empty = { goal: FUND_GOAL, raised: 0, donors: 0, pending: 0, pendingDonors: 0,
-                    unfinished: 0, shares: 0, cheers: 0, list: [] };
+                    unfinished: 0, shares: 0, cheers: 0, list: [],
+                    period: fundPeriod_(), periodEnd: FUND_END };
     if (!sh || sh.getLastRow() < 2) return jsonOut_(empty);
 
     const v = sh.getDataRange().getValues();
@@ -727,7 +760,7 @@ function fund2Stats_() {
     const iAmt = h.indexOf('捐款金額'), iSt = h.indexOf('審核狀態');
     const iWay = h.indexOf('芳名公開方式'), iName = h.indexOf('公開顯示名稱');
     const iMsg = h.indexOf('想說的話'), iTs = h.indexOf('時間戳記');
-    const iProg = h.indexOf('填表進度');
+    const iProg = h.indexOf('填表進度'), iNm = h.indexOf('姓名');
 
     let raised = 0, donors = 0, pending = 0, pendingDonors = 0, unfinished = 0;
     const list = [];
@@ -736,7 +769,7 @@ function fund2Stats_() {
     for (let r = 1; r < v.length; r++) {
       const prog = String(v[r][iProg] || '').trim();
       // 只留了聯絡方式、還沒填匯款資料的：單獨算一個數字，不進金額
-      if (prog === STEP1_LABEL) { unfinished++; continue; }
+      if (prog === STEP1_LABEL) { if (!isTestRow_(v[r][iNm])) unfinished++; continue; }
 
       const st = String(v[r][iSt] || '').trim();
       if (st !== FUND_OK) {
@@ -771,10 +804,12 @@ function fund2Stats_() {
     return jsonOut_({ goal: FUND_GOAL, raised: raised, donors: donors,
                       pending: pending, pendingDonors: pendingDonors,
                       unfinished: unfinished, shares: shares, cheers: cheers,
+                      period: fundPeriod_(), periodEnd: FUND_END,
                       list: list.reverse().slice(0, 60) });
   } catch (err) {
     return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, pending: 0, pendingDonors: 0,
-                      unfinished: 0, shares: 0, cheers: 0, list: [], error: String(err) });
+                      unfinished: 0, shares: 0, cheers: 0, list: [],
+                      period: 'open', periodEnd: FUND_END, error: String(err) });
   }
 }
 
@@ -845,6 +880,12 @@ function setupTriggersV2() {
   console.log('✅ 觸發器已安裝：把「' + FUND2_SHEET + '」的審核狀態改成「' + FUND_OK + '」時，會通知捐款者與理監事');
 }
 
+/**
+ * 審核狀態被改成「已通過」時，自動通知捐款人與理監事。
+ *
+ * ⚠️ Google 的 onEdit 在「一次改多格」時拿不到 e.value，這裡會直接跳過。
+ *    那些漏掉的用 sendMissedApprovalNotices() 補發。
+ */
 function onFundApprovedV2(e) {
   try {
     if (!e || !e.range) return;
@@ -856,69 +897,139 @@ function onFundApprovedV2(e) {
     const h = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
     if (h[e.range.getColumn() - 1] !== '審核狀態') return;        // 只認審核狀態那一欄
 
-    const row = sh.getRange(e.range.getRow(), 1, 1, sh.getLastColumn()).getValues()[0];
-    const g = function (name) { const i = h.indexOf(name); return i < 0 ? '' : row[i]; };
-
-    const name = String(g('姓名') || '');
-    if (isTestRow_(name)) return;                                 // 測試資料不發信
-
-    const amt = Number(String(g('捐款金額') || '').replace(/[^0-9.]/g, '')) || 0;
-    const anon = String(g('芳名公開方式') || '').indexOf('匿名') >= 0;
-    const shown = anon ? '匿名者' : (String(g('公開顯示名稱') || '').trim() || name);
-    const msg = String(g('想說的話') || '').trim();
-    const email = String(g('Email') || '').trim();
-    const receipt = String(g('收據需求') || '').trim();
-    const pledgeId = String(g('登記編號') || '').trim();
-
-    const st = fundTotals_(sh, h);
-    const nf = function (n) { return 'NT$ ' + Number(n).toLocaleString('en-US'); };
-
-    // ── 1. 給捐款者 ──
-    if (email) {
-      const needReceipt = receipt.indexOf('不需要') < 0 && receipt !== '';
-      sendMail_(email, '你的贊助已確認入帳　·　魚池神國教會專案',
-        mailShellFund_((name || '朋友') + '，款項我們確認收到了',
-          '<p>謝謝你。你的贊助已經由財務核對完成，<b>正式計入這個專案</b>。</p>' +
-          '<p><b>金額</b>　' + nf(amt) + '<br>' +
-          '<b>登記編號</b>　' + pledgeId + '<br>' +
-          '<b>芳名錄顯示</b>　' + shown + '</p>' +
-          '<div style="background:#f2faf5;border:1px solid #bfe0cc;border-radius:10px;padding:14px 16px;margin:14px 0;">' +
-          '<div style="font-size:13px;color:#4a7a5c;">這個專案目前累計</div>' +
-          '<div style="font-size:24px;font-weight:900;color:#2f6b47;margin:4px 0;">' + nf(st.raised) +
-          ' <span style="font-size:13px;color:#4a7a5c;font-weight:400;">/ ' + nf(FUND_GOAL) + '（' + st.pct + '%）</span></div>' +
-          '<div style="font-size:13px;color:#4a5a50;">共 ' + st.count + ' 筆贊助' +
-          (st.left > 0 ? '　·　距離目標還差 ' + nf(st.left) : '　·　<b>已達標</b>') + '</div></div>' +
-          (needReceipt
-            ? '<p>你勾選了需要收據，我們會另外跟你聯絡確認寄送方式。</p>'
-            : '') +
-          '<p>找車、驗車與整理的進度會更新在募資頁上，歡迎隨時回來看。</p>' +
-          '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
-          'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:700;">看專案進度</a></p>',
-          '這封信是系統自動發送，有問題直接回覆即可。'));
-    }
-
-    // ── 2. 給理監事 ──
-    sendMail_(boardEmails_(),
-      '【入帳】魚池神國教會專案　' + nf(amt) + '　累計 ' + nf(st.raised) + '（' + st.pct + '%）',
-      mailShellFund_('有一筆贊助確認入帳',
-        '<p>魚池神國教會專案有一筆贊助<b>確認入帳</b>了。</p>' +
-        '<p><b>贊助者</b>　' + shown + '<br>' +
-        '<b>金額</b>　' + nf(amt) + '<br>' +
-        '<b>登記編號</b>　' + pledgeId +
-        (msg ? '<br><b>留言</b>　「' + msg + '」' : '') + '</p>' +
-        '<div style="background:#fdf7ef;border:1px solid #f0dcc0;border-radius:10px;padding:14px 16px;margin:14px 0;">' +
-        '<div style="font-size:13px;color:#8b7d6b;">目前累計</div>' +
-        '<div style="font-size:26px;font-weight:900;color:#d97b1e;margin:4px 0;">' + nf(st.raised) +
-        ' <span style="font-size:14px;color:#8b7d6b;font-weight:400;">/ ' + nf(FUND_GOAL) + '（' + st.pct + '%）</span></div>' +
-        '<div style="font-size:13px;color:#4a4d54;">共 ' + st.count + ' 筆贊助' +
-        (st.left > 0 ? '　·　距離目標還差 <b>' + nf(st.left) + '</b>' : '　·　<b>已達標</b>') + '</div></div>' +
-        '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
-        'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>',
-        '審核狀態改成「已通過」時自動發出，募資頁進度條已同步更新。'));
+    const rowNum = e.range.getRow();
+    const row = sh.getRange(rowNum, 1, 1, sh.getLastColumn()).getValues()[0];
+    notifyApproved_(sh, h, row, rowNum);
 
   } catch (err) {
     console.warn('[onFundApprovedV2] ' + err);
   }
+}
+
+/** 實際寄出「款項已確認」的兩封信並蓋章。觸發器與補發工具共用這一支。 */
+function notifyApproved_(sh, h, row, rowNum) {
+  const g = function (name) { const i = h.indexOf(name); return i < 0 ? '' : row[i]; };
+  const name = String(g('姓名') || '');
+  if (isTestRow_(name)) return;                                 // 測試資料不發信
+
+  const amt = Number(String(g('捐款金額') || '').replace(/[^0-9.]/g, '')) || 0;
+  const anon = String(g('芳名公開方式') || '').indexOf('匿名') >= 0;
+  const shown = anon ? '匿名者' : (String(g('公開顯示名稱') || '').trim() || name);
+  const msg = String(g('想說的話') || '').trim();
+  const email = String(g('Email') || '').trim();
+  const receipt = String(g('收據需求') || '').trim();
+  const pledgeId = String(g('登記編號') || '').trim();
+
+  const st = fundTotals_(sh, h);
+  const nf = function (n) { return 'NT$ ' + Number(n).toLocaleString('en-US'); };
+
+  // ── 1. 給捐款者 ──
+  if (email) {
+    const needReceipt = receipt.indexOf('不需要') < 0 && receipt !== '';
+    sendMail_(email, '你的贊助已確認入帳　·　魚池神國教會專案',
+      mailShellFund_((name || '朋友') + '，款項我們確認收到了',
+        '<p>謝謝你。你的贊助已經由財務核對完成，<b>正式計入這個專案</b>。</p>' +
+        '<p><b>金額</b>　' + nf(amt) + '<br>' +
+        '<b>登記編號</b>　' + pledgeId + '<br>' +
+        '<b>芳名錄顯示</b>　' + shown + '</p>' +
+        '<div style="background:#f2faf5;border:1px solid #bfe0cc;border-radius:10px;padding:14px 16px;margin:14px 0;">' +
+        '<div style="font-size:13px;color:#4a7a5c;">這個專案目前累計</div>' +
+        '<div style="font-size:24px;font-weight:900;color:#2f6b47;margin:4px 0;">' + nf(st.raised) +
+        ' <span style="font-size:13px;color:#4a7a5c;font-weight:400;">/ ' + nf(FUND_GOAL) + '（' + st.pct + '%）</span></div>' +
+        '<div style="font-size:13px;color:#4a5a50;">共 ' + st.count + ' 筆贊助' +
+        (st.left > 0 ? '　·　距離目標還差 ' + nf(st.left) : '　·　<b>已達標</b>') + '</div></div>' +
+        (needReceipt
+          ? '<p>你勾選了需要收據，我們會另外跟你聯絡確認寄送方式。</p>'
+          : '') +
+        '<p>找車、驗車與整理的進度會更新在募資頁上，歡迎隨時回來看。</p>' +
+        '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
+        'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:700;">看專案進度</a></p>',
+        '這封信是系統自動發送，有問題直接回覆即可。'));
+  }
+
+  // ── 2. 給理監事 ──
+  sendMail_(boardEmails_(),
+    '【入帳】魚池神國教會專案　' + nf(amt) + '　累計 ' + nf(st.raised) + '（' + st.pct + '%）',
+    mailShellFund_('有一筆贊助確認入帳',
+      '<p>魚池神國教會專案有一筆贊助<b>確認入帳</b>了。</p>' +
+      '<p><b>贊助者</b>　' + shown + '<br>' +
+      '<b>金額</b>　' + nf(amt) + '<br>' +
+      '<b>登記編號</b>　' + pledgeId +
+      (msg ? '<br><b>留言</b>　「' + msg + '」' : '') + '</p>' +
+      '<div style="background:#fdf7ef;border:1px solid #f0dcc0;border-radius:10px;padding:14px 16px;margin:14px 0;">' +
+      '<div style="font-size:13px;color:#8b7d6b;">目前累計</div>' +
+      '<div style="font-size:26px;font-weight:900;color:#d97b1e;margin:4px 0;">' + nf(st.raised) +
+      ' <span style="font-size:14px;color:#8b7d6b;font-weight:400;">/ ' + nf(FUND_GOAL) + '（' + st.pct + '%）</span></div>' +
+      '<div style="font-size:13px;color:#4a4d54;">共 ' + st.count + ' 筆贊助' +
+      (st.left > 0 ? '　·　距離目標還差 <b>' + nf(st.left) + '</b>' : '　·　<b>已達標</b>') + '</div></div>' +
+      '<p><a href="' + FORM_URL + '" style="display:inline-block;background:#d97b1e;color:#fff;' +
+      'text-decoration:none;padding:11px 22px;border-radius:9px;font-weight:900;">看募資頁</a></p>',
+      '審核狀態改成「已通過」時自動發出，募資頁進度條已同步更新。'));
+
+  stampNotified_(sh, rowNum);
+}
+
+/** 在「通知時間」欄蓋章；欄位不存在就自動補一欄 */
+function stampNotified_(sh, row) {
+  let c = colIndex_(sh, '通知時間');
+  if (!c) {
+    c = sh.getLastColumn() + 1;
+    sh.getRange(1, c).setValue('通知時間');
+  }
+  sh.getRange(row, c).setValue(
+    Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss'));
+}
+
+/**
+ * 補發「已通過但沒發到通知」的信。
+ *
+ * ⚠️ 為什麼需要這支：Google 的 onEdit 觸發器，在「一次改多格」時
+ *    （貼上、往下拖曳填滿、整欄取代）拿不到 e.value，
+ *    onFundApprovedV2 會直接跳過，那幾列就不會發信。
+ *    財務核對完一次改三列是很正常的事，所以這個一定會遇到。
+ *
+ * 這支掃描所有「已通過」但「通知時間」還空著的列，補寄給捐款人與理監事。
+ * 可重複執行，發過的不會重發。
+ */
+function sendMissedApprovalNotices() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sh = ss.getSheetByName(FUND2_SHEET);
+  if (!sh || sh.getLastRow() < 2) { console.log('沒有資料'); return; }
+
+  let cNotify = colIndex_(sh, '通知時間');
+  if (!cNotify) {
+    cNotify = sh.getLastColumn() + 1;
+    sh.getRange(1, cNotify).setValue('通知時間');
+  }
+
+  const v = sh.getDataRange().getValues();
+  const h = v[0];
+  const iSt = h.indexOf('審核狀態'), iNm = h.indexOf('姓名');
+  const sent = [];
+  for (let r = 1; r < v.length; r++) {
+    if (String(v[r][iSt] || '').trim() !== FUND_OK) continue;
+    if (isTestRow_(v[r][iNm])) continue;
+    if (String(v[r][cNotify - 1] || '').trim()) continue;   // 已經通知過
+    notifyApproved_(sh, h, v[r], r + 1);
+    sent.push(String(v[r][iNm] || ''));
+  }
+  console.log(sent.length
+    ? ('已補發 ' + sent.length + ' 筆：' + sent.join('、'))
+    : '沒有遺漏，所有已通過的都通知過了');
+  return sent;
+}
+
+/** 步驟①的期間守門：在期間內回 null，否則回錯誤物件 */
+function fund2PeriodGuard_() {
+  const st = fundPeriod_();
+  if (st === 'open') return null;
+  return { status: 'error', code: st, message: fundPeriodMsg_(st) };
+}
+
+function fundPeriodMsg_(st) {
+  if (st === 'before') return '本次勸募活動尚未開始（' + FUND_START + ' 起）。';
+  if (st === 'grace')  return '勸募活動已結束，目前僅開放補登記期限內已完成的匯款。';
+  return '本次勸募活動已於 ' + FUND_END + ' 結束，感謝你的支持。';
 }
 
 /** 測試資料判斷，統一一個地方 */
