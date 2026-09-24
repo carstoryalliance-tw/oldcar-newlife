@@ -69,7 +69,7 @@ const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 // 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
-const SCRIPT_VERSION = '2026-09-24-h';
+const SCRIPT_VERSION = '2026-09-24-i';
 
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
@@ -800,10 +800,32 @@ function fund2Step2_(sheet, data, timestamp) {
  * 用 Apps Script 內建的 CacheService 存 90 秒，多數請求就不必重算。
  * 有新資料寫入或審核通過時會主動清掉，不會讓人看到過期的數字。 */
 const STATS_CACHE_KEY = 'fund2stats';
-const STATS_CACHE_SEC = 90;
+const STATS_CACHE_SEC = 900;   // 15 分鐘（有觸發器每 5 分鐘保溫，實際不會放到過期）
 
 function clearStatsCache_() {
-  try { CacheService.getScriptCache().remove(STATS_CACHE_KEY); } catch (e) {}
+  // 不是單純清掉 —— 清掉會留一個空窗，下一個進站的人就得等重算。
+  // 直接重算一份放回去，使用者永遠命中快取。
+  try {
+    const out = fund2StatsFresh_();
+    CacheService.getScriptCache().put(STATS_CACHE_KEY, out.getContent(), STATS_CACHE_SEC);
+  } catch (e) {
+    try { CacheService.getScriptCache().remove(STATS_CACHE_KEY); } catch (e2) {}
+  }
+}
+
+/**
+ * 保溫用 —— 由觸發器每 5 分鐘叫一次，讓快取永遠是熱的。
+ *
+ * Apps Script 冷啟動＋讀整張試算表要 2.5～20 秒，那是使用者等不起的。
+ * 與其讓某個倒楣的訪客去觸發重算，不如背景自己先算好。
+ */
+function warmStatsCache_() {
+  try {
+    const out = fund2StatsFresh_();
+    CacheService.getScriptCache().put(STATS_CACHE_KEY, out.getContent(), STATS_CACHE_SEC);
+  } catch (e) {
+    console.warn('[warmStatsCache_] ' + e);
+  }
 }
 
 function fund2Stats_() {
@@ -950,10 +972,11 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
 /**
  * 安裝觸發器 —— ⚠️ 這支只要執行一次。
  *
- * 裝三個：
+ * 裝四個：
  *   ① onEdit     改「已通過」當下立刻發信（單格編輯時）
  *   ② 每 15 分鐘  掃一次有沒有漏掉的，補發
  *   ③ 每天 9:00  把待核對清單寄給財務（沒有待核對就不寄）
+ *   ④ 每 5 分鐘  把募資進度算好放快取（保溫，訪客不必等冷啟動）
  *
  * 為什麼需要第二個：Google 的 onEdit 在「一次改多格」時（貼上、
  * 往下拖曳填滿、整欄取代）拿不到 e.value，會靜默跳過那幾列。
@@ -964,7 +987,8 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
  */
 function setupTriggersV2() {
   const ss = SpreadsheetApp.openById(SHEET_ID);
-  const KEEP = ['onFundApprovedV2', 'sendMissedApprovalNotices', 'dailyPendingMail_'];
+  const KEEP = ['onFundApprovedV2', 'sendMissedApprovalNotices', 'dailyPendingMail_',
+                'warmStatsCache_'];
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (KEEP.indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t);
   });
@@ -973,11 +997,13 @@ function setupTriggersV2() {
   ScriptApp.newTrigger('sendMissedApprovalNotices').timeBased().everyMinutes(15).create();
   ScriptApp.newTrigger('dailyPendingMail_').timeBased()
     .atHour(9).everyDays(1).inTimezone('Asia/Taipei').create();
+  ScriptApp.newTrigger('warmStatsCache_').timeBased().everyMinutes(5).create();
 
   console.log('✅ 觸發器已安裝：');
   console.log('   · 改「審核狀態」為「' + FUND_OK + '」→ 立刻通知捐款人與理監事');
   console.log('   · 每 15 分鐘自動補發漏掉的通知（一次改多格時 onEdit 會漏，靠這個接住）');
   console.log('   · 每天早上 9 點把待核對清單寄給財務（沒有待核對就不寄）');
+  console.log('   · 每 5 分鐘把募資進度算好放快取，訪客就不必等 Apps Script 冷啟動');
   console.log('   財務只要在試算表改狀態就好，不用進來執行任何東西。');
 }
 
