@@ -53,6 +53,10 @@ const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
+/* 勸募文宣要載明勸募團體的名稱、地址與聯絡方式，信件也算文宣 */
+const ORG_ADDR = '333 桃園市龜山區嶺頂里茶專路 16 號';
+const ORG_FB = 'https://www.facebook.com/profile.php?id=61577217124836';
+
 /* 勸募活動期間（公益勸募條例：許可期間外不得勸募）。
  * 期滿後前端會關閉表單，這裡是真正的把關 —— 不能只靠前端，
  * 網址知道就打得開，前端判斷可以被繞過。 */
@@ -602,7 +606,11 @@ function fundStats_() {
 /** 募資相關的信件外框：在通用外框的頁腳補上勸募許可字號 */
 function mailShellFund_(title, bodyHtml, footNote) {
   return mailShell_(title, bodyHtml,
-    (footNote ? footNote + '<br>' : '') + FUND_PERMIT);
+    (footNote ? footNote + '<br>' : '') +
+    ORG_ADDR + '<br>' +
+    '<a href="mailto:' + MAIL_REPLY_TO + '" style="color:#8a8e96;">' + MAIL_REPLY_TO + '</a>' +
+    '　·　<a href="' + ORG_FB + '" style="color:#8a8e96;">Facebook 粉絲團</a><br>' +
+    FUND_PERMIT);
 }
 
 /* 理監事／財務的收件名單。
