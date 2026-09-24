@@ -662,7 +662,20 @@ function renderList() {
     return;
   }
   const rows = LIST.slice();
-  if (mode === 'top') rows.sort((a, b) => (b.amount || 0) - (a.amount || 0));
+  if (mode === 'top') {
+    rows.sort((a, b) => (b.amount || 0) - (a.amount || 0));
+  } else {
+    // 依時間新到舊。後端已經排過，這裡再排一次當保險 ——
+    // 從舊分頁搬過來的資料在試算表裡是附加在最後面的，
+    // 列順序跟時間順序不一致，不能只靠原始順序。
+    rows.sort((a, b) => {
+      const ta = Date.parse(a.ts) || 0, tb = Date.parse(b.ts) || 0;
+      if (ta === tb) return 0;
+      if (!ta) return 1;
+      if (!tb) return -1;
+      return tb - ta;
+    });
+  }
   if (cnt) cnt.textContent = '共 ' + rows.length + ' 筆' + (mode === 'top' ? '，依金額排序' : '，依時間排序');
   box.innerHTML = rows.map(x =>
     '<div class="nm">'

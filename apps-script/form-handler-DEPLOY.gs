@@ -52,7 +52,7 @@ const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 // 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
-const SCRIPT_VERSION = '2026-09-24-e';
+const SCRIPT_VERSION = '2026-09-24-f';
 
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
@@ -805,11 +805,15 @@ function fund2Stats_() {
       const amt = Number(String(v[r][iAmt] || '').replace(/[^0-9.]/g, '')) || 0;
       raised += amt; donors++;
       const anon = String(v[r][iWay] || '').indexOf('匿名') >= 0;
+      const tsRaw = v[r][iTs];
       list.push({
         name: anon ? '匿名者' : (String(v[r][iName] || '').trim() || '匿名者'),
         amount: amt,
         msg: String(v[r][iMsg] || '').trim(),
-        ts: String(v[r][iTs] || '')
+        ts: (tsRaw instanceof Date)
+          ? Utilities.formatDate(tsRaw, 'Asia/Taipei', 'yyyy/MM/dd HH:mm:ss')
+          : String(tsRaw || ''),
+        _t: (tsRaw instanceof Date) ? tsRaw.getTime() : (Date.parse(String(tsRaw)) || 0)
       });
     }
 
@@ -828,7 +832,7 @@ function fund2Stats_() {
                       pending: pending, pendingDonors: pendingDonors,
                       unfinished: unfinished, shares: shares, cheers: cheers,
                       period: fundPeriod_(), periodEnd: FUND_END,
-                      list: list.reverse().slice(0, 60) });
+                      list: sortByTimeDesc_(list).slice(0, 60) });
   } catch (err) {
     return jsonOut_({ goal: FUND_GOAL, raised: 0, donors: 0, pending: 0, pendingDonors: 0,
                       unfinished: 0, shares: 0, cheers: 0, list: [],
@@ -1071,6 +1075,23 @@ function fundPeriodMsg_(st) {
   if (st === 'before') return '本次勸募活動尚未開始（' + FUND_START + ' 起）。';
   if (st === 'grace')  return '勸募活動已結束，目前僅開放補登記期限內已完成的匯款。';
   return '本次勸募活動已於 ' + FUND_END + ' 結束，感謝你的支持。';
+}
+
+/**
+ * 芳名錄依時間新到舊排。
+ *
+ * ⚠️ 不能靠試算表的列順序 —— 從舊分頁搬過來的那批是「附加在最後面」，
+ *    列號大但時間早，用列順序反轉會把幾個月前的捐款排到最上面。
+ *    沒有時間可判讀的（_t = 0）排最後，不要讓它插隊到最新。
+ */
+function sortByTimeDesc_(list) {
+  return list.slice().sort(function (a, b) {
+    const ta = a._t || 0, tb = b._t || 0;
+    if (ta === tb) return 0;
+    if (!ta) return 1;
+    if (!tb) return -1;
+    return tb - ta;
+  });
 }
 
 /** 測試資料判斷，統一一個地方 */
