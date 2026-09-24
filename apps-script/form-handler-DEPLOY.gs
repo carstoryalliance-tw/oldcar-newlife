@@ -9,7 +9,7 @@
 //   selfTest()              確認貼上的程式碼是完整版
 //   setupTriggersV2()       安裝自動通知觸發器（只需一次，裝完財務改狀態就會自動發信）
 //   sendMissedApprovalNotices() 手動補發漏掉的通知（平常由觸發器自動跑，不用管）
-//   mailPendingToFinance()  待核對清單寄財務
+//   mailPendingToFinance()  待核對清單寄財務（平常每天早上自動寄，這支是想臨時補寄時用）
 //   mailProgressToAll()     募資進度寄理監事＋財務
 //   previewMigrate() / migrateFromV1() / compareV1V2() / checkV1Leftover()
 //   ⚠️ doPost、doGet 不能手動執行（它們要網頁請求才有參數）
@@ -869,9 +869,10 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
 /**
  * 安裝觸發器 —— ⚠️ 這支只要執行一次。
  *
- * 裝兩個：
- *   ① onEdit    改「已通過」當下立刻發信（單格編輯時）
- *   ② 每 15 分鐘 掃一次有沒有漏掉的，補發
+ * 裝三個：
+ *   ① onEdit     改「已通過」當下立刻發信（單格編輯時）
+ *   ② 每 15 分鐘  掃一次有沒有漏掉的，補發
+ *   ③ 每天 9:00  把待核對清單寄給財務（沒有待核對就不寄）
  *
  * 為什麼需要第二個：Google 的 onEdit 在「一次改多格」時（貼上、
  * 往下拖曳填滿、整欄取代）拿不到 e.value，會靜默跳過那幾列。
@@ -882,17 +883,20 @@ function fund2Mails_(data, amount, timestamp, pledgeId) {
  */
 function setupTriggersV2() {
   const ss = SpreadsheetApp.openById(SHEET_ID);
-  const KEEP = ['onFundApprovedV2', 'sendMissedApprovalNotices'];
+  const KEEP = ['onFundApprovedV2', 'sendMissedApprovalNotices', 'dailyPendingMail_'];
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (KEEP.indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t);
   });
 
   ScriptApp.newTrigger('onFundApprovedV2').forSpreadsheet(ss).onEdit().create();
   ScriptApp.newTrigger('sendMissedApprovalNotices').timeBased().everyMinutes(15).create();
+  ScriptApp.newTrigger('dailyPendingMail_').timeBased()
+    .atHour(9).everyDays(1).inTimezone('Asia/Taipei').create();
 
   console.log('✅ 觸發器已安裝：');
   console.log('   · 改「審核狀態」為「' + FUND_OK + '」→ 立刻通知捐款人與理監事');
   console.log('   · 每 15 分鐘自動補發漏掉的通知（一次改多格時 onEdit 會漏，靠這個接住）');
+  console.log('   · 每天早上 9 點把待核對清單寄給財務（沒有待核對就不寄）');
   console.log('   財務只要在試算表改狀態就好，不用進來執行任何東西。');
 }
 
@@ -1326,7 +1330,8 @@ function nf_(n) { return 'NT$ ' + Number(n || 0).toLocaleString('en-US'); }
  * 手動執行：把待核對的贊助清單寄給財務。
  * 收件人設在指令碼屬性 FINANCE_EMAILS（逗號分隔），沒設就寄給 MAIL_ADMIN。
  */
-function mailPendingToFinance() {
+function mailPendingToFinance(opts) {
+  opts = opts || {};
   const ss = SpreadsheetApp.openById(SHEET_ID);
   const sh = ss.getSheetByName(FUND2_SHEET);
   if (!sh || sh.getLastRow() < 2) { console.log('沒有資料'); return; }
@@ -1378,6 +1383,13 @@ function mailPendingToFinance() {
   }
 
   if (!rows.length && !waiting.length) { console.log('目前沒有待核對的贊助'); return; }
+
+  // 每天自動寄的情境：只剩「留了聯絡方式沒回來填」的名單時就先不寄，
+  // 那份名單不會天天變，連寄一週只會讓人麻痺。改成每週一提醒一次。
+  if (opts.skipIfOnlyWaiting && !rows.length) {
+    console.log('今天只有未完成登記 ' + waiting.length + ' 人，沒有待核對款項，不寄。');
+    return;
+  }
 
   let body = '';
   if (rows.length) {
@@ -1435,6 +1447,18 @@ function mailPendingToFinance() {
     mailShellFund_('魚池神國教會專案：待核對清單', body, '由協會表單系統整理發出，測試資料已自動排除。'));
   console.log('已寄給財務：待核對 ' + rows.length + ' 筆 / ' + total +
               '，未完成登記 ' + waiting.length + ' 人');
+}
+
+/**
+ * 每天早上給財務的待核對清單（由觸發器呼叫，不用手動執行）。
+ *
+ * 有待核對款項 → 寄。
+ * 只剩「留了聯絡方式沒回來填」的名單 → 只有週一寄，
+ * 因為那份名單不會天天變，天天寄只會讓人不想看。
+ */
+function dailyPendingMail_() {
+  const dow = Utilities.formatDate(new Date(), 'Asia/Taipei', 'u');   // 1=週一
+  mailPendingToFinance({ skipIfOnlyWaiting: dow !== '1' });
 }
 
 /** 手動執行：把目前募資進度與已入帳名單，寄給理監事＋財務 */
