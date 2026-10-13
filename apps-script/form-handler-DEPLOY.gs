@@ -11,6 +11,7 @@
 //   sendMissedApprovalNotices() 手動補發漏掉的通知（平常由觸發器自動跑，不用管）
 //   mailPendingToFinance()  待核對清單寄財務（平常每天早上自動寄，這支是想臨時補寄時用）
 //   mailProgressToAll()     募資進度寄理監事＋財務
+//   resendLastAidNotice()   把最後一筆個案投稿的通知重寄一次（設好收件人後用這支驗）
 //   previewMigrate() / migrateFromV1() / compareV1V2() / checkV1Leftover()
 //   ⚠️ doPost、doGet 不能手動執行（它們要網頁請求才有參數）
 // 部署為 Web App: 執行身分「我」，存取「所有人」
@@ -36,8 +37,15 @@ const MAIL_REPLY_TO = 'carstory.alliance@gmail.com';
 // 照片/影片上傳存放位置。留空 = 自動在雲端根目錄建立同名資料夾。
 const AID_FOLDER_ID = '';
 const AID_FOLDER_NAME = '人車故事公益申請_上傳';
-// 審閱者信箱（會把每筆申請的上傳子資料夾分享給這些人檢視）。留空 = 檔案僅擁有者可見。
-const AID_REVIEWER_EMAILS = []; // 例：['carstory.alliance@gmail.com', 'someone@gmail.com']
+// 個案投稿（公益申請）的通知收件人 —— 核心幹部名單。
+// ⚠️ 這個 repo 是公開的，私人信箱不要寫在這裡，改在
+//    「專案設定 → 指令碼屬性」新增一列：
+//      鍵　AID_EMAILS
+//      值　aaa@gmail.com,bbb@gmail.com,ccc@gmail.com   ← 逗號分隔
+//    沒設定就退回理監事名單（BOARD_EMAILS），再沒有才退回 MAIL_ADMIN。
+// 這份名單同時決定誰看得到上傳的照片 —— 不分享的話只有試算表擁有者打得開，
+// 幹部收到通知卻點不開照片，等於沒收到。
+const AID_REVIEWER_EMAILS = []; // 後備用；正常走指令碼屬性 AID_EMAILS
 
 /* ─── 募資 V2（兩步驟表單）───────────────────────────────
  * 2026-09-24：/fund/ 改成兩步驟，資料進「募資V2」分頁。
@@ -69,7 +77,7 @@ const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 // 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
-const SCRIPT_VERSION = '2026-09-24-i';
+const SCRIPT_VERSION = '2026-10-13-a';
 
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
@@ -174,12 +182,13 @@ function selfTest() {
     console.log('✅ doPost 七個分支都在：' + types.join('、'));
   }
   const need = ['fund2Step1_', 'fund2Step2_', 'onFundApprovedV2', 'migrateFromV1',
-                'mailPendingToFinance', 'mailProgressToAll', 'fundStats_', 'fund2Stats_'];
+                'mailPendingToFinance', 'mailProgressToAll', 'fundStats_', 'fund2Stats_',
+                'aidEmails_', 'aidNotify_', 'resendLastAidNotice'];
   const lost = [];
   for (let k = 0; k < need.length; k++) {
     if (typeof this[need[k]] !== 'function') lost.push(need[k]);
   }
-  console.log(lost.length ? ('⚠️ 找不到這些函式：' + lost.join('、')) : '✅ 募資 V2 的函式都在');
+  console.log(lost.length ? ('⚠️ 找不到這些函式：' + lost.join('、')) : '✅ 募資 V2 與個案投稿通知的函式都在');
   return { missing: missing, lost: lost };
 }
 
@@ -331,9 +340,7 @@ function doPost(e) {
         const folder = getAidFolder_();
         const subName = timestamp.replace(/[\/:]/g, '-') + '_' + (data.name || '申請者');
         const sub = folder.createFolder(subName);
-        if (AID_REVIEWER_EMAILS && AID_REVIEWER_EMAILS.length) {
-          try { sub.addViewers(AID_REVIEWER_EMAILS); } catch (x) {}
-        }
+        try { sub.addViewers(aidEmails_()); } catch (x) {}
         data.files.forEach(function (f, i) {
           try {
             const blob = Utilities.newBlob(Utilities.base64Decode(f.data), f.mimeType || 'application/octet-stream', f.name || 'file');
@@ -368,6 +375,14 @@ function doPost(e) {
           });
           sheet.getRange(row, 13).setRichTextValue(rt.build());
         } catch (x) { /* 保留純文字後備 */ }
+      }
+
+      // 通知核心幹部。包在 try 裡 —— 寄信掛掉不能連帶讓表單寫入失敗，
+      // 資料已經進試算表了，寧可通知漏掉也不要讓申請人看到「送出失敗」。
+      try {
+        aidNotify_(sheet, sheet.getLastRow(), data, timestamp, fileEntries);
+      } catch (x) {
+        console.warn('[aid] 通知寄送失敗（資料已寫入）：' + x);
       }
     }
 
@@ -551,6 +566,161 @@ function getAidFolder_() {
   if (AID_FOLDER_ID) return DriveApp.getFolderById(AID_FOLDER_ID);
   const it = DriveApp.getFoldersByName(AID_FOLDER_NAME);
   return it.hasNext() ? it.next() : DriveApp.createFolder(AID_FOLDER_NAME);
+}
+
+
+/* ═══════════════ 個案投稿通知 ═══════════════
+ * 公益申請原本只寫進試算表、不通知任何人，沒人固定去翻就不會知道有人投稿。
+ */
+
+/** 通知收件人：指令碼屬性 AID_EMAILS → AID_REVIEWER_EMAILS → 理監事名單 */
+function aidEmails_() {
+  const raw = PropertiesService.getScriptProperties().getProperty('AID_EMAILS');
+  const list = raw
+    ? raw.split(',').map(function (x) { return x.trim(); }).filter(function (x) { return x; })
+    : [];
+  if (list.length) return list;
+  if (AID_REVIEWER_EMAILS && AID_REVIEWER_EMAILS.length) return AID_REVIEWER_EMAILS;
+  return boardEmails_();
+}
+
+/** 申請人填的字會原樣進 HTML 信，不逃脫的話對方打一段標籤就能動信件版面 */
+function esc_(v) {
+  return String(v == null ? '' : v)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/** 長文在信裡截斷 —— 人車故事那欄動輒上千字，整段塞進信裡很難讀 */
+function escBlock_(v, max) {
+  const t = String(v == null ? '' : v).trim();
+  if (!t) return '<span style="color:#b0b4bb;">（未填）</span>';
+  const cut = t.length > max ? t.slice(0, max) + '⋯⋯' : t;
+  return esc_(cut).replace(/\n/g, '<br>') +
+    (t.length > max ? '<br><span style="color:#b0b4bb;font-size:11.5px;">（全文請見試算表）</span>' : '');
+}
+
+/** 同一個人之前投過幾次？有人會連送好幾次，信裡標出來免得被當成好幾個案子 */
+function aidDupCount_(sheet, email, phone, excludeRow) {
+  const last = sheet.getLastRow();
+  if (last < 2) return 0;
+  const vals = sheet.getRange(2, 4, last - 1, 2).getValues();   // D 電話、E Email
+  const e = String(email || '').trim().toLowerCase();
+  const p = String(phone || '').replace(/\D/g, '');
+  let n = 0;
+  vals.forEach(function (r, i) {
+    if (i + 2 === excludeRow) return;
+    const re = String(r[1] || '').trim().toLowerCase();
+    const rp = String(r[0] || '').replace(/\D/g, '');
+    if ((e && re === e) || (p && rp === p)) n++;
+  });
+  return n;
+}
+
+/** 有新的個案投稿 → 寄給核心幹部 */
+function aidNotify_(sheet, rowNum, data, timestamp, fileEntries) {
+  const to = aidEmails_();
+  if (!to || !to.length) return;
+
+  const name = String(data.name || '（未填姓名）').trim();
+  const cat = String(data.category || '未分類').trim();
+  const car = String(data.vehicle || '').trim();
+
+  const rows = [
+    ['送出時間', esc_(timestamp)],
+    ['申請類型', '<b>' + esc_(cat) + '</b>'],
+    ['姓名', '<b>' + esc_(name) + '</b>'],
+    ['電話', data.phone ? '<a href="tel:' + esc_(data.phone) + '" style="color:#d97b1e;">' + esc_(data.phone) + '</a>' : '—'],
+    ['Email', data.email ? '<a href="mailto:' + esc_(data.email) + '" style="color:#d97b1e;">' + esc_(data.email) + '</a>' : '—'],
+    ['LINE ID', esc_(data.lineId || '—')],
+    ['所在縣市', esc_(data.city || '—')],
+    ['車輛廠牌/年份', esc_(car || '—')],
+    ['是否同意公開故事', esc_(data.publicConsent || '—')]
+  ];
+
+  let tbl = '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:14px 0;' +
+            'border:1px solid #eef0f3;border-radius:10px;">';
+  rows.forEach(function (r, i) {
+    const bt = i ? 'border-top:1px solid #f2f3f5;' : '';
+    tbl += '<tr><td style="padding:9px 14px;color:#8a8e96;font-size:13px;white-space:nowrap;' + bt + '">' + r[0] + '</td>' +
+           '<td style="padding:9px 14px;text-align:right;' + bt + '">' + r[1] + '</td></tr>';
+  });
+  tbl += '</table>';
+
+  const photos = (fileEntries && fileEntries.length)
+    ? '<p style="margin:4px 0 0;">' + fileEntries.map(function (e) {
+        return e.url
+          ? '<a href="' + esc_(e.url) + '" style="color:#d97b1e;">' + esc_(e.label) + '</a>'
+          : esc_(e.label);
+      }).join('　·　') + '</p>'
+    : '<p style="margin:4px 0 0;color:#b0b4bb;">（沒有上傳照片）</p>';
+
+  const dup = aidDupCount_(sheet, data.email, data.phone, rowNum);
+  const dupNote = dup
+    ? '<p style="margin:0 0 14px;padding:10px 14px;background:#fff6e6;border:1px solid #f0d59a;' +
+      'border-radius:8px;font-size:13px;">⚠️ 這位申請人之前已經送過 <b>' + dup + '</b> 次。' +
+      '請先確認是重複投稿還是不同案件，不要當成多個案子分別處理。</p>'
+    : '';
+
+  const link = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/edit';
+
+  const body =
+    dupNote +
+    '<p>有一筆新的個案投稿進來了，狀態為<b>待審核</b>。</p>' +
+    tbl +
+    '<p style="margin:16px 0 4px;color:#8a8e96;font-size:13px;">車況描述</p>' +
+    '<div style="padding:10px 14px;background:#fafbfc;border:1px solid #eef0f3;border-radius:8px;">' +
+      escBlock_(data.condition, 300) + '</div>' +
+    '<p style="margin:16px 0 4px;color:#8a8e96;font-size:13px;">人車故事</p>' +
+    '<div style="padding:10px 14px;background:#fafbfc;border:1px solid #eef0f3;border-radius:8px;">' +
+      escBlock_(data.story, 600) + '</div>' +
+    '<p style="margin:16px 0 4px;color:#8a8e96;font-size:13px;">家庭／經濟狀況</p>' +
+    '<div style="padding:10px 14px;background:#fafbfc;border:1px solid #eef0f3;border-radius:8px;">' +
+      escBlock_(data.situation, 600) + '</div>' +
+    '<p style="margin:16px 0 4px;color:#8a8e96;font-size:13px;">上傳的照片／影片</p>' +
+    photos +
+    '<p style="margin:20px 0 0;"><a href="' + link + '" ' +
+    'style="display:inline-block;background:#e8a020;color:#0a0b0f;padding:11px 22px;border-radius:8px;' +
+    'font-weight:900;text-decoration:none;">到試算表看第 ' + rowNum + ' 列</a></p>';
+
+  const subject = '【新個案投稿】' + cat + '　' + name + (car ? '　·　' + car : '');
+  sendMail_(to, subject, mailShell_('有新的個案投稿', body,
+    '這封信寄給協會核心幹部，申請人收不到。收件人名單在 Apps Script 指令碼屬性 AID_EMAILS。'));
+}
+
+/**
+ * 手動工具：把「公益申請」最後一筆的通知重寄一次。
+ * 設好 AID_EMAILS 之後用這支驗證收不收得到，不必真的去表單送一筆測試資料。
+ */
+function resendLastAidNotice() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName(AID_SHEET);
+  if (!sheet || sheet.getLastRow() < 2) {
+    console.log('「' + AID_SHEET + '」分頁沒有資料。');
+    return;
+  }
+  const row = sheet.getLastRow();
+  const v = sheet.getRange(row, 1, 1, 14).getValues()[0];
+
+  // 照片連結在第 13 欄，網址藏在 RichText 的超連結裡，純文字讀不到
+  const files = [];
+  try {
+    const rt = sheet.getRange(row, 13).getRichTextValue();
+    if (rt) {
+      rt.getRuns().forEach(function (r) {
+        const label = String(r.getText() || '').trim();
+        if (label) files.push({ label: label, url: r.getLinkUrl() || '' });
+      });
+    }
+  } catch (x) { /* 沒有 RichText 就當作沒附檔 */ }
+
+  aidNotify_(sheet, row, {
+    category: v[1], name: v[2], phone: v[3], email: v[4], lineId: v[5],
+    city: v[6], vehicle: v[7], condition: v[8], story: v[9],
+    situation: v[10], publicConsent: v[11]
+  }, v[0], files);
+
+  console.log('已重寄第 ' + row + ' 列（' + v[2] + '）的通知給：' + aidEmails_().join('、'));
 }
 
 function doGet(e) {
