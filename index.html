@@ -179,7 +179,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
 @keyframes fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:640px){
-  #nav-home,#nav-about,#nav-members,#nav-videos,#nav-apply,#nav-fund,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
+  #nav-home,#nav-about,#nav-members,#nav-videos,#nav-news,#nav-apply,#nav-fund,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important;}
   #ham-btn{display:flex !important;}
   .pc-br{display:none !important;}
   #hero-section{min-height:0 !important;padding:20px 20px 28px !important;overflow:hidden !important;}
@@ -224,12 +224,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#e8a020 !impor
 
 <!-- ── 導覽列 ── -->
 <style id="nav-glow-style">/* 無框線導覽 + hover 背景光暈（仿 tar-tw.com） */
-nav #nav-home,nav #nav-about,nav #nav-members,nav #nav-videos,nav #nav-apply,nav #nav-donate,nav #nav-sponsors,nav #nav-yt,nav #nav-ig{
+nav #nav-home,nav #nav-about,nav #nav-members,nav #nav-videos,nav #nav-news,nav #nav-apply,nav #nav-donate,nav #nav-sponsors,nav #nav-yt,nav #nav-ig{
   border:1px solid transparent !important;background:transparent !important;
   padding:9px 12px !important;border-radius:10px;
   transition:background .22s ease,box-shadow .22s ease,color .22s ease !important;
 }
-nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:hover,nav #nav-apply:hover,nav #nav-donate:hover,nav #nav-sponsors:hover,nav #nav-yt:hover,nav #nav-ig:hover{
+nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:hover,nav #nav-news:hover,nav #nav-apply:hover,nav #nav-donate:hover,nav #nav-sponsors:hover,nav #nav-yt:hover,nav #nav-ig:hover{
   background:rgba(232,160,32,.12) !important;color:#e8a020 !important;box-shadow:0 0 20px rgba(232,160,32,.28);
 }
 </style>
@@ -242,6 +242,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
   <a id="nav-about" href="./about/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">認識我們</a>
   <a id="nav-members" href="./members/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">成員介紹</a>
   <a id="nav-videos" href="./videos/" style="padding:14px 9px;font-size:12px;color:#555;font-family:'Noto Sans TC',sans-serif;font-weight:600;white-space:nowrap;text-decoration:none;">公益影片</a>
+  <a id="nav-news" href="news/" style="padding:14px 9px;font-size:12px;color:#555;font-weight:600;font-family:'Noto Sans TC',sans-serif;white-space:nowrap;text-decoration:none;">媒體報導</a>
   <div id="nav-spacer" style="flex:1;"></div>
   <a id="nav-fund" href="fund/" style="padding:7px 12px;background:#d97b1e;border:1px solid #d97b1e;border-radius:8px;font-size:12px;font-weight:700;color:#fff;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">❤ 專案募資</a>
   <a id="nav-apply" href="apply/" style="padding:7px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.35);border-radius:8px;font-size:12px;font-weight:700;color:#e8a020;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0;">個案投稿</a>
