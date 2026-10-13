@@ -109,6 +109,28 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
   .row .nm{min-width:0}
 }
 
+/* 同稿轉載收合 */
+details.more{margin-top:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+details.more>summary{list-style:none;cursor:pointer;padding:15px 20px;display:flex;align-items:center;gap:10px;
+  font-size:13.5px;font-weight:700;color:var(--muted);transition:background .18s ease}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary:hover{background:rgba(232,160,32,.06);color:var(--text)}
+details.more>summary .cnt{background:rgba(232,160,32,.14);border:1px solid rgba(232,160,32,.4);color:var(--gold);
+  font-size:11px;font-weight:900;padding:2px 10px;border-radius:12px;flex-shrink:0}
+details.more>summary .chev{margin-left:auto;color:var(--dim);transition:transform .22s ease;flex-shrink:0}
+details.more[open]>summary{border-bottom:1px solid var(--border)}
+details.more[open]>summary .chev{transform:rotate(180deg)}
+/* 用 flex 不用 grid —— grid 最後一行會留下空格，在深色格線上變成灰塊 */
+.mlist{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px;background:var(--card)}
+.mrow{display:flex;align-items:center;gap:9px;padding:9px 14px;flex:1 1 170px;
+  border:1px solid var(--border);border-radius:9px;background:var(--card);
+  text-decoration:none;color:inherit;transition:background .18s ease,border-color .18s ease}
+.mrow:hover{background:rgba(232,160,32,.07);border-color:rgba(232,160,32,.45)}
+.mrow .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.mrow .nm{font-size:13.5px;font-weight:700;flex:1}
+.mrow .arrow{color:var(--dim);font-size:12px;flex-shrink:0}
+.mrow:hover .arrow{color:var(--gold)}
+
 .note{margin-top:14px;font-size:12px;color:var(--dim);line-height:1.9}
 
 /* CTA */
@@ -224,69 +246,28 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
     </a>
   </div>
 
-  <div class="list" style="margin-top:16px">
-    <a class="row" href="https://twpowernews.com/news_pagein.php?iType=1010&n_id=296547" target="_blank" rel="noopener">
+  <a class="row" href="https://twpowernews.com/news_pagein.php?iType=1010&n_id=296547" target="_blank" rel="noopener" style="border:1px solid var(--border);border-radius:14px;background:var(--card)">
       <span class="dot" style="background:#e8a020"></span>
       <span class="nm">勁報</span>
       <span class="orig">原始報導</span>
       <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
       <span class="dt">2026.10.10</span><span class="arrow">↗</span>
     </a>
-    <a class="row" href="https://www.marketersgo.com/uncategorized/202610/k-wax%e5%89%b5%e8%be%a6%e4%ba%ba%e6%94%9c%e6%89%8b%e8%bb%8a%e5%9c%88%e8%81%b7%e4%ba%ba%e3%80%80%e7%a0%b8%e7%99%be%e8%90%ac%e5%8a%a9%e5%bc%b1%e5%8b%a2%e5%ae%b6%e5%ba%ad%e8%80%81%e8%bb%8a%e7%bf%bb/" target="_blank" rel="noopener">
-      <span class="dot" style="background:#4a90d9"></span>
-      <span class="nm">行銷人</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://sunmedia.tw/news/collaborative/1i4pc1MpcXmZHD8KvBPi05uC9hZiCbYotnU4fsG6wR03x47yoHgW2cE3" target="_blank" rel="noopener">
-      <span class="dot" style="background:#e85d4a"></span>
-      <span class="nm">商傳媒</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://886.news/archives/366285" target="_blank" rel="noopener">
-      <span class="dot" style="background:#3aa76d"></span>
-      <span class="nm">台灣新聞雲</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://n.yam.com/Article/20261010364129" target="_blank" rel="noopener">
-      <span class="dot" style="background:#f0760f"></span>
-      <span class="nm">蕃薯藤</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10.10</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://17news.net/archives/341903" target="_blank" rel="noopener">
-      <span class="dot" style="background:#c85a8f"></span>
-      <span class="nm">民生好報</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://enn.tw/791152/" target="_blank" rel="noopener">
-      <span class="dot" style="background:#5a7fc8"></span>
-      <span class="nm">台灣電報</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://www.ntsn.com.tw/archives/4868" target="_blank" rel="noopener">
-      <span class="dot" style="background:#6aa84f"></span>
-      <span class="nm">新北樹報</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://life.tw/article/k-wax%E5%89%B5%E8%BE%A6%E4%BA%BA%E6%94%9C%E6%89%8B%E8%BB%8A%E5%9C%88%E8%81%B7%E4%BA%BA-%E7%A0%B8%E7%99%BE%E8%90%AC%E5%8A%A9%E5%BC%B1%E5%8B%A2%E5%AE%B6%E5%BA%AD%E8%80%81%E8%BB%8A%E7%BF%BB%E6%96%B0-3175595" target="_blank" rel="noopener">
-      <span class="dot" style="background:#9b6ac8"></span>
-      <span class="nm">Life新聞網</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://water-transport.org/archives/29413" target="_blank" rel="noopener">
-      <span class="dot" style="background:#4aa8b8"></span>
-      <span class="nm">中華通訊社</span>
-      <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
-      <span class="dt">2026.10</span><span class="arrow">↗</span>
-    </a>
-  </div>
+
+  <details class="more">
+    <summary><span class="cnt">+9</span>其他媒體同步刊登這則報導（標題相同）<span class="chev">▾</span></summary>
+    <div class="mlist">
+      <a class="mrow" href="https://www.marketersgo.com/uncategorized/202610/k-wax%e5%89%b5%e8%be%a6%e4%ba%ba%e6%94%9c%e6%89%8b%e8%bb%8a%e5%9c%88%e8%81%b7%e4%ba%ba%e3%80%80%e7%a0%b8%e7%99%be%e8%90%ac%e5%8a%a9%e5%bc%b1%e5%8b%a2%e5%ae%b6%e5%ba%ad%e8%80%81%e8%bb%8a%e7%bf%bb/" target="_blank" rel="noopener"><span class="dot" style="background:#4a90d9"></span><span class="nm">行銷人</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://sunmedia.tw/news/collaborative/1i4pc1MpcXmZHD8KvBPi05uC9hZiCbYotnU4fsG6wR03x47yoHgW2cE3" target="_blank" rel="noopener"><span class="dot" style="background:#e85d4a"></span><span class="nm">商傳媒</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://886.news/archives/366285" target="_blank" rel="noopener"><span class="dot" style="background:#3aa76d"></span><span class="nm">台灣新聞雲</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://n.yam.com/Article/20261010364129" target="_blank" rel="noopener"><span class="dot" style="background:#f0760f"></span><span class="nm">蕃薯藤</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://17news.net/archives/341903" target="_blank" rel="noopener"><span class="dot" style="background:#c85a8f"></span><span class="nm">民生好報</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://enn.tw/791152/" target="_blank" rel="noopener"><span class="dot" style="background:#5a7fc8"></span><span class="nm">台灣電報</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://www.ntsn.com.tw/archives/4868" target="_blank" rel="noopener"><span class="dot" style="background:#6aa84f"></span><span class="nm">新北樹報</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://life.tw/article/k-wax%E5%89%B5%E8%BE%A6%E4%BA%BA%E6%94%9C%E6%89%8B%E8%BB%8A%E5%9C%88%E8%81%B7%E4%BA%BA-%E7%A0%B8%E7%99%BE%E8%90%AC%E5%8A%A9%E5%BC%B1%E5%8B%A2%E5%AE%B6%E5%BA%AD%E8%80%81%E8%BB%8A%E7%BF%BB%E6%96%B0-3175595" target="_blank" rel="noopener"><span class="dot" style="background:#9b6ac8"></span><span class="nm">Life新聞網</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://water-transport.org/archives/29413" target="_blank" rel="noopener"><span class="dot" style="background:#4aa8b8"></span><span class="nm">中華通訊社</span><span class="arrow">↗</span></a>
+    </div>
+  </details>
 
 
   <!-- 2026.04 公益洗車 -->
@@ -327,74 +308,22 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
     </a>
   </div>
 
-  <div class="list" style="margin-top:16px">
-    <a class="row" href="https://www.ctee.com.tw/news/20260429701637-431208" target="_blank" rel="noopener">
-      <span class="dot" style="background:#c0392b"></span>
-      <span class="nm">工商時報</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://app.storm.mg/article/11126404#wholePage" target="_blank" rel="noopener">
-      <span class="dot" style="background:#2d6fb5"></span>
-      <span class="nm">風傳媒</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://www.carture.com.tw/csr/article/40462-%E8%81%9A%E6%B2%99%E6%88%90%E5%A1%94%EF%BC%812026%E5%8F%B0%E7%81%A3%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%A4%A7%E5%85%AC%E7%9B%8A%E6%B4%97%E8%BB%8A%E6%B4%BB%E5%8B%95%E8%90%BD%E5%B9%95%EF%BC%8C138%E5%8F%B0%E8%BB%8A%E8%A6%8B%E8%AD%89%E8%BB%8A%E5%9C%88%E6%9A%96%E5%AF%A6%E5%8A%9B" target="_blank" rel="noopener">
-      <span class="dot" style="background:#e8a020"></span>
-      <span class="nm">車勢文化</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://www.contentplatform.info/articles/459083/%e5%be%9e%e6%b4%97%e8%bb%8a%e5%88%b0%e4%bf%ae%e5%be%a9%e4%ba%ba%e7%94%9f%ef%bc%9a%e8%bb%8a%e5%9c%88%e8%81%b7%e4%ba%ba%e7%94%a8%e9%9b%99%e6%89%8b%e9%bd%8a%e5%bf%83%e5%81%9a%e5%85%ac%e7%9b%8a/" target="_blank" rel="noopener">
-      <span class="dot" style="background:#4a90d9"></span>
-      <span class="nm">報新聞</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://share.google/i6HCklXllbx7dBESW" target="_blank" rel="noopener">
-      <span class="dot" style="background:#4a90d9"></span>
-      <span class="nm">行銷人</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://share.google/1ghdZGVQQp1a2V32x" target="_blank" rel="noopener">
-      <span class="dot" style="background:#f0760f"></span>
-      <span class="nm">yam 蕃新聞</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://share.google/rFIDqjFqAf2NauNAm" target="_blank" rel="noopener">
-      <span class="dot" style="background:#3aa76d"></span>
-      <span class="nm">奧丁丁新聞</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://share.google/VntVfN9Aj2HeC3xDF" target="_blank" rel="noopener">
-      <span class="dot" style="background:#e2231a"></span>
-      <span class="nm">PChome 新聞</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://share.google/7iWcDayjR8s9F1Qug" target="_blank" rel="noopener">
-      <span class="dot" style="background:#8a7fc8"></span>
-      <span class="nm">索引新聞</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://share.google/lIqN9rcZJOXoNXbDX" target="_blank" rel="noopener">
-      <span class="dot" style="background:#5a7fc8"></span>
-      <span class="nm">台灣新聞日報</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-    <a class="row" href="https://share.google/xqMtSEfHMLhZg0gnJ" target="_blank" rel="noopener">
-      <span class="dot" style="background:#4aa8b8"></span>
-      <span class="nm">ENN 台灣電報</span>
-      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
-      <span class="dt">2026.04</span><span class="arrow">↗</span>
-    </a>
-  </div>
+  <details class="more">
+    <summary><span class="cnt">+11</span>其他媒體同步刊登這則報導（標題相同）<span class="chev">▾</span></summary>
+    <div class="mlist">
+      <a class="mrow" href="https://www.ctee.com.tw/news/20260429701637-431208" target="_blank" rel="noopener"><span class="dot" style="background:#c0392b"></span><span class="nm">工商時報</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://app.storm.mg/article/11126404#wholePage" target="_blank" rel="noopener"><span class="dot" style="background:#2d6fb5"></span><span class="nm">風傳媒</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://www.carture.com.tw/csr/article/40462-%E8%81%9A%E6%B2%99%E6%88%90%E5%A1%94%EF%BC%812026%E5%8F%B0%E7%81%A3%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%A4%A7%E5%85%AC%E7%9B%8A%E6%B4%97%E8%BB%8A%E6%B4%BB%E5%8B%95%E8%90%BD%E5%B9%95%EF%BC%8C138%E5%8F%B0%E8%BB%8A%E8%A6%8B%E8%AD%89%E8%BB%8A%E5%9C%88%E6%9A%96%E5%AF%A6%E5%8A%9B" target="_blank" rel="noopener"><span class="dot" style="background:#e8a020"></span><span class="nm">車勢文化</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://www.contentplatform.info/articles/459083/%e5%be%9e%e6%b4%97%e8%bb%8a%e5%88%b0%e4%bf%ae%e5%be%a9%e4%ba%ba%e7%94%9f%ef%bc%9a%e8%bb%8a%e5%9c%88%e8%81%b7%e4%ba%ba%e7%94%a8%e9%9b%99%e6%89%8b%e9%bd%8a%e5%bf%83%e5%81%9a%e5%85%ac%e7%9b%8a/" target="_blank" rel="noopener"><span class="dot" style="background:#4a90d9"></span><span class="nm">報新聞</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://share.google/i6HCklXllbx7dBESW" target="_blank" rel="noopener"><span class="dot" style="background:#4a90d9"></span><span class="nm">行銷人</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://share.google/1ghdZGVQQp1a2V32x" target="_blank" rel="noopener"><span class="dot" style="background:#f0760f"></span><span class="nm">yam 蕃新聞</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://share.google/rFIDqjFqAf2NauNAm" target="_blank" rel="noopener"><span class="dot" style="background:#3aa76d"></span><span class="nm">奧丁丁新聞</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://share.google/VntVfN9Aj2HeC3xDF" target="_blank" rel="noopener"><span class="dot" style="background:#e2231a"></span><span class="nm">PChome 新聞</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://share.google/7iWcDayjR8s9F1Qug" target="_blank" rel="noopener"><span class="dot" style="background:#8a7fc8"></span><span class="nm">索引新聞</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://share.google/lIqN9rcZJOXoNXbDX" target="_blank" rel="noopener"><span class="dot" style="background:#5a7fc8"></span><span class="nm">台灣新聞日報</span><span class="arrow">↗</span></a>
+      <a class="mrow" href="https://share.google/xqMtSEfHMLhZg0gnJ" target="_blank" rel="noopener"><span class="dot" style="background:#4aa8b8"></span><span class="nm">ENN 台灣電報</span><span class="arrow">↗</span></a>
+    </div>
+  </details>
 
   <p class="note">
     ＊ 以上連結將開啟各媒體網站，內容與著作權屬各該媒體所有。<br>
