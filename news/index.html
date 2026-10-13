@@ -69,10 +69,13 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
 .lede b{color:var(--text)}
 .lede .src{display:block;margin-top:10px;font-size:12px;color:var(--dim)}
 
-/* 主流媒體大卡 */
-/* 四張卡用 auto-fit 會變成 3+1，固定兩欄比較穩 */
-.top-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-@media(max-width:620px){.top-grid{grid-template-columns:1fr}}
+/* 報導卡片 */
+/* auto-fit 會讓 4 張變成 3+1、3 張變成 2+1，所以依張數指定欄數 */
+.top-grid{display:grid;gap:16px}
+.top-grid.c4{grid-template-columns:repeat(2,1fr)}
+.top-grid.c3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:860px){.top-grid.c3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.top-grid.c4,.top-grid.c3{grid-template-columns:1fr}}
 .ncard{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:16px;
   overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 18px rgba(20,20,40,.05);
   transition:box-shadow .25s ease,transform .25s ease,border-color .25s ease}
@@ -161,11 +164,11 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
 <div class="page-hero">
   <div class="page-badge">MEDIA</div>
   <h1>新聞媒體報導</h1>
-  <p>協會的每一次行動，都是車圈職人自己掏錢、自己動手做出來的。<br>以下是各家媒體對我們的報導。</p>
+  <p>協會的每一次行動，都是車圈職人自己掏錢、自己動手做出來的。<br>以下是各家媒體對協會的報導，依活動時間排列。</p>
   <div class="hero-stats">
-    <div><b>14</b>篇媒體報導</div>
-    <div><b>3</b>台老車重生</div>
-    <div><b>100<span style="font-size:15px">萬+</span></b>投入修復金額</div>
+    <div><b>28</b>篇媒體報導</div>
+    <div><b>3</b>家電視台</div>
+    <div><b>2</b>項公益專案</div>
   </div>
 </div>
 
@@ -175,7 +178,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
   <!-- 報導重點 -->
   <div class="sec-head">
     <span class="kicker">2026.10</span>
-    <h2>這次報導了什麼</h2>
+    <h2>弱勢家庭老車翻新</h2>
     <div class="rule"></div>
   </div>
 
@@ -187,14 +190,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
     <span class="src">原始報導：勁報　記者張亞痕／台中報導　2026.10.10</span>
   </div>
 
-  <!-- 主流媒體 -->
-  <div class="sec-head">
-    <span class="kicker">HEADLINE</span>
-    <h2>主流媒體</h2>
-    <div class="rule"></div>
-  </div>
-
-  <div class="top-grid">
+  <div class="top-grid c4">
     <a class="ncard" href="https://news.ebc.net.tw/news/living/575311" target="_blank" rel="noopener">
       <div class="brand" style="background:linear-gradient(135deg,#0b63c5,#0846a0)">東森新聞<small>EBC</small></div>
       <div class="nbody">
@@ -228,14 +224,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
     </a>
   </div>
 
-  <!-- 其他媒體 -->
-  <div class="sec-head">
-    <span class="kicker">ALL</span>
-    <h2>其他媒體轉載</h2>
-    <div class="rule"></div>
-  </div>
-
-  <div class="list">
+  <div class="list" style="margin-top:16px">
     <a class="row" href="https://twpowernews.com/news_pagein.php?iType=1010&n_id=296547" target="_blank" rel="noopener">
       <span class="dot" style="background:#e8a020"></span>
       <span class="nm">勁報</span>
@@ -296,6 +285,114 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
       <span class="nm">中華通訊社</span>
       <span class="ti">K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</span>
       <span class="dt">2026.10</span><span class="arrow">↗</span>
+    </a>
+  </div>
+
+
+  <!-- 2026.04 公益洗車 -->
+  <div class="sec-head">
+    <span class="kicker">2026.04</span>
+    <h2>全台最大公益洗車活動</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="lede">
+    2026 年 4 月 29 日，協會舉辦<b>台灣史上最大公益洗車活動</b>，
+    車圈職人齊聚，當天為 <b>138 台車</b>免費清洗整理，活動所得全數投入弱勢家庭的車輛修復。
+    <b>TVBS、壹電視、年代新聞</b>等 14 家媒體到場採訪報導。
+    <span class="src">活動日期：2026.04.29</span>
+  </div>
+
+  <div class="top-grid c3">
+    <a class="ncard" href="https://news.tvbs.com.tw/life/3194614" target="_blank" rel="noopener">
+      <div class="brand" style="background:linear-gradient(135deg,#1769c9,#0f4e9c)">TVBS 新聞台<small>NEWS</small></div>
+      <div class="nbody">
+        <h3>從洗車到修復人生：車圈職人用雙手齊心做公益</h3>
+        <div class="nmeta"><span>2026.04.29 · 電視新聞</span><span class="go">閱讀 →</span></div>
+      </div>
+    </a>
+    <a class="ncard" href="https://www.nexttv.com.tw/NextTV/News/Home/Society/2026-04-29/2329865.html" target="_blank" rel="noopener">
+      <div class="brand" style="background:linear-gradient(135deg,#d6302f,#a82120)">壹電視<small>NEXT TV</small></div>
+      <div class="nbody">
+        <h3>從洗車到修復人生：車圈職人用雙手齊心做公益</h3>
+        <div class="nmeta"><span>2026.04.29 · 電視新聞</span><span class="go">閱讀 →</span></div>
+      </div>
+    </a>
+    <a class="ncard" href="https://www.eracom.com.tw/EraNews/Home/Society/2026-04-29/2329867.html" target="_blank" rel="noopener">
+      <div class="brand" style="background:linear-gradient(135deg,#1f2a44,#131a2c)">年代新聞<small>ERA</small></div>
+      <div class="nbody">
+        <h3>從洗車到修復人生：車圈職人用雙手齊心做公益</h3>
+        <div class="nmeta"><span>2026.04.29 · 電視新聞</span><span class="go">閱讀 →</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="list" style="margin-top:16px">
+    <a class="row" href="https://www.ctee.com.tw/news/20260429701637-431208" target="_blank" rel="noopener">
+      <span class="dot" style="background:#c0392b"></span>
+      <span class="nm">工商時報</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://app.storm.mg/article/11126404#wholePage" target="_blank" rel="noopener">
+      <span class="dot" style="background:#2d6fb5"></span>
+      <span class="nm">風傳媒</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://www.carture.com.tw/csr/article/40462-%E8%81%9A%E6%B2%99%E6%88%90%E5%A1%94%EF%BC%812026%E5%8F%B0%E7%81%A3%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%A4%A7%E5%85%AC%E7%9B%8A%E6%B4%97%E8%BB%8A%E6%B4%BB%E5%8B%95%E8%90%BD%E5%B9%95%EF%BC%8C138%E5%8F%B0%E8%BB%8A%E8%A6%8B%E8%AD%89%E8%BB%8A%E5%9C%88%E6%9A%96%E5%AF%A6%E5%8A%9B" target="_blank" rel="noopener">
+      <span class="dot" style="background:#e8a020"></span>
+      <span class="nm">車勢文化</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://www.contentplatform.info/articles/459083/%e5%be%9e%e6%b4%97%e8%bb%8a%e5%88%b0%e4%bf%ae%e5%be%a9%e4%ba%ba%e7%94%9f%ef%bc%9a%e8%bb%8a%e5%9c%88%e8%81%b7%e4%ba%ba%e7%94%a8%e9%9b%99%e6%89%8b%e9%bd%8a%e5%bf%83%e5%81%9a%e5%85%ac%e7%9b%8a/" target="_blank" rel="noopener">
+      <span class="dot" style="background:#4a90d9"></span>
+      <span class="nm">報新聞</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://share.google/i6HCklXllbx7dBESW" target="_blank" rel="noopener">
+      <span class="dot" style="background:#4a90d9"></span>
+      <span class="nm">行銷人</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://share.google/1ghdZGVQQp1a2V32x" target="_blank" rel="noopener">
+      <span class="dot" style="background:#f0760f"></span>
+      <span class="nm">yam 蕃新聞</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://share.google/rFIDqjFqAf2NauNAm" target="_blank" rel="noopener">
+      <span class="dot" style="background:#3aa76d"></span>
+      <span class="nm">奧丁丁新聞</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://share.google/VntVfN9Aj2HeC3xDF" target="_blank" rel="noopener">
+      <span class="dot" style="background:#e2231a"></span>
+      <span class="nm">PChome 新聞</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://share.google/7iWcDayjR8s9F1Qug" target="_blank" rel="noopener">
+      <span class="dot" style="background:#8a7fc8"></span>
+      <span class="nm">索引新聞</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://share.google/lIqN9rcZJOXoNXbDX" target="_blank" rel="noopener">
+      <span class="dot" style="background:#5a7fc8"></span>
+      <span class="nm">台灣新聞日報</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
+    </a>
+    <a class="row" href="https://share.google/xqMtSEfHMLhZg0gnJ" target="_blank" rel="noopener">
+      <span class="dot" style="background:#4aa8b8"></span>
+      <span class="nm">ENN 台灣電報</span>
+      <span class="ti">從洗車到修復人生：車圈職人用雙手齊心做公益</span>
+      <span class="dt">2026.04</span><span class="arrow">↗</span>
     </a>
   </div>
 
