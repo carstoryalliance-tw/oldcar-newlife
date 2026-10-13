@@ -87,9 +87,16 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
   overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 18px rgba(20,20,40,.05);
   transition:box-shadow .25s ease,transform .25s ease,border-color .25s ease}
 .ncard:hover{box-shadow:0 10px 36px rgba(232,160,32,.20);transform:translateY(-3px);border-color:rgba(232,160,32,.5)}
-.ncard .brand{padding:18px 20px;color:#fff;font-weight:900;letter-spacing:1px;font-size:17px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px}
-.ncard .brand small{font-size:10px;font-weight:700;letter-spacing:1px;opacity:.85}
+.ncard .nthumb{position:relative;aspect-ratio:16/9;background:#e7e9ef;overflow:hidden}
+.ncard .nthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.ncard:hover .nthumb img{transform:scale(1.045)}
+/* 圖片下緣壓一層暗角，媒體名壓在上面才讀得到 */
+.ncard .nthumb::after{content:'';position:absolute;inset:auto 0 0 0;height:56%;pointer-events:none;
+  background:linear-gradient(transparent,rgba(0,0,0,.55))}
+.ncard .src{position:absolute;left:12px;bottom:11px;z-index:1;color:#fff;font-weight:900;font-size:13.5px;
+  letter-spacing:1px;padding:6px 12px;border-radius:9px;box-shadow:0 3px 12px rgba(0,0,0,.35);
+  display:inline-flex;align-items:baseline;gap:7px}
+.ncard .src small{font-size:9px;font-weight:700;letter-spacing:1px;opacity:.85}
 .ncard .nbody{padding:16px 20px 18px;flex:1;display:flex;flex-direction:column}
 .ncard h3{font-size:15px;font-weight:700;line-height:1.65;margin-bottom:10px}
 .ncard .nmeta{margin-top:auto;padding-top:12px;border-top:1px solid var(--border);
@@ -221,7 +228,7 @@ details.more[open]>summary .chev{transform:rotate(180deg)}
 
   <div class="top-grid c4">
     <a class="ncard" href="https://news.ebc.net.tw/news/living/575311" target="_blank" rel="noopener">
-      <div class="brand" style="background:linear-gradient(135deg,#0b63c5,#0846a0)">東森新聞<small>EBC</small></div>
+      <div class="nthumb"><img src="../uploads/news/oct-lancer.webp" alt="台灣人車公益協會與 SGT7 合作展出的 1996 Mitsubishi Lancer" width="640" height="360" loading="eager" fetchpriority="high"><span class="src" style="background:linear-gradient(135deg,#0b63c5,#0846a0)">東森新聞<small>EBC</small></span></div>
       <div class="nbody">
         <h3>K-WAX創辦人攜手車圈職人！砸百萬助弱勢老車翻新</h3>
         <div class="nmeta"><span>2026.10.12 · 生活</span><span class="go">閱讀 →</span></div>
@@ -229,7 +236,7 @@ details.more[open]>summary .chev{transform:rotate(180deg)}
     </a>
 
     <a class="ncard" href="https://today.line.me/tw/v3/article/Nv59pOO" target="_blank" rel="noopener">
-      <div class="brand" style="background:linear-gradient(135deg,#06C755,#04a445)">LINE TODAY<small>LINE</small></div>
+      <div class="nthumb"><img src="../uploads/news/oct-team.webp" alt="九家業者接力完成修復的老車與修復團隊合影" width="640" height="360" loading="lazy" decoding="async"><span class="src" style="background:linear-gradient(135deg,#06C755,#04a445)">LINE TODAY<small>LINE</small></span></div>
       <div class="nbody">
         <h3>K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</h3>
         <div class="nmeta"><span>2026.10.10 · 轉載勁報</span><span class="go">閱讀 →</span></div>
@@ -237,7 +244,7 @@ details.more[open]>summary .chev{transform:rotate(180deg)}
     </a>
 
     <a class="ncard" href="https://news.m.pchome.com.tw/living/twpowernews/20261010/index-17916244412722147009.html" target="_blank" rel="noopener">
-      <div class="brand" style="background:linear-gradient(135deg,#e2231a,#b81a13)">PChome<small>ONLINE</small></div>
+      <div class="nthumb"><img src="../uploads/news/oct-officers.webp" alt="協會理事長曾聖凱與常務理事和首輛公益車輛合影" width="640" height="360" loading="lazy" decoding="async"><span class="src" style="background:linear-gradient(135deg,#e2231a,#b81a13)">PChome<small>ONLINE</small></span></div>
       <div class="nbody">
         <h3>K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</h3>
         <div class="nmeta"><span>2026.10.10 · 生活</span><span class="go">閱讀 →</span></div>
@@ -245,7 +252,7 @@ details.more[open]>summary .chev{transform:rotate(180deg)}
     </a>
 
     <a class="ncard" href="https://n.yam.com/Article/20261010492554" target="_blank" rel="noopener">
-      <div class="brand" style="background:linear-gradient(135deg,#f0760f,#c85a08)">yam 蕃薯藤<small>YAM</small></div>
+      <div class="nthumb"><img src="../uploads/news/oct-story.webp" alt="車展現場展出的「三代人的回憶」故事看板" width="640" height="360" loading="lazy" decoding="async"><span class="src" style="background:linear-gradient(135deg,#f0760f,#c85a08)">yam 蕃薯藤<small>YAM</small></span></div>
       <div class="nbody">
         <h3>K-WAX創辦人攜手車圈職人　砸百萬助弱勢家庭老車翻新</h3>
         <div class="nmeta"><span>2026.10.10 · 生活</span><span class="go">閱讀 →</span></div>
@@ -293,21 +300,21 @@ details.more[open]>summary .chev{transform:rotate(180deg)}
 
   <div class="top-grid c3">
     <a class="ncard" href="https://news.tvbs.com.tw/life/3194614" target="_blank" rel="noopener">
-      <div class="brand" style="background:linear-gradient(135deg,#1769c9,#0f4e9c)">TVBS 新聞台<small>NEWS</small></div>
+      <div class="nthumb"><img src="../uploads/news/apr-supercar.webp" alt="頂級超跑首次參與公益洗車活動" width="640" height="360" loading="lazy" decoding="async"><span class="src" style="background:linear-gradient(135deg,#1769c9,#0f4e9c)">TVBS 新聞台<small>NEWS</small></span></div>
       <div class="nbody">
         <h3>從洗車到修復人生：車圈職人用雙手齊心做公益</h3>
         <div class="nmeta"><span>2026.04.29 · 電視新聞</span><span class="go">閱讀 →</span></div>
       </div>
     </a>
     <a class="ncard" href="https://www.nexttv.com.tw/NextTV/News/Home/Society/2026-04-29/2329865.html" target="_blank" rel="noopener">
-      <div class="brand" style="background:linear-gradient(135deg,#d6302f,#a82120)">壹電視<small>NEXT TV</small></div>
+      <div class="nthumb"><img src="../uploads/news/apr-volunteer.webp" alt="車圈職人志工在公益洗車活動現場為民眾洗車" width="640" height="360" loading="lazy" decoding="async"><span class="src" style="background:linear-gradient(135deg,#d6302f,#a82120)">壹電視<small>NEXT TV</small></span></div>
       <div class="nbody">
         <h3>從洗車到修復人生：車圈職人用雙手齊心做公益</h3>
         <div class="nmeta"><span>2026.04.29 · 電視新聞</span><span class="go">閱讀 →</span></div>
       </div>
     </a>
     <a class="ncard" href="https://www.eracom.com.tw/EraNews/Home/Society/2026-04-29/2329867.html" target="_blank" rel="noopener">
-      <div class="brand" style="background:linear-gradient(135deg,#1f2a44,#131a2c)">年代新聞<small>ERA</small></div>
+      <div class="nthumb"><img src="../uploads/news/apr-group.webp" alt="協會幹部與民眾在公益洗車活動現場合影" width="640" height="360" loading="lazy" decoding="async"><span class="src" style="background:linear-gradient(135deg,#1f2a44,#131a2c)">年代新聞<small>ERA</small></span></div>
       <div class="nbody">
         <h3>從洗車到修復人生：車圈職人用雙手齊心做公益</h3>
         <div class="nmeta"><span>2026.04.29 · 電視新聞</span><span class="go">閱讀 →</span></div>
@@ -334,7 +341,8 @@ details.more[open]>summary .chev{transform:rotate(180deg)}
 
   <p class="note">
     ＊ 以上連結將開啟各媒體網站，內容與著作權屬各該媒體所有。<br>
-    ＊ 同一則新聞稿由多家媒體轉載，標題與用字可能略有差異。
+    ＊ 同一則新聞稿由多家媒體轉載，標題與用字可能略有差異。<br>
+    ＊ 卡片縮圖為協會／合作業者提供予媒體的新聞稿照片。
   </p>
 
   <!-- CTA -->
