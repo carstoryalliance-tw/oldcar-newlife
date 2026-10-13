@@ -119,6 +119,16 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
   font-size:14px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:200}
 .toast.show{opacity:1}
 </style>
+<style id="nav-collapse">
+/* 導覽列加到 9 個項目後整列需要約 825px，舊的 640/760px 斷點太晚收，
+   中間那段寬度（平板直立、分割視窗）會把頁面推寬、底下冒出橫向捲軸。
+   這條只管導覽列，不動原本那段 @media 裡的其他行動版樣式。 */
+@media(max-width:872px){
+  #nav-home,#nav-about,#nav-members,#nav-videos,#nav-news,#nav-apply,#nav-fund,
+  #nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none !important}
+  #ham-btn{display:flex !important}
+}
+</style>
 </head>
 <body>
 
