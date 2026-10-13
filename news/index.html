@@ -16,15 +16,18 @@
 <meta property="og:title" content="新聞媒體報導 | 社團法人台灣人車公益協會">
 <meta property="og:description" content="東森新聞、LINE TODAY、PChome 等多家媒體報導——車圈職人攜手投入逾百萬元，協助弱勢家庭老車重獲新生。">
 <meta property="og:url" content="https://oldcarnewlife.org.tw/news/">
-<meta property="og:image" content="https://oldcarnewlife.org.tw/uploads/DSC08180.jpg">
+<meta property="og:image" content="https://oldcarnewlife.org.tw/uploads/news-banner-og.jpg">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="新聞媒體報導 | 社團法人台灣人車公益協會">
 <meta name="twitter:description" content="東森新聞、LINE TODAY、PChome 等多家媒體報導協會公益行動。">
-<meta name="twitter:image" content="https://oldcarnewlife.org.tw/uploads/DSC08180.jpg">
+<meta name="twitter:image" content="https://oldcarnewlife.org.tw/uploads/news-banner-og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<link rel="preload" as="image" href="../uploads/news-banner-sm.webp" media="(max-width:767px)">
+<link rel="preload" as="image" href="../uploads/news-banner.webp" media="(min-width:768px)">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--gold:#e8a020;--gold-light:#f5c842;--bg:#f8f9fa;--card:#fff;--border:#e0e2e8;--text:#1a1a2e;--muted:#666;--dim:#999}
@@ -40,8 +43,12 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
 @media(max-width:760px){#nav-home,#nav-about,#nav-members,#nav-videos,#nav-news,#nav-apply,#nav-yt,#nav-ig,#nav-donate,#nav-sponsors,#nav-spacer{display:none!important}#ham-btn{display:flex!important}}
 
 /* HERO */
-.page-hero{position:relative;padding:60px 24px 46px;text-align:center;overflow:hidden;
-  background:#13141a url('../uploads/DSC08180.jpg') center 34%/cover;color:#fff}
+/* 手機先給 900px 小圖（116K），桌機才換 1600px（277K） */
+.page-hero{position:relative;padding:60px 24px 96px;text-align:center;overflow:hidden;
+  background:#13141a url('../uploads/news-banner-sm.webp') center 34%/cover;color:#fff}
+@media(min-width:768px){
+  .page-hero{background-image:url('../uploads/news-banner.webp')}
+}
 .page-hero::after{content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(14,15,20,.80) 0%,rgba(14,15,20,.62) 45%,rgba(14,15,20,.90) 100%)}
 .page-hero>*{position:relative;z-index:2}
