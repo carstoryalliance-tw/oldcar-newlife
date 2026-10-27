@@ -12,6 +12,7 @@
 //   mailPendingToFinance()  待核對清單寄財務（平常每天早上自動寄，這支是想臨時補寄時用）
 //   mailProgressToAll()     募資進度寄理監事＋財務
 //   resendLastAidNotice()   把最後一筆個案投稿的通知重寄一次（設好收件人後用這支驗）
+//   sendAidAckNow(row)      補寄某一列個案投稿的「已收到」確認信給申請人（以協會名義）
 //   previewMigrate() / migrateFromV1() / compareV1V2() / checkV1Leftover()
 //   ⚠️ doPost、doGet 不能手動執行（它們要網頁請求才有參數）
 // 部署為 Web App: 執行身分「我」，存取「所有人」
@@ -77,7 +78,7 @@ const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 // 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
-const SCRIPT_VERSION = '2026-10-13-a';
+const SCRIPT_VERSION = '2026-10-27-a';
 
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
@@ -183,12 +184,13 @@ function selfTest() {
   }
   const need = ['fund2Step1_', 'fund2Step2_', 'onFundApprovedV2', 'migrateFromV1',
                 'mailPendingToFinance', 'mailProgressToAll', 'fundStats_', 'fund2Stats_',
-                'aidEmails_', 'aidNotify_', 'resendLastAidNotice'];
+                'aidEmails_', 'aidNotify_', 'resendLastAidNotice',
+                'aidAck_', 'sendAidAckNow'];
   const lost = [];
   for (let k = 0; k < need.length; k++) {
     if (typeof this[need[k]] !== 'function') lost.push(need[k]);
   }
-  console.log(lost.length ? ('⚠️ 找不到這些函式：' + lost.join('、')) : '✅ 募資 V2 與個案投稿通知的函式都在');
+  console.log(lost.length ? ('⚠️ 找不到這些函式：' + lost.join('、')) : '✅ 募資 V2、個案投稿通知與申請人回信的函式都在');
   return { missing: missing, lost: lost };
 }
 
@@ -383,6 +385,15 @@ function doPost(e) {
         aidNotify_(sheet, sheet.getLastRow(), data, timestamp, fileEntries);
       } catch (x) {
         console.warn('[aid] 通知寄送失敗（資料已寫入）：' + x);
+      }
+
+      // 回信給申請人。沒有這封的話，申請人送出後完全收不到東西，
+      // 會以為沒送成功而一直重送（張溢廷 9/30 連送三次就是這樣）。
+      try {
+        aidAck_(data, timestamp, fileEntries.length,
+          aidDupCount_(sheet, data.email, data.phone, sheet.getLastRow()));
+      } catch (x) {
+        console.warn('[aid] 申請人確認信寄送失敗（資料已寫入）：' + x);
       }
     }
 
@@ -721,6 +732,96 @@ function resendLastAidNotice() {
   }, v[0], files);
 
   console.log('已重寄第 ' + row + ' 列（' + v[2] + '）的通知給：' + aidEmails_().join('、'));
+}
+
+
+/**
+ * 回信給個案投稿的申請人：「我們收到了」。
+ * 走 sendMail_，寄件者就是 MAIL_FROM（社團法人台灣人車公益協會），
+ * 跟捐款確認信同一條路，不是從誰的私人信箱寄。
+ *
+ * @param {number} dupCount 這個人之前還送過幾次；>0 時信裡會講「以最後一次為準」
+ * @param {string} extraNote 這一案要補問的話（選填，HTML 片段）
+ */
+function aidAck_(data, timestamp, fileCount, dupCount, extraNote) {
+  if (!data || !data.email) return;   // 沒留 Email 就寄不了，不是錯誤
+
+  const name = String(data.name || '').trim();
+  const car = String(data.vehicle || '').trim();
+  const cat = String(data.category || '').trim();
+
+  const rows = [
+    ['送出時間', esc_(timestamp)],
+    ['申請類型', esc_(cat || '—')],
+    ['車輛廠牌/年份', esc_(car || '—')],
+    ['所在縣市', esc_(data.city || '—')],
+    ['附件', fileCount ? (fileCount + ' 個檔案') : '（未附照片）']
+  ];
+  let tbl = '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:14px 0;' +
+            'border:1px solid #eef0f3;border-radius:10px;">';
+  rows.forEach(function (r, i) {
+    const bt = i ? 'border-top:1px solid #f2f3f5;' : '';
+    tbl += '<tr><td style="padding:9px 14px;color:#8a8e96;font-size:13px;white-space:nowrap;' + bt + '">' + r[0] + '</td>' +
+           '<td style="padding:9px 14px;text-align:right;' + bt + '">' + r[1] + '</td></tr>';
+  });
+  tbl += '</table>';
+
+  // 重複送出的人最需要這句 —— 他們就是不確定有沒有成功才一直送
+  const dupNote = dupCount
+    ? '<p style="padding:10px 14px;background:#fff6e6;border:1px solid #f0d59a;border-radius:8px;">' +
+      '我們收到你先後送出的多份資料，內容我們都有留存，<b>會以最後送出的這一份為準</b>，' +
+      '不需要再重新填寫一次。</p>'
+    : '';
+
+  const body =
+    '<p>' + esc_(name || '您') + ' 您好，</p>' +
+    '<p>我們已經收到您向「人車故事公益計畫」送出的申請，也讀過您寫下的人車故事。</p>' +
+    dupNote +
+    tbl +
+    '<p>這份申請已經列入審查作業。協會會就車輛實際狀況、使用需求與家庭狀況做整體評估，' +
+    '期間如果需要補充資料、或需要安排時間實際看車，我們會直接以電話或 Email 與您聯繫。</p>' +
+    '<p>協會每一次的修復，都是由車圈業者無償投入，從機械、鈑金烤漆到美容與內裝一關一關接力完成，' +
+    '因此能夠承接的案件數量有限，審查也需要一些時間，還請您耐心等候。</p>' +
+    (extraNote || '') +
+    '<p>這段期間如果有任何補充，或聯絡方式有變動，直接回覆這封信即可。</p>';
+
+  sendMail_(data.email,
+    '【台灣人車公益協會】已收到您的個案投稿' + (car ? '　·　' + car : ''),
+    mailShell_('我們收到您的申請了', body,
+      '這封信由系統自動發送，回信會寄到協會信箱。'));
+}
+
+/**
+ * 手動工具：補寄某一列個案投稿的確認信給申請人。
+ * 用在通知功能上線前就已經投稿、沒收到確認信的那幾筆。
+ *
+ * @param {number} rowNum 試算表「公益申請」分頁的列號（含標題列，第一筆資料是 2）
+ * @param {string} extraNote 這一案要補問的話（選填，純文字，會自動包成一段）
+ *
+ * 例：sendAidAckNow(5, '申請表上「所在縣市」前後填了台中市與苗栗縣，方便的話請回信告訴我們車輛目前停放的地點。')
+ */
+function sendAidAckNow(rowNum, extraNote) {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(AID_SHEET);
+  if (!sheet) { console.log('找不到「' + AID_SHEET + '」分頁。'); return; }
+  if (!rowNum || rowNum < 2 || rowNum > sheet.getLastRow()) {
+    console.log('列號要在 2 ～ ' + sheet.getLastRow() + ' 之間。'); return;
+  }
+  const v = sheet.getRange(rowNum, 1, 1, 14).getValues()[0];
+  const data = {
+    category: v[1], name: v[2], phone: v[3], email: v[4],
+    city: v[6], vehicle: v[7]
+  };
+  if (!data.email) { console.log('第 ' + rowNum + ' 列沒有 Email，寄不了。'); return; }
+
+  const fileCount = String(v[12] || '').split('\n').filter(function (x) { return x.trim(); }).length;
+  const dup = aidDupCount_(sheet, data.email, data.phone, rowNum);
+  const note = String(extraNote || '').trim()
+    ? '<p>' + escBlock_(extraNote, 400) + '</p>'
+    : '';
+
+  aidAck_(data, v[0], fileCount, dup, note);
+  console.log('已寄確認信給第 ' + rowNum + ' 列：' + data.name + '（' + data.email + '）' +
+              (dup ? '　※ 信中已註明以最後一份為準（偵測到 ' + dup + ' 筆重複）' : ''));
 }
 
 function doGet(e) {
