@@ -261,7 +261,7 @@ footer a{color:var(--muted)}
   <div class="prog-card">
     <div class="prog-top">
       <div class="raised">目前募得<b id="raised">NT$ —</b></div>
-      <div class="goal">募資目標<br><b id="goal">NT$ 200,000</b></div>
+      <div class="goal">本案目標<br><b id="goal">NT$ 200,000</b></div>
     </div>
     <div class="bar"><u id="barPend"></u><i id="bar"></i></div>
     <div class="prog-foot">
@@ -276,7 +276,8 @@ footer a{color:var(--muted)}
     </div>
     <div class="permit">
       <b>勸募許可文號</b>　<span style="white-space:nowrap">衛生福利部</span>　<span style="white-space:nowrap">衛部救字第 1151363585 號</span><br>
-      <b>勸募活動期間</b>　<span style="white-space:nowrap">民國 115 年 9 月 23 日</span> ～ <span style="white-space:nowrap">116 年 9 月 19 日</span>
+      <b>勸募活動期間</b>　<span style="white-space:nowrap">民國 115 年 9 月 23 日</span> ～ <span style="white-space:nowrap">116 年 9 月 19 日</span><br>
+      <b>許可範圍</b>　全年度 <span style="white-space:nowrap">5 件公益個案</span>、總額上限 <span style="white-space:nowrap">NT$ 1,000,000</span>　·　<span style="white-space:nowrap">本頁為第 1 件</span>
     </div>
   </div>
 
@@ -347,6 +348,34 @@ footer a{color:var(--muted)}
     <p class="usenote">
       ＊ 以上是我們看車的實際經驗值，實際狀況以找到的車為準——會在協會官網公開整個找車與驗車過程。<br>
       ＊ 超過目標的款項<b>全數用於提升車況</b>（更好的車、必要的安全零件），不會挪作他用；剩餘款項若有，將公告後轉入協會下一件公益個案。
+    </p>
+  </section>
+
+  <section id="year">
+    <h2>這不是一次性的募款，是今年度的五個案子</h2>
+    <p class="lead">
+      很多人以為募到 20 萬這件事就結束了。其實<b>衛福部核准的這張勸募許可，涵蓋的是整個年度：
+      5 件公益個案、總額上限 100 萬</b>。魚池神國教會是其中第 1 件。
+    </p>
+    <p class="lead">
+      同一張字號可以一路用到 <b>116 年 9 月 19 日</b>，所以這裡募到的錢，
+      不會因為一個案子結束就停在那裡。
+    </p>
+    <div class="use" style="margin-top:18px">
+      <div class="r"><span>勸募許可期間</span><b>115.09.23 ～ 116.09.19</b></div>
+      <div class="r"><span>可執行個案數</span><b>5 件</b></div>
+      <div class="r"><span>全年度勸募總額上限</span><b>NT$ 1,000,000</b></div>
+      <div class="r sum"><span>本頁個案</span><b>第 1 件・魚池神國教會</b></div>
+    </div>
+    <p class="lead" style="margin-top:18px">
+      <b>一個案子用不完的錢，會往下一個案子走。</b>
+      先把這台車做到該有的水準，有剩的公告後轉入下一件個案——
+      不會留在協會帳上，也不會挪去做別的事。
+    </p>
+    <p class="usenote">
+      ＊ <b>所有款項的使用都須送衛生福利部審核，未通過不得動支</b>；協會帳務同時受內政部監督。<br>
+      ＊ 每一筆支出都會留存單據、建立可追蹤帳目，於協會例會與官網公開；捐款收據由協會統一開立。<br>
+      ＊ 五件個案執行完畢或許可期間屆滿，本次勸募即停止；協會固定於每年 7 月申請下一張許可。
     </p>
   </section>
 
@@ -665,7 +694,8 @@ function renderStats(d, animate) {
     const ov = document.getElementById('over');
     ov.style.display = 'block';
     ov.innerHTML = '🎉 已達標，超出 <b>' + nf(raised - goal) + '</b>'
-      + '——這筆錢會直接用在把車況升級，不會留著。';
+      + '——會先用來把這台車的車況升級；'
+      + '<b>用不完的部分依同一張勸募許可轉入下一件個案</b>，不會留在協會帳上。';
   }
 
   applyPeriod(d.period, d.periodEnd);
