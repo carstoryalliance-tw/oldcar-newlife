@@ -68,6 +68,16 @@ img{max-width:100%;display:block}
 .pend b{color:#6f737b}
 .prog-foot{margin-top:12px;display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);flex-wrap:wrap;gap:8px}
 .prog-foot .pct{color:var(--gold2);font-weight:900;font-size:14px}
+.case{margin-top:16px;padding:13px 15px;background:#fbfbfc;border:1px solid var(--border);border-radius:12px}
+.case-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-size:13px;color:var(--muted)}
+.case-head .nm{color:var(--text);font-size:13.5px}
+.case-head .nm b{color:var(--gold2)}
+.case-head .num b{color:var(--text);font-variant-numeric:tabular-nums}
+.bar.mini{margin-top:9px;height:9px;border-radius:6px}
+.bar.mini i{border-radius:6px}
+.case-foot{margin-top:8px;font-size:12.5px;color:var(--dim)}
+.case-foot .done{color:#2f7d4f;font-weight:900}
 .retry{margin-left:6px;padding:3px 10px;border:1px solid var(--border);background:#fff;border-radius:7px;
   font-family:inherit;font-size:12px;font-weight:700;color:var(--gold2);cursor:pointer}
 .retry:hover{background:#fdf7ef}
@@ -260,13 +270,21 @@ footer a{color:var(--muted)}
 
   <div class="prog-card">
     <div class="prog-top">
-      <div class="raised">目前募得<b id="raised">NT$ —</b></div>
-      <div class="goal">本案目標<br><b id="goal">NT$ 200,000</b></div>
+      <div class="raised">年度累計募得<b id="raised">NT$ —</b></div>
+      <div class="goal">年度許可預募<br><b id="goal">NT$ 1,000,000</b></div>
     </div>
     <div class="bar"><u id="barPend"></u><i id="bar"></i></div>
     <div class="prog-foot">
-      <div>已完成 <span class="pct" id="pct">—</span>　·　<span id="donors">—</span> 位善心夥伴<span class="pend" id="pendTxt"></span></div>
+      <div>年度進度 <span class="pct" id="pct">—</span>　·　<span id="donors">—</span> 位善心夥伴<span class="pend" id="pendTxt"></span></div>
       <div id="stamp">進度以財務審核通過的款項為準</div>
+    </div>
+    <div class="case">
+      <div class="case-head">
+        <span class="nm"><b>進行中・第 1 件</b>　魚池神國教會</span>
+        <span class="num"><b id="caseRaised">NT$ —</b>　/　本案目標 <span id="caseGoal">NT$ 200,000</span></span>
+      </div>
+      <div class="bar mini"><i id="caseBar"></i></div>
+      <div class="case-foot" id="caseFoot">—</div>
     </div>
     <div id="over" style="display:none;margin-top:12px;background:#eefaf1;border:1px solid #bfe6cb;
       border-radius:10px;padding:11px 15px;font-size:13.5px;line-height:1.8;color:#256b3f;"></div>
@@ -555,7 +573,10 @@ footer a{color:var(--muted)}
 <script>
 // ⚠️ 部署 fund-v2-DEPLOY.gs 後，把下面這串換成新專案的 /exec 網址
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4Fx1--3AnuZKBQ33OmN50jNqOlZUvSy-PVQmIwjBRijIgnJ9i7_BF-3mnqSY87tND/exec';
-const GOAL = 200000;
+const YEAR_GOAL = 1000000;   // 衛福部許可的年度預募上限
+const CASE_GOAL = 200000;    // 本頁個案（魚池神國教會）的目標
+// 開第 2 件個案時：把第 1 件結算的金額填進來，個案條才會從 0 重新算。
+const CASE_BASE = 0;
 const nf = n => 'NT$ ' + Number(n || 0).toLocaleString('en-US');
 
 // 金額快捷鈕
@@ -663,7 +684,7 @@ function agoText(ms) {
 
 /** 把一份統計資料畫到畫面上 */
 function renderStats(d, animate) {
-  const goal = GOAL, raised = d.raised || 0;
+  const goal = YEAR_GOAL, raised = d.raised || 0;
   const realPct = Math.round(raised / goal * 1000) / 10;      // 真實百分比（可超過 100）
   const barPct = Math.min(100, realPct);                       // 條寬最多滿格
   document.getElementById('raised').textContent = nf(raised);
@@ -679,6 +700,24 @@ function renderStats(d, animate) {
   };
   if (animate) setTimeout(paint, 260); else paint();
 
+  // ── 個案條：這一件自己的進度，跟年度分開算 ──
+  const caseRaised = Math.max(0, raised - CASE_BASE);
+  const caseReal = Math.round(caseRaised / CASE_GOAL * 1000) / 10;
+  const caseBar = document.getElementById('caseBar');
+  document.getElementById('caseRaised').textContent = nf(caseRaised);
+  document.getElementById('caseGoal').textContent = nf(CASE_GOAL);
+  const paintCase = () => { caseBar.style.width = Math.min(100, caseReal) + '%'; };
+  if (animate) setTimeout(paintCase, 420); else paintCase();
+  const cf = document.getElementById('caseFoot');
+  if (caseRaised >= CASE_GOAL) {
+    caseBar.style.background = 'linear-gradient(90deg,#2f9e5f,#4aab6a)';
+    cf.innerHTML = '<span class="done">✓ 本案目標已達成　' + caseReal + '%</span>'
+      + (caseRaised > CASE_GOAL ? '　·　超出 <b>' + nf(caseRaised - CASE_GOAL) + '</b>' : '');
+  } else {
+    cf.innerHTML = '本案完成 <b>' + caseReal + '%</b>　·　還差 <b>'
+      + nf(CASE_GOAL - caseRaised) + '</b>';
+  }
+
   const pt = document.getElementById('pendTxt');
   if (pending > 0) {
     pt.innerHTML = '　·　待審核 <b>' + nf(pending) + '</b>'
@@ -686,12 +725,10 @@ function renderStats(d, animate) {
     pt.title = '已收到但財務還沒核對完成的款項，核對通過後會轉成橘色';
   } else { pt.textContent = ''; }
 
-  if (raised > goal) {
-    bar.style.background = 'linear-gradient(90deg,#2f9e5f,#4aab6a)';
-    document.getElementById('pct').style.color = '#2f7d4f';
+  if (caseRaised > CASE_GOAL) {
     const ov = document.getElementById('over');
     ov.style.display = 'block';
-    ov.innerHTML = '🎉 已達標，超出 <b>' + nf(raised - goal) + '</b>'
+    ov.innerHTML = '🎉 <b>第 1 件・魚池神國教會已達標</b>，超出 <b>' + nf(caseRaised - CASE_GOAL) + '</b>'
       + '——會先用來把這台車的車況升級；'
       + '<b>用不完的部分依同一張勸募許可轉入下一件個案</b>。';
   }
