@@ -77,7 +77,6 @@ img{max-width:100%;display:block}
 .bar.mini{margin-top:9px;height:9px;border-radius:6px}
 .bar.mini i{border-radius:6px}
 .case-foot{margin-top:8px;font-size:12.5px;color:var(--dim)}
-.case-foot .done{color:#2f7d4f;font-weight:900}
 .retry{margin-left:6px;padding:3px 10px;border:1px solid var(--border);background:#fff;border-radius:7px;
   font-family:inherit;font-size:12px;font-weight:700;color:var(--gold2);cursor:pointer}
 .retry:hover{background:#fdf7ef}
@@ -281,13 +280,11 @@ footer a{color:var(--muted)}
     <div class="case">
       <div class="case-head">
         <span class="nm"><b>進行中・第 1 件</b>　魚池神國教會</span>
-        <span class="num"><b id="caseRaised">NT$ —</b>　/　本案目標 <span id="caseGoal">NT$ 200,000</span></span>
+        <span class="num">本案預計 <b id="caseGoal">NT$ 200,000</b></span>
       </div>
       <div class="bar mini"><i id="caseBar"></i></div>
       <div class="case-foot" id="caseFoot">—</div>
     </div>
-    <div id="over" style="display:none;margin-top:12px;background:#eefaf1;border:1px solid #bfe6cb;
-      border-radius:10px;padding:11px 15px;font-size:13.5px;line-height:1.8;color:#256b3f;"></div>
     <div class="btn-row">
       <a class="btn primary" href="#form">贊助這個專案</a>
       <a class="btn ghost" href="#use">看看錢會怎麼用</a>
@@ -359,7 +356,7 @@ footer a{color:var(--muted)}
       同樣是送物資上山，一台省心的車，跟一台三天兩頭進廠的車，對山上那些等著物資的長輩來說，差很多。
     </p>
     <div class="use" style="margin-top:18px">
-      <div class="r"><span><b>NT$ 200,000</b>　達標</span><b style="color:var(--muted);font-weight:500;white-space:normal;text-align:right">年份較舊的四驅車，整理後可安全上山</b></div>
+      <div class="r"><span><b>NT$ 200,000</b>　預計</span><b style="color:var(--muted);font-weight:500;white-space:normal;text-align:right">年份較舊的四驅車，整理後可安全上山</b></div>
       <div class="r"><span><b>NT$ 250,000</b></span><b style="color:var(--muted);font-weight:500;white-space:normal;text-align:right">年份較新、里程較低，後續維修風險明顯下降</b></div>
       <div class="r sum"><span><b>NT$ 300,000 以上</b></span><b style="font-weight:500;white-space:normal;text-align:right">車況良好、保養紀錄完整，能穩定跑更多年</b></div>
     </div>
@@ -704,16 +701,15 @@ function renderStats(d, animate) {
   const caseRaised = Math.max(0, raised - CASE_BASE);
   const caseReal = Math.round(caseRaised / CASE_GOAL * 1000) / 10;
   const caseBar = document.getElementById('caseBar');
-  document.getElementById('caseRaised').textContent = nf(caseRaised);
   document.getElementById('caseGoal').textContent = nf(CASE_GOAL);
   const paintCase = () => { caseBar.style.width = Math.min(100, caseReal) + '%'; };
   if (animate) setTimeout(paintCase, 420); else paintCase();
+  // 募滿就安靜地滿格，不寫達標、不寫百分比、不寫超出多少
   const cf = document.getElementById('caseFoot');
   if (caseRaised >= CASE_GOAL) {
-    caseBar.style.background = 'linear-gradient(90deg,#2f9e5f,#4aab6a)';
-    cf.innerHTML = '<span class="done">✓ 本案目標已達成　' + caseReal + '%</span>'
-      + (caseRaised > CASE_GOAL ? '　·　超出 <b>' + nf(caseRaised - CASE_GOAL) + '</b>' : '');
+    cf.style.display = 'none';
   } else {
+    cf.style.display = '';
     cf.innerHTML = '本案完成 <b>' + caseReal + '%</b>　·　還差 <b>'
       + nf(CASE_GOAL - caseRaised) + '</b>';
   }
@@ -724,14 +720,6 @@ function renderStats(d, animate) {
       + (d.pendingDonors ? '（' + d.pendingDonors + ' 筆）' : '');
     pt.title = '已收到但財務還沒核對完成的款項，核對通過後會轉成橘色';
   } else { pt.textContent = ''; }
-
-  if (caseRaised > CASE_GOAL) {
-    const ov = document.getElementById('over');
-    ov.style.display = 'block';
-    ov.innerHTML = '🎉 <b>第 1 件・魚池神國教會已達標</b>，超出 <b>' + nf(caseRaised - CASE_GOAL) + '</b>'
-      + '——會先用來把這台車的車況升級；'
-      + '<b>用不完的部分依同一張勸募許可轉入下一件個案</b>。';
-  }
 
   applyPeriod(d.period, d.periodEnd);
 
