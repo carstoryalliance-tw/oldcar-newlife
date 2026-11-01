@@ -13,6 +13,7 @@
 //   mailProgressToAll()     募資進度寄理監事＋財務
 //   resendLastAidNotice()   把最後一筆個案投稿的通知重寄一次（設好收件人後用這支驗）
 //   sendAidAckNow(row)      補寄某一列個案投稿的「已收到」確認信給申請人（以協會名義）
+//   previewAidAckToJay()    把張溢廷那封確認信原樣寄一份給 Jay 過目（本人收不到）
 //   previewMigrate() / migrateFromV1() / compareV1V2() / checkV1Leftover()
 //   ⚠️ doPost、doGet 不能手動執行（它們要網頁請求才有參數）
 // 部署為 Web App: 執行身分「我」，存取「所有人」
@@ -835,6 +836,46 @@ function sendAidAckNow(rowNum, extraNote) {
   aidAck_(data, v[0], fileCount, dup, note);
   console.log('已寄確認信給第 ' + rowNum + ' 列：' + data.name + '（' + data.email + '）' +
               (dup ? '　※ 信中已註明以最後一份為準（偵測到 ' + dup + ' 筆重複）' : ''));
+}
+
+
+/**
+ * 預覽：把某一列的申請人確認信，原封不動寄一份給自己人過目。
+ *
+ * 跟 sendAidAckNow() 用同一支 aidAck_()，所以收到的信與申請人會收到的
+ * 完全一樣（主旨、內文、表格、頁腳都沒動），只是收件人換掉。
+ * 看過覺得可以，再用 sendAidAckNow(列號) 真的寄給本人。
+ *
+ * @param {number} rowNum  「公益申請」分頁的列號（含標題列，第一筆資料是 2）
+ * @param {string} toEmail 預覽要寄到哪（省略就寄給 MAIL_REPLY_TO）
+ */
+function previewAidAck(rowNum, toEmail) {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(AID_SHEET);
+  if (!sheet) { console.log('找不到「' + AID_SHEET + '」分頁。'); return; }
+  if (!rowNum || rowNum < 2 || rowNum > sheet.getLastRow()) {
+    console.log('列號要在 2 ～ ' + sheet.getLastRow() + ' 之間。'); return;
+  }
+  const to = String(toEmail || MAIL_REPLY_TO).trim();
+  const v = sheet.getRange(rowNum, 1, 1, 14).getValues()[0];
+  const realEmail = v[4];
+
+  // email 換成預覽收件人，其餘欄位照抄 —— 信的內容才會跟本人收到的一模一樣
+  const data = {
+    category: v[1], name: v[2], phone: v[3], email: to,
+    city: v[6], vehicle: v[7]
+  };
+  const fileCount = String(v[12] || '').split('\n').filter(function (x) { return x.trim(); }).length;
+  const dup = aidDupCount_(sheet, realEmail, v[3], rowNum);
+
+  aidAck_(data, v[0], fileCount, dup);
+  console.log('【預覽】第 ' + rowNum + ' 列（' + v[2] + '）的確認信已寄到 ' + to +
+              '　※ 申請人本人（' + realEmail + '）沒有收到' +
+              (dup ? '　※ 信中有「以最後一份為準」那段（偵測到 ' + dup + ' 筆重複）' : ''));
+}
+
+/** 預覽張溢廷（第 5 列）的確認信，寄給 Jay 過目。本人收不到。 */
+function previewAidAckToJay() {
+  previewAidAck(5, 'soulbreakin@gmail.com');
 }
 
 function doGet(e) {
