@@ -255,6 +255,13 @@
   .c7 .step-duration { background: #3a381d; color: #d4c46a; }
   .c7 .tag-item { background: #3a381d; color: #e5d88f; }
 
+  .c8 .step-dot { background: #3a1f1a; border-color: #e8705a; color: #e8705a; }
+  .c8 .step-card { background: #1a1210; border-color: #3a2420; }
+  .c8 .step-card::before { background: #e8705a; }
+  .c8 .step-title { color: #e8705a; }
+  .c8 .step-duration { background: #3a2420; color: #e8705a; }
+  .c8 .tag-item { background: #3a2420; color: #f09c8a; }
+
   /* 分隔線：幹部會議前 */
   .divider {
     display: flex;
@@ -334,9 +341,28 @@
 <div class="timeline">
 
   <!-- Step 1 -->
-  <div class="step c1">
+  <div class="step c8">
     <div class="step-time"><span>開場</span></div>
     <div class="step-dot">1</div>
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-icon">🙋</div>
+        <div class="step-title">全場自我介紹</div>
+        <div class="step-duration">10 分鐘</div>
+      </div>
+      <div class="step-desc">每人輪流一分鐘，先把人認完再進議程</div>
+      <div class="step-tags">
+        <span class="tag-item">⏱️ 每人約 1 分鐘</span>
+        <span class="tag-item">🏢 姓名 / 品牌 / 專長</span>
+        <span class="tag-item">🎯 今天想認識誰、想找什麼合作</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step c1">
+    <div class="step-time"><span>+10'</span></div>
+    <div class="step-dot">2</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-icon">🏛️</div>
@@ -353,10 +379,10 @@
     </div>
   </div>
 
-  <!-- Step 2 -->
+  <!-- Step 3 -->
   <div class="step c2">
-    <div class="step-time"><span>+10'</span></div>
-    <div class="step-dot">2</div>
+    <div class="step-time"><span>+20'</span></div>
+    <div class="step-dot">3</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-icon">🎤</div>
@@ -372,10 +398,10 @@
     </div>
   </div>
 
-  <!-- Step 3 -->
+  <!-- Step 4 -->
   <div class="step c4">
-    <div class="step-time"><span>+30'</span></div>
-    <div class="step-dot">3</div>
+    <div class="step-time"><span>+40'</span></div>
+    <div class="step-dot">4</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-icon">✍️</div>
@@ -392,15 +418,15 @@
     </div>
   </div>
 
-  <!-- Step 4 -->
+  <!-- Step 5 -->
   <div class="step c3">
-    <div class="step-time"><span>+40'</span></div>
-    <div class="step-dot">4</div>
+    <div class="step-time"><span>+50'</span></div>
+    <div class="step-dot">5</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-icon">🤝</div>
-        <div class="step-title">自我介紹 & 交流時間</div>
-        <div class="step-duration">30 分鐘</div>
+        <div class="step-title">交流時間</div>
+        <div class="step-duration">20 分鐘</div>
       </div>
       <div class="step-desc">全場自由交流，主動認識新朋友、找合作對象、約拍片</div>
       <div class="step-tags">
@@ -411,10 +437,10 @@
     </div>
   </div>
 
-  <!-- Step 5 -->
+  <!-- Step 6 -->
   <div class="step c5">
     <div class="step-time"><span>+70'</span></div>
-    <div class="step-dot">5</div>
+    <div class="step-dot">6</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-icon">🏪</div>
@@ -437,10 +463,10 @@
     <div class="divider-line"></div>
   </div>
 
-  <!-- Step 6 -->
+  <!-- Step 7 -->
   <div class="step c6">
     <div class="step-time"><span>+85'</span></div>
-    <div class="step-dot">6</div>
+    <div class="step-dot">7</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-icon">💬</div>
@@ -456,10 +482,10 @@
     </div>
   </div>
 
-  <!-- Step 7 -->
+  <!-- Step 8 -->
   <div class="step c7">
     <div class="step-time"><span>最後</span></div>
-    <div class="step-dot">7</div>
+    <div class="step-dot">8</div>
     <div class="step-card">
       <div class="step-header">
         <div class="step-icon">⚙️</div>
@@ -482,10 +508,11 @@
 <div class="progress-row">
   <div class="progress-label">議程時間分配（共 85 分鐘正式議程）</div>
   <div class="progress-bar">
+    <div class="pb-seg" style="width:11.8%; background:#e8705a;">介紹<br>10'</div>
     <div class="pb-seg" style="width:11.8%; background:#4a9eff;">報告<br>10'</div>
     <div class="pb-seg" style="width:23.5%; background:#7bc67e;">簡報<br>20'</div>
     <div class="pb-seg" style="width:11.8%; background:#e87c9e;">收割<br>10'</div>
-    <div class="pb-seg" style="width:35.3%; background:#f5a623;">交流<br>30'</div>
+    <div class="pb-seg" style="width:23.5%; background:#f5a623;">交流<br>20'</div>
     <div class="pb-seg" style="width:17.6%; background:#7ec8e3;">參訪<br>15'</div>
   </div>
 </div>
@@ -522,11 +549,10 @@
 <div style="width:100%;max-width:860px;margin-top:24px;background:#1a1d27;border:1px solid #2a2d3a;border-radius:12px;padding:20px 24px;">
   <div style="color:#e8a020;font-size:14px;font-weight:700;margin-bottom:16px;">📅 2026 年度例會時間表</div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;">
-    <div style="flex:1;min-width:120px;background:#111420;border:1px solid #2a3060;border-radius:10px;padding:14px;text-align:center;">
+    <div style="flex:1;min-width:120px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
       <div style="color:#4a9eff;font-size:20px;font-weight:900;">6/30</div>
       <div style="color:#888;font-size:11px;margin-top:4px;">第 1 場</div>
       <div style="color:#fff;font-size:12px;margin-top:6px;font-weight:500;">K-Wax<br>Kevin 場地</div>
-      <div style="display:inline-block;background:#1a2a50;color:#7bbfff;font-size:10px;padding:2px 8px;border-radius:10px;margin-top:6px;">即將舉辦</div>
     </div>
     <div style="flex:1;min-width:120px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
       <div style="color:#7bc67e;font-size:20px;font-weight:900;">9/1</div>
@@ -538,11 +564,52 @@
       <div style="color:#888;font-size:11px;margin-top:4px;">第 3 場</div>
       <div style="color:#fff;font-size:12px;margin-top:6px;font-weight:500;">派威場地</div>
     </div>
-    <div style="flex:1;min-width:120px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
+    <div style="flex:1;min-width:120px;background:#111420;border:1px solid #2a3060;border-radius:10px;padding:14px;text-align:center;">
       <div style="color:#e87c9e;font-size:20px;font-weight:900;">12/29</div>
       <div style="color:#888;font-size:11px;margin-top:4px;">第 4 場</div>
-      <div style="color:#fff;font-size:12px;margin-top:6px;font-weight:500;">絕世名膜<br>小劉場地</div>
+      <div style="color:#fff;font-size:12px;margin-top:6px;font-weight:500;">瑋瑋中古車<br>新廠</div>
+      <div style="display:inline-block;background:#1a2a50;color:#7bbfff;font-size:10px;padding:2px 8px;border-radius:10px;margin-top:6px;">即將舉辦</div>
     </div>
+  </div>
+</div>
+
+<!-- 2027 年度時間表 -->
+<div style="width:100%;max-width:860px;margin-top:16px;background:#1a1d27;border:1px solid #2a2d3a;border-radius:12px;padding:20px 24px;">
+  <div style="color:#e8a020;font-size:14px;font-weight:700;margin-bottom:16px;">📅 2027 年度例會時間表</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:110px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
+      <div style="color:#4a9eff;font-size:20px;font-weight:900;">2/23</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">第 1 場</div>
+      <div style="color:#666;font-size:12px;margin-top:6px;font-weight:500;">場地待定</div>
+    </div>
+    <div style="flex:1;min-width:110px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
+      <div style="color:#7bc67e;font-size:20px;font-weight:900;">4/20</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">第 2 場</div>
+      <div style="color:#666;font-size:12px;margin-top:6px;font-weight:500;">場地待定</div>
+    </div>
+    <div style="flex:1;min-width:110px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
+      <div style="color:#f5a623;font-size:20px;font-weight:900;">6/22</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">第 3 場</div>
+      <div style="color:#666;font-size:12px;margin-top:6px;font-weight:500;">場地待定</div>
+    </div>
+    <div style="flex:1;min-width:110px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
+      <div style="color:#e87c9e;font-size:20px;font-weight:900;">8/24</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">第 4 場</div>
+      <div style="color:#666;font-size:12px;margin-top:6px;font-weight:500;">場地待定</div>
+    </div>
+    <div style="flex:1;min-width:110px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
+      <div style="color:#7ec8e3;font-size:20px;font-weight:900;">10/19</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">第 5 場</div>
+      <div style="color:#666;font-size:12px;margin-top:6px;font-weight:500;">場地待定</div>
+    </div>
+    <div style="flex:1;min-width:110px;background:#111420;border:1px solid #1d3557;border-radius:10px;padding:14px;text-align:center;">
+      <div style="color:#b07fd4;font-size:20px;font-weight:900;">12/21</div>
+      <div style="color:#888;font-size:11px;margin-top:4px;">第 6 場</div>
+      <div style="color:#666;font-size:12px;margin-top:6px;font-weight:500;">場地待定</div>
+    </div>
+  </div>
+  <div style="color:#777;font-size:11px;margin-top:14px;line-height:1.7;">
+    ※ 場地輪流在會員店面辦，確定後更新；提供場地者當次不需繳活動費。
   </div>
 </div>
 
