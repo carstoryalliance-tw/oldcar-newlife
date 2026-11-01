@@ -79,7 +79,7 @@ const FORM_URL = 'https://oldcarnewlife.org.tw/fund/';
 const BANK_HTML = '<b>永豐銀行（新莊副都心）</b><br>' +
   '銀行代碼　807<br>帳號　132-01-80110-2656<br>戶名　社團法人台灣人車公益協會';
 // 改一次就把日期往後推一位，doGet 會回報，方便確認線上跑的是哪一版
-const SCRIPT_VERSION = '2026-11-01-a';
+const SCRIPT_VERSION = '2026-11-01-b';
 
 const FUND_PERMIT = '衛生福利部勸募許可 衛部救字第 1151363585 號　·　勸募期間 115.09.23–116.09.19';
 
@@ -779,7 +779,7 @@ function aidAck_(data, timestamp, fileCount, dupCount, extraNote) {
   // 不寫時程，申請人只能猜，然後就會重複投稿。
   const steps =
     '<ol style="padding-left:20px;line-height:2;">' +
-    '<li><b>資料核對</b>　約 3 個工作天。如果資料有缺漏或需要補充，我們會主動與您聯繫。</li>' +
+    '<li><b>資料核對</b>　約 10 個工作天。如果資料有缺漏或需要補充，我們會主動與您聯繫。</li>' +
     '<li><b>審查</b>　由協會例會審查，<b>例會每兩個月召開一次</b>，' +
     '因此從收到申請到確定結果，<b>最長約需兩個月</b>。期間如果需要安排時間實際看車，' +
     '我們會先與您聯絡。</li>' +
