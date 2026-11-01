@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<title>會員下載區｜社團法人台灣人車公益協會</title>
+<meta name="description" content="例會簡報範本與歷屆例會 DM，協會會員自由下載使用。">
+<meta property="og:title" content="會員下載區｜社團法人台灣人車公益協會">
+<meta property="og:description" content="例會簡報範本與歷屆例會 DM，自由下載使用。">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #0f1117;
+    color: #e8eaed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  .wrap { width: 100%; max-width: 980px; }
+
+  .backlink { margin-bottom: 18px; }
+  .backlink a {
+    color: #fff; text-decoration: none; font-size: 13px; opacity: .85;
+    background: rgba(255,255,255,.08); padding: 6px 13px; border-radius: 16px;
+  }
+  .backlink a:hover { background: rgba(255,255,255,.16); }
+
+  .header { text-align: center; margin-bottom: 44px; }
+  .header .tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #e8a020, #f5c842);
+    color: #0f1117; font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    padding: 6px 18px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .header h1 { font-size: 30px; font-weight: 900; letter-spacing: 1px; }
+  .header p { margin-top: 12px; font-size: 14px; color: #9aa0a8; line-height: 1.9; }
+
+  h2.sec {
+    font-size: 19px; font-weight: 900; margin: 0 0 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  h2.sec::before {
+    content: ''; width: 5px; height: 20px; background: #e8a020; border-radius: 2px;
+  }
+  .sec-note { font-size: 13px; color: #9aa0a8; line-height: 1.9; margin-bottom: 18px; }
+
+  .block { margin-bottom: 44px; }
+
+  /* 範本 */
+  .tpl {
+    background: #171a22; border: 1px solid #272b35; border-radius: 14px;
+    padding: 22px 24px; display: flex; gap: 22px; align-items: center; flex-wrap: wrap;
+  }
+  .tpl .icon {
+    width: 58px; height: 58px; border-radius: 12px; flex: 0 0 auto;
+    background: #e8a020; color: #0f1117;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 900; letter-spacing: .5px;
+  }
+  .tpl .body { flex: 1 1 320px; }
+  .tpl .body b { display: block; font-size: 17px; margin-bottom: 6px; }
+  .tpl .body span { font-size: 13px; color: #9aa0a8; line-height: 1.9; }
+  .btn {
+    display: inline-block; text-decoration: none; white-space: nowrap;
+    background: #e8a020; color: #0f1117; font-weight: 900; font-size: 14px;
+    padding: 12px 24px; border-radius: 10px;
+  }
+  .btn:hover { background: #f5c842; }
+  .btn.ghost { background: transparent; color: #e8a020; border: 1.5px solid #3a3f4a; }
+  .btn.ghost:hover { background: rgba(232,160,32,.1); }
+
+  /* DM 卡片 */
+  .dm-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px;
+  }
+  .dm {
+    background: #171a22; border: 1px solid #272b35; border-radius: 14px;
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .dm img { width: 100%; display: block; background: #0b0c0f; }
+  .dm .meta { padding: 14px 16px 16px; }
+  .dm .meta .date {
+    font-size: 12px; color: #e8a020; font-weight: 700; letter-spacing: 1px;
+  }
+  .dm .meta .name { font-size: 15px; font-weight: 700; margin: 4px 0 3px; }
+  .dm .meta .sub { font-size: 12px; color: #9aa0a8; line-height: 1.8; }
+  .dm .meta a {
+    display: inline-block; margin-top: 12px; text-decoration: none;
+    font-size: 13px; font-weight: 700; color: #e8a020;
+  }
+  .dm .meta a:hover { text-decoration: underline; }
+
+  .note {
+    background: #171a22; border: 1px solid #272b35; border-radius: 12px;
+    padding: 16px 20px; font-size: 13px; color: #9aa0a8; line-height: 1.95;
+  }
+  .note b { color: #e8eaed; }
+
+  .footer {
+    margin-top: 40px; color: #555; font-size: 11px; letter-spacing: 1px; text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 24px 16px; }
+    .header h1 { font-size: 24px; }
+    .tpl { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="backlink"><a href="/agenda/">← 回例會議程</a></div>
+
+  <div class="header">
+    <div class="tag">MEMBER DOWNLOADS</div>
+    <h1>會員下載區</h1>
+    <p>例會簡報範本與歷屆例會 DM，協會會員自由下載使用。</p>
+  </div>
+
+  <!-- 例會簡報範本 -->
+  <div class="block">
+    <h2 class="sec">例會簡報範本</h2>
+    <div class="sec-note">
+      主辦例會的成員從這份範本開始做，版面與配色都已經排好，把內容換掉就能用。
+    </div>
+    <div class="tpl">
+      <div class="icon">PPTX</div>
+      <div class="body">
+        <b>人車公益協會　例會簡報範本</b>
+        <span>
+          封面、開場宣誓與例會流程、協會現況、財務總結、組織架構、新進成員、
+          活動回顧、公益個案、募資進度、主題簡報、入會說明、自由交流、散場頁。<br>
+          16:9　·　PowerPoint 可直接編輯，文字與數字都能改。
+        </span>
+      </div>
+      <a class="btn" href="files/人車公益協會_例會簡報範本.pptx" download>下載範本</a>
+    </div>
+  </div>
+
+  <!-- 歷屆 DM -->
+  <div class="block">
+    <h2 class="sec">歷屆例會 DM</h2>
+    <div class="sec-note">
+      點縮圖看原圖，或按「下載原圖」存檔。歡迎轉發到自己的社群，幫協會多曝光一點。
+    </div>
+    <div class="dm-grid">
+
+      <div class="dm">
+        <a href="files/dm/2026-06-30_第1場例會.jpg" target="_blank" rel="noopener">
+          <img src="files/dm/thumb/2026-06-30_第1場例會.jpg" alt="2026 第 1 場例會 DM" loading="lazy">
+        </a>
+        <div class="meta">
+          <div class="date">2026.06.30</div>
+          <div class="name">第 1 場例會</div>
+          <div class="sub">K-WAX 凱閎國際企業總部<br>主講　曾聖凱</div>
+          <a href="files/dm/2026-06-30_第1場例會.jpg" download>下載原圖 ↓</a>
+        </div>
+      </div>
+
+      <div class="dm">
+        <a href="files/dm/2026-09-01_第2場例會.png" target="_blank" rel="noopener">
+          <img src="files/dm/thumb/2026-09-01_第2場例會.jpg" alt="2026 第 2 場例會 DM" loading="lazy">
+        </a>
+        <div class="meta">
+          <div class="date">2026.09.01</div>
+          <div class="name">第 2 場例會</div>
+          <div class="sub">卓越凹痕修復中心・桃園平鎮店<br>主講　馬成傑</div>
+          <a href="files/dm/2026-09-01_第2場例會.png" download>下載原圖 ↓</a>
+        </div>
+      </div>
+
+      <div class="dm">
+        <a href="files/dm/2026-10-27_第3場例會.jpg" target="_blank" rel="noopener">
+          <img src="files/dm/thumb/2026-10-27_第3場例會.jpg" alt="2026 第 3 場例會 DM" loading="lazy">
+        </a>
+        <div class="meta">
+          <div class="date">2026.10.27</div>
+          <div class="name">第 3 場例會</div>
+          <div class="sub">派威事業升級學院<br>主講　吳建勳</div>
+          <a href="files/dm/2026-10-27_第3場例會.jpg" download>下載原圖 ↓</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="note">
+    <b>這一區只放協會自己做的東西。</b>
+    範本與 DM 都可以自由取用、自由轉發；要改成自己店家的版本也沒問題。<br>
+    有新的場次 DM，或是範本改版，都會更新在這一頁。缺什麼跟協會說一聲。
+  </div>
+
+  <div class="footer">社團法人台灣人車公益協會　·　OLD CAR × NEW LIFE</div>
+
+</div>
+
+</body>
+</html>
