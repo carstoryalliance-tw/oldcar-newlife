@@ -14,6 +14,9 @@
 //   resendLastAidNotice()   把最後一筆個案投稿的通知重寄一次（設好收件人後用這支驗）
 //   sendAidAckNow(row)      補寄某一列個案投稿的「已收到」確認信給申請人（以協會名義）
 //   previewAidAckToJay()    把張溢廷那封確認信原樣寄一份給 Jay 過目（本人收不到）
+//   resendAidNotice(row)    補寄某一列個案投稿的通知給幹部（AID_EMAILS 全員）
+//   resendAidNoticesToStaff()  一次補寄第 5、6 列的通知給幹部（張溢廷、高思凱）
+//   sendAidAckToPending()      一次補寄第 5、6 列的確認信給申請人本人
 //   previewMigrate() / migrateFromV1() / compareV1V2() / checkV1Leftover()
 //   ⚠️ doPost、doGet 不能手動執行（它們要網頁請求才有參數）
 // 部署為 Web App: 執行身分「我」，存取「所有人」
@@ -876,6 +879,73 @@ function previewAidAck(rowNum, toEmail) {
 /** 預覽張溢廷（第 5 列）的確認信，寄給 Jay 過目。本人收不到。 */
 function previewAidAckToJay() {
   previewAidAck(5, 'soulbreakin@gmail.com');
+}
+
+
+/**
+ * 補寄指定列的個案投稿通知給幹部（resendLastAidNotice 的任意列版本）。
+ *
+ * 用在通知功能上線前就投稿、幹部從來沒收到過的那幾筆。
+ * 寄給 AID_EMAILS 全部的人，不是只寄給新加入的人 —— 名單是一起看案子的，
+ * 只補給其中一個人，其他人手上的資訊就會跟他對不起來。
+ *
+ * @param {number} rowNum 「公益申請」分頁的列號（含標題列，第一筆資料是 2）
+ */
+function resendAidNotice(rowNum) {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(AID_SHEET);
+  if (!sheet) { console.log('找不到「' + AID_SHEET + '」分頁。'); return; }
+  if (!rowNum || rowNum < 2 || rowNum > sheet.getLastRow()) {
+    console.log('列號要在 2 ～ ' + sheet.getLastRow() + ' 之間。'); return;
+  }
+  const v = sheet.getRange(rowNum, 1, 1, 14).getValues()[0];
+
+  // 照片連結在第 13 欄，網址藏在 RichText 的超連結裡，純文字讀不到
+  const files = [];
+  try {
+    const rt = sheet.getRange(rowNum, 13).getRichTextValue();
+    if (rt) {
+      rt.getRuns().forEach(function (r) {
+        const label = String(r.getText() || '').trim();
+        if (label) files.push({ label: label, url: r.getLinkUrl() || '' });
+      });
+    }
+  } catch (x) { /* 沒有 RichText 就當作沒附檔 */ }
+
+  aidNotify_(sheet, rowNum, {
+    category: v[1], name: v[2], phone: v[3], email: v[4], lineId: v[5],
+    city: v[6], vehicle: v[7], condition: v[8], story: v[9],
+    situation: v[10], publicConsent: v[11]
+  }, v[0], files);
+
+  console.log('已重寄第 ' + rowNum + ' 列（' + v[2] + '）的通知給：' + aidEmails_().join('、'));
+}
+
+/**
+ * 一次補寄張溢廷（第 5 列）與高思凱（第 6 列）的投稿通知給幹部。
+ * 2026-11-01 瑋瑋加入 AID_EMAILS，這兩筆他沒收過。
+ */
+function resendAidNoticesToStaff() {
+  [5, 6].forEach(function (r) { resendAidNotice(r); });
+}
+
+/**
+ * 補寄申請人確認信給張溢廷（第 5 列）與高思凱（第 6 列）。
+ *
+ * 這兩位都在自動回信上線前投稿，從投稿到現在沒收到過任何東西。
+ * 各自夾帶一句這一案真的需要問的話 —— 不是客套，是 A3 初篩缺的資料：
+ *   張溢廷：三次投稿縣市填了台中又填苗栗，不確定車停哪、也就排不了看車
+ *   高思凱：整筆沒有附任何照片，初篩的「車況」這一項無從核對
+ */
+function sendAidAckToPending() {
+  sendAidAckNow(5,
+    '另外想跟您確認一件事：申請表上「所在縣市」前後填了台中市與苗栗縣，' +
+    '方便的話請回信告訴我們車輛目前停放的地點，以及您方便看車的時段，' +
+    '這會影響我們安排評估的人員。');
+
+  sendAidAckNow(6,
+    '另外想請您補充車輛照片：由於這次申請沒有附上照片，' +
+    '方便的話請回信附幾張車子的外觀（前、後、左、右）、內裝與儀表板里程數，' +
+    '有助於我們在初步評估時了解實際狀況。');
 }
 
 function doGet(e) {
