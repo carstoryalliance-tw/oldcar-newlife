@@ -303,7 +303,7 @@ nav #nav-home:hover,nav #nav-about:hover,nav #nav-members:hover,nav #nav-videos:
     <div style="font-size:clamp(13px,2vw,15px);color:rgba(232,160,32,.95);letter-spacing:2px;margin-bottom:14px;line-height:2.2;text-shadow:0 1px 8px rgba(0,0,0,.6);">以人為本 · 以車為橋 · 讓愛發動 · 讓希望前行</div>
     <p style="font-size:14px;color:rgba(255,255,255,.9);font-weight:700;line-height:2;margin-bottom:40px;text-shadow:0 1px 6px rgba(0,0,0,.5);">致力協助弱勢族群解決交通與生活困難，讓車圈的熱情與專業<span class="pc-br"><br></span>成為改變社會的善的力量。</p>
     <div id="hero-cta" class="hero-hide-mobile" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
-      <button onClick="{{ gotoDonate }}" style="padding:15px 34px;background:linear-gradient(135deg,#e8a020,#d4821a);border:none;border-radius:10px;font-size:15px;font-weight:900;color:#0a0b0f;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;box-shadow:0 4px 20px rgba(232,160,32,.3);">立即捐款</button>
+      <button onClick="{{ gotoFund }}" style="padding:15px 34px;background:linear-gradient(135deg,#e8a020,#d4821a);border:none;border-radius:10px;font-size:15px;font-weight:900;color:#0a0b0f;cursor:pointer;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;box-shadow:0 4px 20px rgba(232,160,32,.3);">立即捐款</button>
       <a href="apply/" style="padding:15px 34px;background:rgba(255,255,255,.06);border:1.5px solid rgba(232,160,32,.75);border-radius:10px;font-size:15px;font-weight:900;color:#e8a020;text-decoration:none;letter-spacing:1px;font-family:'Noto Sans TC',sans-serif;backdrop-filter:blur(4px);box-shadow:0 4px 20px rgba(0,0,0,.25);">個案投稿</a>
     </div>
   </div>
@@ -1226,6 +1226,7 @@ class Component extends DCLogic {
       gotoHome: () => this.switchTab('home'),
       gotoJoin: () => { window.location.href = '/join/'; },
       gotoDonate: () => { window.location.href = '/donate-notice/'; },
+      gotoFund: () => { window.location.href = '/fund/'; },
       gotoAbout: () => this.goTo('about'),
       gotoVideos: () => this.goTo('videos'),
       gotoNews: () => this.goTo('news'),
